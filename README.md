@@ -1,2 +1,2 @@
 # Ampalibe
-Ampalibe is an open source framework.  
+Ampalibe is a light open source framework. 

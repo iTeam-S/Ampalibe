@@ -1,0 +1,3 @@
+fastapi
+mysql-connector
+python-dotenv

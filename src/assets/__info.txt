@@ -1,0 +1,1 @@
+Dans ce dossier, est placer les dossier voulant être exposé sur le serveur web.

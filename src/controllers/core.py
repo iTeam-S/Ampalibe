@@ -9,11 +9,10 @@ import ampalibe
         données envoyé par facevook (heure d'envoi, ...)
 '''
 @ampalibe.commande('/')
-def main(user_id, message, **extends):
+def main(sender_id, cmd, **extends):
     print("Hello, world")
 
 
 @ampalibe.commande('/test')
-def test(user_id, message, **extends):
+def test(sender_id, cmd, **extends):
     print("Hello, test")
-

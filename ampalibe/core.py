@@ -53,7 +53,7 @@ def analyse(data):
 async def verif(request: Request) -> Dict:
     fb_token = request.query_params.get("hub.verify_token")
 
-    if fb_token == env.get("AMP_ACCESS_TOKEN"):
+    if fb_token == env("AMP_VERIF_TOKEN"):
         return Response(content=request.query_params["hub.challenge"])
     return 'Failed to verify token'
 
@@ -62,6 +62,6 @@ async def verif(request: Request) -> Dict:
 async def main(request: Request) -> Dict:
     data = await request.json()
     sender_id, payload = analyse(data)
-    funcs.get(payload, funcs['/'])(sender_id, payload)
+    Thread(target=funcs.get(payload, funcs['/']), args=(sender_id, payload)).start()
 
     return {'status': 'ok'}

@@ -11,11 +11,12 @@ from conf import Configuration
         données envoyé par facebook (heure d'envoi, ...)
 '''
 req = ampalibe.req(Configuration())
+bot = ampalibe.Messenger(Configuration.ACCESS_TOKEN)
 
 
 @ampalibe.commande('/')
 def main(sender_id, cmd, **extends):
-    print("Hello, world")
+    bot.send_message(sender_id, "Hello, world")
     req.del_temp(sender_id, "nom")
 
 
@@ -23,10 +24,10 @@ def main(sender_id, cmd, **extends):
 def test(sender_id, cmd, **extends):
     req.set_action(sender_id, "/getname")
     req.set_temp(sender_id, 'nom', 'Gaetan')
+    bot.send_message(sender_id, "ok")
 
 
 @ampalibe.action('/getname')
 def getname(sender_id, cmd, **extends):
-    print("Bonjour", cmd)
-    print(req.get_temp(sender_id, 'nom'))
+    bot.send_message(sender_id, f"Bonjour, {cmd}")
     req.set_action(sender_id, None)

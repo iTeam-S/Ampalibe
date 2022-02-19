@@ -66,4 +66,22 @@ class Request:
         '''
         self.cursor.execute(req, (user_id,))
         self.db.commit()
-        
+    
+    @verif_db
+    def get_action(self, user_id):
+        '''
+            Recuperer l'action de l'utilisateur
+        '''
+        req = 'SELECT action FROM amp_user WHERE user_id = %s'
+        self.cursor.execute(req, (user_id,))
+        # retourne le resultat
+        return self.cursor.fetchone()[0]
+    
+    @verif_db
+    def set_action(self, user_id, action):
+        '''
+            Definir l'action de l'utilisateur
+        '''
+        req = 'UPDATE amp_user set action = %s WHERE user_id = %s'
+        self.cursor.execute(req, (action, user_id))
+        self.db.commit()

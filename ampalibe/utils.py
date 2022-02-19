@@ -1,28 +1,4 @@
-
-import uvicorn
-from typing import Dict
-from .requete import Request as model
-from threading import Thread
-from fastapi import FastAPI, Request, Response
-
-funcs = {}
-webserver = FastAPI()
-conf = None
-req = None
-
-def commande(*args, **kwargs):
-    def call_fn(function):
-        funcs[args[0]] = function
-    return call_fn
-
-def run(cnf):
-    global conf
-    global req
-
-    conf = cnf
-    req = model(cnf)
-    
-    uvicorn.run(webserver)
+funcs = {'commande': {}, 'action': {}}
 
 def analyse(data):
     '''
@@ -56,21 +32,12 @@ def analyse(data):
                 pst_payload = message['postback']['payload']
                 return recipient_id, pst_payload
 
+def commande(*args, **kwargs):
+    def call_fn(function):
+        funcs['commande'][args[0]] = function
+    return call_fn
 
-@webserver.get('/')
-async def verif(request: Request) -> Dict:
-    fb_token = request.query_params.get("hub.verify_token")
-
-    if fb_token == conf.VERIF_TOKEN:
-        return Response(content=request.query_params["hub.challenge"])
-    return 'Failed to verify token'
-
-
-@webserver.post('/')
-async def main(request: Request) -> Dict:
-    data = await request.json()
-    sender_id, payload = analyse(data)
-    req.verif_user(sender_id)
-    Thread(target=funcs.get(payload, funcs['/']), args=(sender_id, payload)).start()
-
-    return {'status': 'ok'}
+def action(*args, **kwargs):
+    def call_fn(function):
+        funcs['action'][args[0]] = function
+    return call_fn

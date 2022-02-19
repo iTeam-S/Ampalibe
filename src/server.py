@@ -1,10 +1,10 @@
 import os
 import sys
-from dotenv import load_dotenv
+# Mode Dev only 
 sys.path.insert(0, os.path.dirname('/'.join(__file__.split('/')[:-1])))
-load_dotenv()
 if True:
     import ampalibe
-    from controllers import core
+    import controllers.core
+    from conf import Configuration
 
-ampalibe.run()
+ampalibe.run(Configuration())

@@ -16,4 +16,4 @@ class Configuration:
     DB_PORT = env.get('DB_PORT')
 
     ACCESS_TOKEN = env.get('ACCESS_TOKEN')
-    VERIF_TOKEN = env.get('VERIF_TOKEN')
+    VERIF_TOKEN = env.get('AMP_VERIF_TOKEN')

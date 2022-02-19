@@ -7,13 +7,16 @@ from fastapi import FastAPI, Request, Response
 
 funcs = {}
 webserver = FastAPI()
+conf = None
 
 def commande(*args, **kwargs):
     def call_fn(function):
         funcs[args[0]] = function
     return call_fn
 
-def run():
+def run(cnf):
+    global conf 
+    conf = cnf
     uvicorn.run(webserver)
 
 def analyse(data):
@@ -53,7 +56,7 @@ def analyse(data):
 async def verif(request: Request) -> Dict:
     fb_token = request.query_params.get("hub.verify_token")
 
-    if fb_token == env("AMP_VERIF_TOKEN"):
+    if fb_token == conf.VERIF_TOKEN:
         return Response(content=request.query_params["hub.challenge"])
     return 'Failed to verify token'
 

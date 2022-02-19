@@ -50,7 +50,7 @@ async def main(request: Request) -> Dict:
             ).start()
     else:
         Thread(
-            target=funcs['commande'].get(payload, funcs['commande']['/']),
+            target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
             args=(sender_id, payload)
         ).start()
 

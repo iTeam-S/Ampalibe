@@ -1,3 +1,4 @@
+import json
 import mysql.connector
 
 class Request:
@@ -85,3 +86,52 @@ class Request:
         req = 'UPDATE amp_user set action = %s WHERE user_id = %s'
         self.cursor.execute(req, (action, user_id))
         self.db.commit()
+    
+    @verif_db
+    def __get_temp(self, user_id):
+        req = 'SELECT tmp FROM amp_user WHERE user_id = %s'
+        self.cursor.execute(req, (user_id,))
+        return self.cursor.fetchone()[0]
+
+    @verif_db
+    def set_temp(self, user_id, key, value):
+        '''
+            Inserer des données temporaire dans la table
+        '''
+        data = self.__get_temp(user_id)
+        if not data:
+            data = {}
+        else:
+            data = json.loads(data)
+        data[key] = value
+        data = json.dumps(data)
+        req = 'UPDATE amp_user SET tmp = %s WHERE user_id = %s'
+        self.cursor.execute(req, (data, user_id))
+        self.db.commit()
+
+    @verif_db
+    def get_temp(self, user_id, key):
+        '''
+            Recuperation des données temporaire d'un utilisateur
+        '''
+        data = self.__get_temp(user_id)
+        if not data:
+            return
+        data = json.loads(data)
+        return data.get(key)
+    
+    @verif_db
+    def del_temp(self, user_id, key):
+        data = self.__get_temp(user_id)
+        if not data:
+            return
+        data = json.loads(data)
+        try:
+            data.pop(key)
+        except KeyError:
+            pass
+        else:
+            data = json.dumps(data)
+            req = 'UPDATE amp_user SET tmp = %s WHERE user_id = %s'
+            self.cursor.execute(req, (data, user_id))
+            self.db.commit()

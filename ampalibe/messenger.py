@@ -112,6 +112,7 @@ class Messenger:
             Affichage de resultat de façon structuré
             chez l'utilisateur
         '''
+        
         dataJSON = {
             'messaging_type': "RESPONSE",
             'recipient': {
@@ -230,7 +231,7 @@ class Messenger:
         if filename_ is None:
             filename_ = file
         params = {
-             "access_token": self.token
+            "access_token": self.token
         }
 
         data = {

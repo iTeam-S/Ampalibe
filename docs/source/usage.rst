@@ -10,25 +10,30 @@ To use Ampalibe, first install it using pip:
 
 .. code-block:: console
 
-   (.venv) $ pip install ampalibe
+   $ pip install ampalibe
 
-Creating recipes
-----------------
+Creation of a new project
+-------------------------
 
-To retrieve a list of random ingredients,
-you can use the ``lumache.get_random_ingredients()`` function:
+After installation, an ``ampalibe`` executable is available in your system path, 
+and we will create our project with this command.
 
-.. autofunction:: lumache.get_random_ingredients
+.. code-block:: console
 
-The ``kind`` parameter should be either ``"meat"``, ``"fish"``,
-or ``"veggies"``. Otherwise, :py:func:`lumache.get_random_ingredients`
-will raise an exception.
+   $ ampalibe create myfirstbot
 
-.. autoexception:: lumache.InvalidKindError
+There will be a created directory named **myfirstbot/** and all the files contained in it.
 
-For example:
+.. note::
 
->>> import lumache
->>> lumache.get_random_ingredients()
-['shells', 'gorgonzola', 'parsley']
+   You can directly create projet without a new directory with **init** command
+
+.. code-block:: console
+
+   $ cd myExistingDirectory
+   $ ampalibe init
+
+
+Understanding of files
+-------------------------
 

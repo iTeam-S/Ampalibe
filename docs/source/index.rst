@@ -1,7 +1,7 @@
 Welcome to Ampalibe's documentation!
 ===================================
 
-**Ampalibe** is a Python framework to quickly create bots or applications on facebook messenger
+**Ampalibe** is a Python framework to quickly create bots or applications on facebook messenger.
 It uses api from the `Messenger platforms <https://developers.facebook.com/docs/messenger-platform/>`_
 and offers a *simple* and *quick* functions to use it.
 
@@ -19,3 +19,4 @@ Contents
 
    usage
    api
+

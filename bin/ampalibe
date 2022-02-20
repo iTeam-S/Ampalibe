@@ -10,7 +10,6 @@ if [ "$1" == "create" ]; then
         python -c "import ampalibe;print(ampalibe.env)" > $2/.env
         python -c "import ampalibe;print(ampalibe.conf)" > $2/conf.py
         python -c "import ampalibe;print(ampalibe.core)" > $2/core.py
-        python -c "import ampalibe;print(ampalibe.server)" > $2/server.py
         mkdir -p $2/assets/{public,private}
     else
         echo "Incorrect number of args for create"
@@ -21,7 +20,6 @@ elif [ "$1" == "init" ]; then
         python -c "import ampalibe;print(ampalibe.env)" > .env
         python -c "import ampalibe;print(ampalibe.conf)" > conf.py
         python -c "import ampalibe;print(ampalibe.core)" > core.py
-        python -c "import ampalibe;print(ampalibe.server)" > server.py
         mkdir -p assets/{public,private}
     else
         echo "Incorrect number of args for init"
@@ -30,11 +28,12 @@ elif [ "$1" == "init" ]; then
     fi
 elif [ "$1" == "run" ]; then
     if [ $# -eq 1 ]; then
-        if ! [ -f "server.py" ]; then
-            echo "server.py not found\nPlease, go to your dir project."
+        if ! [ -f "core.py" ]; then
+            echo "core.py not found\nPlease, go to your dir project."
             exit 1
         fi
-        python server.py
+        source .env
+        python -c 'import core;core.ampalibe.run(core.Configuration())'
     else
         echo "Incorrect number of args for run"
         exit 1

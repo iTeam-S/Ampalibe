@@ -16,7 +16,8 @@ AMP_HOST=0.0.0.0
 AMP_PORT=4555"""
 
 
-server = """import core
+server = """from conf import Configuration
+import core
 core.ampalibe.run(core.Configuration())
 """
 

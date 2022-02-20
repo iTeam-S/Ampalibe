@@ -5,6 +5,9 @@ def analyse(data):
         Fonction analysant les données reçu de Facebook
         Donnée de type Dictionnaire attendu (JSON parsé)
     '''
+    def struct_atts(data):
+        return data['payload']['url']
+
     for event in data['entry']:
         messaging = event['messaging']
         for message in messaging:
@@ -14,13 +17,7 @@ def analyse(data):
                 if message['message'].get('attachments'):
                     # recuperations des fichiers envoyés.
                     data = message['message'].get('attachments')
-                    # data[0]['type'] == 'file'
-                    return sender_id, data[0]['payload']['url']
-                elif message['message'].get('attachments'):
-                    # recuperations des fichiers envoyés.
-                    data = message['message'].get('attachments')
-                    # data[0]['type'] == 'file'
-                    return  sender_id, data[0]['payload']['url']
+                    return sender_id, ','.join(list(map(struct_atts, data)))
                 elif message['message'].get('quick_reply'):
                     # cas d'une reponse de type QUICK_REPLY
                     return  sender_id, message['message']['quick_reply'].get('payload')

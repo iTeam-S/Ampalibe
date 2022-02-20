@@ -1,7 +1,11 @@
 # Configuration file for the Sphinx documentation builder.
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
+import ampalibe
 
 # -- Project information
-import ampalibe
 
 project = 'Ampalibe'
 copyright = '2021, iTeam-$'

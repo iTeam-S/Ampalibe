@@ -4,11 +4,13 @@ from typing import Dict
 from threading import Thread
 from .utils import analyse, funcs
 from .requete import Request as Model
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 
 _req = None
 conf = None
 webserver = FastAPI()
+webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
 
 
 def req(cnf):

@@ -2,7 +2,7 @@ from .server import run
 from .server import req as Req
 from .messenger import Messenger
 from .requete import Request as Model
-from .utils import action, commande
+from .utils import action, command
 from .source import env, conf, core, server
 
 __version__ = '0.0.1'

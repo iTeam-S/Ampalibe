@@ -4,4 +4,7 @@ API
 .. autosummary::
    :toctree: generated
 
-   ampalibe
+   ampalibe.command
+   ampalibe.action
+   ampalibe.Req
+   ampalibe.Messenger

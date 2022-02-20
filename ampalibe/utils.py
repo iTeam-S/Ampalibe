@@ -32,7 +32,7 @@ def analyse(data):
                 pst_payload = message['postback']['payload']
                 return recipient_id, pst_payload
 
-def commande(*args, **kwargs):
+def command(*args, **kwargs):
     def call_fn(function):
         funcs['commande'][args[0]] = function
     return call_fn

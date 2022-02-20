@@ -37,7 +37,7 @@ req = ampalibe.Req(Configuration())
 bot = ampalibe.Messenger(Configuration.ACCESS_TOKEN)
 
 
-@ampalibe.commande('/')
+@ampalibe.command('/')
 def main(sender_id, cmd, **extends):
     print("Hello World")"""
 

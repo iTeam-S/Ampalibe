@@ -1,20 +1,5 @@
 # Ampalibe
-Ampalibe is a light open source framework. 
+<img align="center" height=240 src="https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/ampalibe.png"/>
 
-### Use
-```s
-$ cd Ampalibe
-```
-
-```s
-$ python setup.py install
-```
-
-```s
-$ cd src/
-```
-
-```s
-$ python server.py
-```
+Ampalibe is a ligth Python framework to quickly create bots or applications on facebook messenger.
 

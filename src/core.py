@@ -10,7 +10,7 @@ from conf import Configuration
     @param extends: contiennent la liste des autres
         données envoyé par facebook (heure d'envoi, ...)
 '''
-req = ampalibe.req(Configuration())
+req = ampalibe.Req(Configuration())
 bot = ampalibe.Messenger(Configuration.ACCESS_TOKEN)
 
 

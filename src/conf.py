@@ -18,3 +18,6 @@ class Configuration:
 
     ACCESS_TOKEN = env.get('AMP_ACCESS_TOKEN')
     VERIF_TOKEN = env.get('AMP_VERIF_TOKEN')
+
+    APP_HOST = env.get('AMP_HOST')
+    APP_PORT = int(env.get('AMP_PORT'))

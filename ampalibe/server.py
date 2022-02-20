@@ -26,7 +26,7 @@ def run(cnf):
     global _req
     conf = cnf
     _req = Model(cnf)
-    uvicorn.run(webserver)
+    uvicorn.run(webserver, port=cnf.APP_PORT, host=cnf.APP_HOST)
 
 
 @webserver.get('/')

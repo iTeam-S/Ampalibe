@@ -6,5 +6,5 @@ API
 
    ampalibe.command
    ampalibe.action
-   ampalibe.Req
+   ampalibe.Model
    ampalibe.Messenger

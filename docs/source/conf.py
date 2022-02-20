@@ -9,7 +9,7 @@ import ampalibe
 
 project = 'Ampalibe'
 copyright = '2021, iTeam-$'
-author = 'Gatan Jonathan and iTeam-$ members'
+author = 'iTeam-$'
 
 release = ampalibe.__version__
 version = ampalibe.__version__
@@ -20,7 +20,6 @@ html_static_path = ['_static']
 html_logo = "_static/ampalibe_logo.png"
 html_favicon = "_static/LOGO.png"
 html_theme_options = {
-    'logo_only': True,
     'display_version': False,
 }
 # -- General configuration

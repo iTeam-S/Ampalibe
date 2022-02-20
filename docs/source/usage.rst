@@ -37,3 +37,4 @@ There will be a created directory named **myfirstbot/** and all the files contai
 Understanding of files
 -------------------------
 
+.. image:: https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/structure.png

@@ -10,7 +10,7 @@ setuptools.setup(
     description="Ampalibe is a light open source framework.",
     long_description=long_description,  # Long description read from the readme
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages(),  # List of all modules to be installed
+    packages=['ampalibe'],  # List of all modules to be installed
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",

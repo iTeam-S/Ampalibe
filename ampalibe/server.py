@@ -1,4 +1,4 @@
-
+import os
 import uvicorn
 from typing import Dict
 from threading import Thread
@@ -10,7 +10,12 @@ from fastapi import FastAPI, Request, Response
 _req = None
 conf = None
 webserver = FastAPI()
-webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
+if os.path.isdir("assets/public"):
+    webserver.mount(
+        "/asset",
+        StaticFiles(directory="assets/public"),
+        name="asset"
+    )
 
 
 def req(cnf):

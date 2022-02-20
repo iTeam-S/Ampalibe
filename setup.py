@@ -23,7 +23,9 @@ setuptools.setup(
     python_requires='>=3.7',
     py_modules=["ampalibe"],                      # Name of the python package
     install_requires=[
-        "fastapi", "uvicorn", "python-dotenv", "mysql-connector", "retry"],  # depandance
+        "fastapi", "uvicorn", "python-dotenv", "mysql-connector",
+        "retry", "requests_toolbelt", "requests"
+    ],  # depandance
     include_package_data=True, # Include all data file with the package
     scripts=['bin/ampalibe']
 )

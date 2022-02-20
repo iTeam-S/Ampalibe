@@ -17,7 +17,7 @@ version = ampalibe.__version__
 # Html cinfiguration
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
-html_logo = "_static/ampalibe.png"
+html_logo = "_static/ampalibe_logo.png"
 html_favicon = "_static/LOGO.png"
 html_theme_options = {
     'logo_only': True,

@@ -4,12 +4,20 @@ AMP_VERIF_TOKEN=
 # PAGE VERIF TOKEN
 AMP_VERIF_TOKEN= 
 
+
 # DATABASE AUTHENTIFICATION
+ADAPTER=SQLITE
+# ADAPTER=MYSQL
+
+####### CASE MYSQL ADAPTER
 DB_HOST=
 DB_USER=
 DB_PASSWORD=
 DB_NAME=
 DB_PORT=3306
+
+####### CASE SQLITE ADAPTER
+DB_FILE=ampalibe.db
 
 # APPLICATION CONFIGURATION
 AMP_HOST=0.0.0.0
@@ -22,11 +30,19 @@ set AMP_VERIF_TOKEN=
 set AMP_VERIF_TOKEN= 
 
 :: DATABASE AUTHENTIFICATION
+ADAPTER=SQLITE
+:: ADAPTER=MYSQL
+
+::::: CASE MYSQL ADAPTER
 set DB_HOST=
 set DB_USER=
 set DB_PASSWORD=
 set DB_NAME=
 set DB_PORT=3306
+
+:: CASE SQLITE ADAPTER
+DB_FILE=ampalibe.db
+
 
 :: APPLICATION CONFIGURATION
 set AMP_HOST=0.0.0.0
@@ -66,6 +82,10 @@ class Configuration:
         Retrieves the value from the environment.
         Takes the default value if not defined.
     '''
+    ADAPTER = env.get('ADAPTER')
+
+    DB_FILE = env.get('DB_FILE')
+    
     DB_HOST = env.get('DB_HOST', 'localhost')
     DB_USER = env.get('DB_USER', 'root')
     DB_PASSWORD = env.get('DB_PASSWORD', '')

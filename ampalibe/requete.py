@@ -1,4 +1,5 @@
 import json
+import sqlite3
 import mysql.connector
 
 class Request:
@@ -6,35 +7,56 @@ class Request:
         '''
             Initialisation: Connexion à la base de données
         '''
-        self.DB_CONF = {
-            'host': conf.DB_HOST,
-            'user': conf.DB_USER,
-            'password': conf.DB_PASSWORD,
-            'database': conf.DB_NAME,
-            'port': conf.DB_PORT
-        }
+        self.ADAPTER = conf.ADAPTER
+        if self.ADAPTER == 'MYSQL':
+            self.DB_CONF = {
+                'host': conf.DB_HOST,
+                'user': conf.DB_USER,
+                'password': conf.DB_PASSWORD,
+                'database': conf.DB_NAME,
+                'port': conf.DB_PORT
+            }
+        else:  # SQLite is choosen by default
+            self.DB_CONF = conf.DB_FILE
+
         self.__connect()
         self.__init_db()
 
     def __connect(self):
-        self.db = mysql.connector.connect(**self.DB_CONF)
-        self.cursor = self.db.cursor()
+        if self.ADAPTER == 'MYSQL':
+            self.db = mysql.connector.connect(**self.DB_CONF)
+            self.cursor = self.db.cursor()
+        else:
+            self.db = sqlite3.connect(self.DB_CONF)
+            self.cursor = self.db.cursor()
 
     def __init_db(self):
         '''
             Creation des tables necessaires à l'applicatifs
         '''
-        req = '''
-            CREATE TABLE IF NOT EXISTS `amp_user` (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `user_id` varchar(50) NOT NULL UNIQUE,
-                `action` varchar(50) DEFAULT NULL,
-                `last_use` datetime NOT NULL DEFAULT current_timestamp(),
-                `lang` varchar(5) DEFAULT NULL,
-                `tmp` varchar(255) DEFAULT NULL,
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        '''
+        if self.ADAPTER == 'SQLite':
+            req = '''
+                CREATE TABLE IF NOT EXISTS `amp_user` (
+                    `id` INT NOT NULL AUTO_INCREMENT,
+                    `user_id` varchar(50) NOT NULL UNIQUE,
+                    `action` varchar(50) DEFAULT NULL,
+                    `last_use` datetime NOT NULL DEFAULT current_timestamp(),
+                    `lang` varchar(5) DEFAULT NULL,
+                    `tmp` varchar(255) DEFAULT NULL,
+                    PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            '''
+        else:
+            req = '''
+               CREATE TABLE IF NOT EXISTS amp_user (
+                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                   user_id TEXT NOT NULL UNIQUE,
+                   action TEXT,
+                   last_use TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                   lang TEXT,
+                   tmp TEXT
+                )
+            '''
         self.cursor.execute(req)
         self.db.commit()
     
@@ -44,7 +66,7 @@ class Request:
             connexion au serveur avant traitement.
         '''
         def trt_verif(*arg, **kwarg):
-            if not arg[0].db.is_connected():
+            if not arg[0].db.is_connected() and arg[0].adapter == 'MYSQL':
                 # reconnexion de la base
                 try:
                     arg[0].db.reconnect()
@@ -61,10 +83,16 @@ class Request:
         '''
         # Insertion dans la base si non present
         # Mise à jour du last_use si déja présent
-        req = '''
-            INSERT INTO amp_user(user_id) VALUES (%s)
-            ON DUPLICATE KEY UPDATE last_use = NOW()
-        '''
+        if self.ADAPTER == 'MYSQL':
+            req = '''
+                INSERT INTO amp_user(user_id) VALUES (%s)
+                ON DUPLICATE KEY UPDATE last_use = NOW()
+            '''
+        else:
+            req = '''
+                INSERT INTO amp_user(user_id) VALUES (?)
+                ON CONFLICT(user_id) DO UPDATE SET last_use = CURRENT_TIMESTAMP;
+            '''
         self.cursor.execute(req, (user_id,))
         self.db.commit()
     
@@ -73,7 +101,10 @@ class Request:
         '''
             Recuperer l'action de l'utilisateur
         '''
-        req = 'SELECT action FROM amp_user WHERE user_id = %s'
+        if self.ADAPTER == 'MYSQL':
+            req = 'SELECT action FROM amp_user WHERE user_id = %s'
+        else:
+            req = 'SELECT action FROM amp_user WHERE user_id = ?'
         self.cursor.execute(req, (user_id,))
         # retourne le resultat
         return self.cursor.fetchone()[0]
@@ -83,13 +114,19 @@ class Request:
         '''
             Definir l'action de l'utilisateur
         '''
-        req = 'UPDATE amp_user set action = %s WHERE user_id = %s'
+        if self.ADAPTER == 'MYSQL':
+            req = 'UPDATE amp_user set action = %s WHERE user_id = %s'
+        else:
+            req = 'UPDATE amp_user set action = ? WHERE user_id = ?'
         self.cursor.execute(req, (action, user_id))
         self.db.commit()
     
     @verif_db
     def __get_temp(self, user_id):
-        req = 'SELECT tmp FROM amp_user WHERE user_id = %s'
+        if self.ADAPTER == 'MYSQL':
+            req = 'SELECT tmp FROM amp_user WHERE user_id = %s'
+        else:
+            req = 'SELECT tmp FROM amp_user WHERE user_id = ?'
         self.cursor.execute(req, (user_id,))
         return self.cursor.fetchone()[0]
 
@@ -105,7 +142,10 @@ class Request:
             data = json.loads(data)
         data[key] = value
         data = json.dumps(data)
-        req = 'UPDATE amp_user SET tmp = %s WHERE user_id = %s'
+        if self.ADAPTER == 'MYSQL':
+            req = 'UPDATE amp_user SET tmp = %s WHERE user_id = %s'
+        else:
+            req = 'UPDATE amp_user SET tmp = ? WHERE user_id = ?'
         self.cursor.execute(req, (data, user_id))
         self.db.commit()
 
@@ -132,6 +172,9 @@ class Request:
             pass
         else:
             data = json.dumps(data)
-            req = 'UPDATE amp_user SET tmp = %s WHERE user_id = %s'
+            if self.ADAPTER == 'MYSQL':
+                req = 'UPDATE amp_user SET tmp = %s WHERE user_id = %s'
+            else:
+                req = 'UPDATE amp_user SET tmp = ? WHERE user_id = ?'
             self.cursor.execute(req, (data, user_id))
             self.db.commit()

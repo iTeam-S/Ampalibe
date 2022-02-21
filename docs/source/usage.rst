@@ -38,3 +38,5 @@ Understanding of files
 -------------------------
 
 .. image:: https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/structure.png
+
+

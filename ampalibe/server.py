@@ -1,8 +1,8 @@
 import os
 import uvicorn
 from typing import Dict
-from threading import Thread
 from .utils import analyse, funcs
+from multiprocessing import Process
 from .requete import Request as Model
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
@@ -51,12 +51,12 @@ async def main(request: Request) -> Dict:
     action = _req.get_action(sender_id)
 
     if action and funcs['action'].get(action):
-            Thread(
+            Process(
                 target=funcs['action'].get(action),
                 args=(sender_id, payload)
             ).start()
     else:
-        Thread(
+        Process(
             target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
             args=(sender_id, payload)
         ).start()

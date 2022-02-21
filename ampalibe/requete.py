@@ -66,12 +66,13 @@ class Request:
             connexion au serveur avant traitement.
         '''
         def trt_verif(*arg, **kwarg):
-            if not arg[0].db.is_connected() and arg[0].adapter == 'MYSQL':
-                # reconnexion de la base
-                try:
-                    arg[0].db.reconnect()
-                except Exception:
-                    arg[0].__connect()
+            if arg[0].ADAPTER == 'MYSQL':
+                if not arg[0].db.is_connected():
+                    # reconnexion de la base
+                    try:
+                        arg[0].db.reconnect()
+                    except Exception:
+                        arg[0].__connect()
             return fonction(*arg, **kwarg)
         return trt_verif
 

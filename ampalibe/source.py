@@ -1,38 +1,51 @@
-env = """### PAGE ACCESS TOKEN 
+env = """# PAGE ACCESS TOKEN 
 AMP_VERIF_TOKEN=
 
-### PAGE VERIF TOKEN
+# PAGE VERIF TOKEN
 AMP_VERIF_TOKEN= 
 
-### DATABASE AUTHENTIFICATION
+# DATABASE AUTHENTIFICATION
 DB_HOST=
 DB_USER=
 DB_PASSWORD=
 DB_NAME=
 DB_PORT=3306
 
-### APPLICATION CONFIGURATION
+# APPLICATION CONFIGURATION
 AMP_HOST=0.0.0.0
 AMP_PORT=4555"""
 
+env_cmd = """:: PAGE ACCESS TOKEN 
+set AMP_VERIF_TOKEN=
 
-server = """from conf import Configuration
-import core
-core.ampalibe.run(core.Configuration())
+:: PAGE VERIF TOKEN
+set AMP_VERIF_TOKEN= 
+
+:: DATABASE AUTHENTIFICATION
+set DB_HOST=
+set DB_USER=
+set DB_PASSWORD=
+set DB_NAME=
+set DB_PORT=3306
+
+:: APPLICATION CONFIGURATION
+set AMP_HOST=0.0.0.0
+set AMP_PORT=4555
 """
-
-
 core = """import ampalibe
 from conf import Configuration
 
 '''
-    Principal fonction, où les messages réçu sur
-    la page facebook rentrent.
+    Main function, where messages received on
+    the facebook page come in.
 
-    @param user_id: identifiant facebook de l'exp.
-    @param cmd: message de la personne.
-    @param extends: contiennent la liste des autres
-        données envoyé par facebook (heure d'envoi, ...)
+    @param user_id: 
+        sender facebook id
+    @param cmd: 
+        message content
+    @param extends: 
+        contain list of others
+        data sent by facebook (sending time, ...)
 '''
 req = ampalibe.Req(Configuration())
 bot = ampalibe.Messenger(Configuration.ACCESS_TOKEN)
@@ -44,16 +57,14 @@ def main(sender_id, cmd, **extends):
 
 
 conf = """from os import environ as env
-from dotenv import load_dotenv
 
 # Charge tous les variables dans le fichier .env
-load_dotenv()
 
 
 class Configuration:
     '''
-        Recupère la valeur dans l'environnement.
-        Prend la valeur par defaut si non definit.
+        Retrieves the value from the environment.
+        Takes the default value if not defined.
     '''
     DB_HOST = env.get('DB_HOST', 'localhost')
     DB_USER = env.get('DB_USER', 'root')

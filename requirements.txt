@@ -1,6 +1,5 @@
 fastapi
 mysql-connector
-python-dotenv
 uvicorn
 retry
 requests_toolbelt

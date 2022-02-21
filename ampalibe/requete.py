@@ -4,7 +4,15 @@ import mysql.connector
 class Request:
     def __init__(self, conf):
         '''
-            Initialisation: Connexion à la base de données
+            Init the database
+            [conf] => {
+                DB_HOST = ,
+                DB_USER = ,
+                DB_PASSWORD = ,
+                DB_NAME = ,
+                DB_PORT = 
+            }
+
         '''
         self.DB_CONF = {
             'host': conf.DB_HOST,
@@ -17,6 +25,9 @@ class Request:
         self.__init_db()
 
     def __connect(self):
+        """
+        The function which connect to the Database.
+        """
         self.db = mysql.connector.connect(**self.DB_CONF)
         self.cursor = self.db.cursor()
 
@@ -40,8 +51,8 @@ class Request:
     
     def verif_db(fonction):
         '''
-            Un decorateur de verification de la
-            connexion au serveur avant traitement.
+            The function that checks if the database 
+            is connected or not before doing an operation.
         '''
         def trt_verif(*arg, **kwarg):
             if not arg[0].db.is_connected():
@@ -56,8 +67,11 @@ class Request:
     @verif_db
     def verif_user(self, user_id):
         '''
-            Fonction d'insertion du nouveau utilisateur
-            et/ou mise à jour de la date de dernière utilisation.
+            Function to insert new user and/or update the date 
+            of last use if the user already exists.
+
+            Parameter :  user_id
+            
         '''
         # Insertion dans la base si non present
         # Mise à jour du last_use si déja présent
@@ -71,7 +85,9 @@ class Request:
     @verif_db
     def get_action(self, user_id):
         '''
-            Recuperer l'action de l'utilisateur
+            Get action user
+
+            Parameter :  user_id
         '''
         req = 'SELECT action FROM amp_user WHERE user_id = %s'
         self.cursor.execute(req, (user_id,))
@@ -81,7 +97,9 @@ class Request:
     @verif_db
     def set_action(self, user_id, action):
         '''
-            Definir l'action de l'utilisateur
+            Define aciton of an user 
+
+            Parameter :  user_id
         '''
         req = 'UPDATE amp_user set action = %s WHERE user_id = %s'
         self.cursor.execute(req, (action, user_id))
@@ -89,6 +107,11 @@ class Request:
     
     @verif_db
     def __get_temp(self, user_id):
+        '''
+            Get temp parameter of an user
+
+            Parameter :  user_id
+        '''
         req = 'SELECT tmp FROM amp_user WHERE user_id = %s'
         self.cursor.execute(req, (user_id,))
         return self.cursor.fetchone()[0]
@@ -96,7 +119,9 @@ class Request:
     @verif_db
     def set_temp(self, user_id, key, value):
         '''
-            Inserer des données temporaire dans la table
+            Insert or set a temp parameter of an user
+
+            Parameter :  user_id
         '''
         data = self.__get_temp(user_id)
         if not data:
@@ -112,7 +137,9 @@ class Request:
     @verif_db
     def get_temp(self, user_id, key):
         '''
-            Recuperation des données temporaire d'un utilisateur
+            Get temp parameter of an user
+
+            Parameter :  user_id ,key_temp
         '''
         data = self.__get_temp(user_id)
         if not data:
@@ -122,6 +149,11 @@ class Request:
     
     @verif_db
     def del_temp(self, user_id, key):
+        '''
+            Delete temp parameter of an user
+
+            Parameter :  user_id ,key_temp
+        '''
         data = self.__get_temp(user_id)
         if not data:
             return

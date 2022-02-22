@@ -3,8 +3,15 @@ import json
 import requests
 from retry import retry
 import requests_toolbelt
+<<<<<<< Updated upstream
 from .utils import trt_payload_out
 
+=======
+from requete import Request
+import json
+
+req = Request()
+>>>>>>> Stashed changes
 class Analyse:
     def __init__(self, res) -> None:
         if res.status_code != 200:
@@ -357,3 +364,26 @@ class Messenger:
         )
         Analyse(res)
         return res
+
+    def send_template(self, dest_id,elements,payload):   
+        res = elements
+        if res:
+            page = int(json.loads(req.get_temp(dest_id)).get("__page"))
+            deb_indice = (page-1) * 10 if page else 1
+            
+            if len(res) > deb_indice + 10:
+                self.send_result(
+                    dest_id, res[deb_indice:deb_indice + 10],
+                    next=[
+                        {
+                            "content_type": "text",
+                            "title": "⏭️PAGE SUIVANTE",
+                            "payload": payload,
+                        }
+                    ]
+                )
+                req.set_temp(dest_id,"__page",page+1)
+            else:
+                self.send_result(dest_id, res[deb_indice:deb_indice + 10])
+        else:
+            self.send_message(dest_id, "No Elements dispo")

@@ -1,5 +1,5 @@
 env = """# PAGE ACCESS TOKEN 
-AMP_VERIF_TOKEN=
+AMP_ACCESS_TOKEN=
 
 # PAGE VERIF TOKEN
 AMP_VERIF_TOKEN= 
@@ -24,13 +24,13 @@ AMP_HOST=0.0.0.0
 AMP_PORT=4555"""
 
 env_cmd = """:: PAGE ACCESS TOKEN 
-set AMP_VERIF_TOKEN=
+set AMP_ACCESS_TOKEN=
 
 :: PAGE VERIF TOKEN
 set AMP_VERIF_TOKEN= 
 
 :: DATABASE AUTHENTIFICATION
-ADAPTER=SQLITE
+set ADAPTER=SQLITE
 :: ADAPTER=MYSQL
 
 ::::: CASE MYSQL ADAPTER
@@ -41,7 +41,7 @@ set DB_NAME=
 set DB_PORT=3306
 
 :: CASE SQLITE ADAPTER
-DB_FILE=ampalibe.db
+set DB_FILE=ampalibe.db
 
 
 :: APPLICATION CONFIGURATION
@@ -73,7 +73,7 @@ def main(sender_id, cmd, **extends):
 
 
 conf = """from os import environ as env
-
+from dotenv import load_env()
 # Charge tous les variables dans le fichier .env
 
 

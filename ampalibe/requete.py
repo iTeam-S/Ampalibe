@@ -73,6 +73,8 @@ class Request:
                         arg[0].db.reconnect()
                     except Exception:
                         arg[0].__connect()
+            else:
+                arg[0].__connect()
             return fonction(*arg, **kwarg)
         return trt_verif
 

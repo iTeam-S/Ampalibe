@@ -3,7 +3,7 @@ import json
 import requests
 from retry import retry
 import requests_toolbelt
-
+from .utils import trt_payload_out
 
 class Analyse:
     def __init__(self, res) -> None:
@@ -110,6 +110,10 @@ class Messenger:
         Returns:
             Response: POST request to the facebook API to send a quick_reply to the user
         """
+
+        for i in range(len(quick_rep)):
+            quick_rep[i]['payload'] = trt_payload_out(quick_rep[i]['payload'])
+
         data_json = {
             'messaging_type': "RESPONSE",
             'recipient': {
@@ -157,6 +161,10 @@ class Messenger:
             Response: POST request to the facebook API to send a template generic to the user
         """
         
+        for i in range(len(elements)):
+            for j in range(elements[i]['buttons']):
+                elements[i]['buttons'][j]['payload'] = trt_payload_out(elements[i]['buttons'][j]['payload'])
+
         dataJSON = {
             'messaging_type': "RESPONSE",
             'recipient': {
@@ -287,7 +295,7 @@ class Messenger:
 
         elif action == "DELETE":
             params['params'] = "(persistent_menu)"
-            params['psid'] = destId
+            params['psid'] = dest_id
 
             res = requests.delete(
                 self.url + '/custom_user_settings',

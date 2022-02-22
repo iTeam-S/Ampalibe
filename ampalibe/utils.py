@@ -1,5 +1,12 @@
 funcs = {'commande': {}, 'action': {}}
 
+
+class Payload:
+    def __init__(self, payload, **kwargs) -> None:
+        self.payload = payload
+        self.data = kwargs
+
+
 def analyse(data):
     '''
         Fonction analysant les données reçu de Facebook
@@ -29,12 +36,38 @@ def analyse(data):
                 pst_payload = message['postback']['payload']
                 return recipient_id, pst_payload
 
+
 def command(*args, **kwargs):
     def call_fn(function):
         funcs['commande'][args[0]] = function
     return call_fn
 
+
 def action(*args, **kwargs):
     def call_fn(function):
         funcs['action'][args[0]] = function
     return call_fn
+
+
+def trt_payload_in(payload):
+    res = {}
+    while '{{' in payload:
+        start = payload.index('{{')
+        end = payload.index('}}')
+        items = payload[start+2:end].split('===')
+        res[items[0]] = items[1]
+        payload = payload.replace(payload[start:end+2], '')
+    return payload.strip(), res
+
+
+def trt_payload_out(payload):
+    '''
+        text payload processing
+        payload object to text
+    '''
+    if isinstance(payload, Payload):
+        tmp = ''
+        for key_data, val_data in payload.data.items():
+            tmp += f'{{{{{key_data}==={val_data}}}}} '
+        return payload.payload + ' ' + tmp
+    return payload

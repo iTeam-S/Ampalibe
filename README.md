@@ -57,6 +57,6 @@ We have made a promise to
 
 --------------------------
 
-<img align='left' width='460' src='https://user-images.githubusercontent.com/43904633/155228591-1b038a55-1c50-4c94-8f5a-69d1023a265c.png'>
-<img align='right' width='460' src='https://user-images.githubusercontent.com/43904633/155229349-c958b47a-69db-4086-8bb9-2e8dd1f7857a.png'>
+<img align='left' width='400px' src='https://user-images.githubusercontent.com/43904633/155228591-1b038a55-1c50-4c94-8f5a-69d1023a265c.png'>
+<img align='right' width='400px' src='https://user-images.githubusercontent.com/43904633/155229349-c958b47a-69db-4086-8bb9-2e8dd1f7857a.png'>
 

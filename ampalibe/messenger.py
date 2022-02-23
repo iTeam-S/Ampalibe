@@ -1,9 +1,11 @@
+import imp
 import os
 import json
+import pickle
 import requests
 from retry import retry
 import requests_toolbelt
-
+from .utils import trt_payload_out
 
 class Analyse:
     def __init__(self, res) -> None:
@@ -13,17 +15,29 @@ class Analyse:
 
 class Messenger:
     def __init__(self, access_token):
+        """
+        Here, We need the <access token> of the facebook page we want
+        to apply the bot for the purpose of page and bot interaction
+        
+        Args:
+            access_token (str): A facebook page access token
+        """
         self.token = access_token
         self.url = "https://graph.facebook.com/v8.0/me"
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_message(self, dest_id, message, prio=False):
-
-        self.send_action(dest_id, 'typing_on')
         """
-            Cette fonction sert à envoyer une message texte
-                à un utilisateur donnée
-                                                                """
+        This method sends a message to user given
+
+        Args:
+            dest_id (str): user id facebook for the destination
+            message (str): message want to send
+    
+        Returns:
+            Response: POST request to the facebook API to send a message to the user
+        """
+        self.send_action(dest_id, 'typing_on')
         data_json = {
             'recipient': {
                 "id": dest_id
@@ -53,9 +67,16 @@ class Messenger:
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_action(self, dest_id, action):
         """
-            Cette fonction sert à simuler un action sur les messages.
-            exemple: vue, en train d'ecrire.
-            Action dispo: ['mark_seen', 'typing_on', 'typing_off']
+        This method is used to simulate an action on messages.
+        example: view, writing.
+        Action available: ['mark_seen', 'typing_on', 'typing_off']
+
+        Args:
+            dest_id (str): user id facebook for the destination
+            action (str): action ['mark_seen', 'typing_on', 'typing_off']
+
+        Returns:
+            Response: POST request to the facebook API to send an action to the user
         """
         data_json = {
             'messaging_type': "RESPONSE",
@@ -79,9 +100,22 @@ class Messenger:
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_quick_reply(self, dest_id, quick_rep, text):
-        '''
-            Envoie des quick reply messenger
-        '''
+        """
+        This is a method to send a <quick_reply>
+        to the user
+
+        Args:
+            dest_id (str): user id facebook for the destoination
+            quick_rep (list of dict): list of the different quick_reply to send a user
+            text (str): A text of a little description for each <quick_reply>
+
+        Returns:
+            Response: POST request to the facebook API to send a quick_reply to the user
+        """
+
+        for i in range(len(quick_rep)):
+            quick_rep[i]['payload'] = trt_payload_out(quick_rep[i]['payload'])
+
         data_json = {
             'messaging_type': "RESPONSE",
             'recipient': {
@@ -107,31 +141,62 @@ class Messenger:
         return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_result(self, destId, elements, **kwargs):
-        '''
-            Affichage de resultat de façon structuré
-            chez l'utilisateur
-        '''
+    def send_result(self, dest_id, elements, next=False, **kwargs):
+        """
+        this method display the result in a structured 
+        form at the user(form: template generic),
         
+        For this, messenger only validates 10 templates
+        for the first display, so we put the optional parameter
+        <**kwargs> to manage these numbers if it is a number of 
+        elements more than 10,
+
+        So, there is a quick_reply which acts as a "next page"
+        displaying all requested templates
+
+        Args:
+            dest_id (str): user id facebook for the destination
+            elements (list of dict): the list of the specific elements to define the
+            structure for the template
+
+        Returns:
+            Response: POST request to the facebook API to send a template generic to the user
+        """
+        
+        for i in range(len(elements)):
+            for j in range(len(elements[i]['buttons'])):
+                elements[i]['buttons'][j]['payload'] = trt_payload_out(elements[i]['buttons'][j]['payload'])
+
         dataJSON = {
             'messaging_type': "RESPONSE",
             'recipient': {
-                "id": destId
+                "id": dest_id
             },
             'message': {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
-                        "elements": elements,
+                        "elements": elements[:10],
                     },
                 },
             }
         }
 
-        if kwargs.get("next"):
-            dataJSON['message']['quick_replies'] = kwargs.get("next")
-
+        if len(elements)>10 and next:
+            dataJSON['message']['quick_replies'] = [
+                {
+                    "content_type": "text",
+                    "title": 'Next',
+                    "payload": "/__next",
+                    "image_url":
+                        "https://icon-icons.com/downloadimage.php"
+                        + "?id=81300&root=1149/PNG/512/&file=" +
+                        "1486504364-chapter-controls-forward-play"
+                        + "-music-player-video-player-next_81300.png"
+                }
+            ]
+            pickle.dump(elements[10:], open(f'.__{dest_id}', 'wb'))
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
 
@@ -143,15 +208,24 @@ class Messenger:
         return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file_url(self, destId, url, filetype='file'):
-        '''
-            Envoyé piece jointe par lien.
-        '''
+    def send_file_url(self, dest_id, url, filetype='file'):
+        """
+        this method sent attachment by link.
+        [image,video,pdf,docx,...]
+        
+        Args:
+            dest_id (str): user id facebook for destination
+            url (str): the origin url for the file
+            filetype (str, optional): type of the file["video","image",...]. Defaults to 'file'.
+
+        Returns:
+            Response: POST request to the facebook API to send a template generic to the user
+        """
 
         dataJSON = {
             'messaging_type': "RESPONSE",
             'recipient': {
-                "id": destId
+                "id": dest_id
             },
             'message': {
                 'attachment': {
@@ -175,12 +249,29 @@ class Messenger:
         return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def persistent_menu(self, destId, persistent_menu, action='PUT'):
+    def persistent_menu(self, dest_id, persistent_menu, action='PUT'):
+        """
+        this is a method to enable a persistent 
+        menu for messenger
+        
+        it sits at the bottom of the screen 
+        
+        it is not necessarily permanent but we can play
+        according to the usefulness, this is why we propose
+        the action parameter which is defined its appearance 
+        on the screen. we delete it if in an interface or scene
+        that we don't need it. we updated it if necessary
+
+        Args:
+            dest_id (str): user id for destination
+            persistent_menu (list of dict): the elements of the persistent menu to enable
+            action (str, optional): the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
+        """
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
         if action == "PUT":
             dataJSON = {
-                "psid": destId,
+                "psid": dest_id,
                 persistent_menu: persistent_menu
                 # "persistent_menu": [
                 #         {
@@ -217,7 +308,7 @@ class Messenger:
 
         elif action == "DELETE":
             params['params'] = "(persistent_menu)"
-            params['psid'] = destId
+            params['psid'] = dest_id
 
             res = requests.delete(
                 self.url + '/custom_user_settings',
@@ -227,7 +318,19 @@ class Messenger:
             return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file(self, destId, file, filetype="file", filename_=None):
+    def send_file(self, dest_id, file, filetype="file", filename_=None):
+        """
+        this method send a local file
+
+        Args:
+            destId (str): user id facebook for the destination
+            file (str): name of the file in local folder 
+            filetype (str, optional): type of the file["video","image",...]. Defaults to "file".
+            filename_ (str, optional): A filename received for de destination . Defaults to None.
+
+        Returns:
+            Response: POST request to the facebook API to send a file to the user
+        """
         if filename_ is None:
             filename_ = file
         params = {
@@ -235,7 +338,7 @@ class Messenger:
         }
 
         data = {
-            'recipient': json.dumps({'id': destId}),
+            'recipient': json.dumps({'id': dest_id}),
 
             'message': json.dumps({
                 'attachment': {
@@ -248,7 +351,7 @@ class Messenger:
 
             'filedata': (
                 os.path.basename(filename_),
-                open(f'data/{destId}/{file}', 'rb'),
+                open(f'data/{dest_id}/{file}', 'rb'),
                 f"{filetype}/{file.split('.')[-1]}"
             )
         }

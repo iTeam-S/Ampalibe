@@ -33,3 +33,30 @@ OR
 $ cd myproject
 $ ampalibe init
 ```
+
+to run project, just use
+```s
+ampalibe run
+```
+
+## Documentation
+
+- [Ampalibe Readthedocs](https://ampalibe.readthedocs.io/)
+
+
+## About 
+
+Ampalibe is a word of Malagasy 🇲🇬 origin designating the fruit jackfruit.
+
+We have made a promise to
+ 
+- keep it **light**
+- make it **easy to use**
+- do it **quickly to develop**
+
+
+--------------------------
+
+<img align='left' width='375px' src='https://user-images.githubusercontent.com/43904633/155228591-1b038a55-1c50-4c94-8f5a-69d1023a265c.png'>
+<img align='right' width='375px' src='https://user-images.githubusercontent.com/43904633/155229349-c958b47a-69db-4086-8bb9-2e8dd1f7857a.png'>
+

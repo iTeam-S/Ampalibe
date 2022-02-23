@@ -1,5 +1,19 @@
 #!/bin/bash
 
+which python3 > /dev/null
+if [ ! $? -eq 0 ]; then
+    echo -e "~\033[31m Wait, what? no python in path !! \033[0m\nTest python3"
+    which python > /dev/null
+    if [ ! $? -eq 0 ]; then
+        echo -e "~\033[31m Oh, Give up !! \033[0m\nNo python/python3 in path"
+        exit 1
+    else
+        python="python"
+    fi
+else
+    python="python3"
+fi
+
 if [ "$1" == "create" ]; then
     if [ $# -eq 2 ]; then
         if [ -d "$2" ]; then
@@ -8,28 +22,27 @@ if [ "$1" == "create" ]; then
         fi
         mkdir $2; 
             echo -e "~\033[32m 👌 \033[0m | Creating $2 ...";
-        python -c "import ampalibe;print(ampalibe.env)" > $2/.env;
+        `$python -c "import ampalibe;print(ampalibe.env)" > $2/.env`;
             echo -e "~\033[32m 👌 \033[0m | Env file created";
-        python -c "import ampalibe;print(ampalibe.conf)" > $2/conf.py;
+        `$python -c "import ampalibe;print(ampalibe.conf)" > $2/conf.py`;
             echo -e "~\033[32m 👌 \033[0m | Config file created";
-        python -c "import ampalibe;print(ampalibe.core)" > $2/core.py;
+        `$python -c "import ampalibe;print(ampalibe.core)" > $2/core.py`;
             echo -e "~\033[32m 👌 \033[0m | Core file created";
         mkdir -p $2/assets/{public,private}
             echo -e "~\033[32m 👌 \033[0m | Project Ampalibe created. \033[32mYoupii !!! 😎 \033[0m";
             echo -e "~\033[36m TIPS\033[0m |\033[0m Fill in .env file."
-            echo -e "~\033[36m TIPS\033[0m |\033[36m ampalibe run\033[0m for lauching project."
-        cd $2;
+            echo -e "~\033[36m TIPS\033[0m |\033[36m cd $2 && ampalibe run\033[0m for lauching project."
     else
-        echo -e "~\033[31m ERROR :(\033[0m | Incorrect number of args for create"
+        echo -e "~\033[31m ERROR !!\033[0m | Incorrect number of args for create"
         exit 1
     fi
 elif [ "$1" == "init" ]; then
     if [ $# -eq 1 ]; then
-        python -c "import ampalibe;print(ampalibe.env)" > .env;
+        `$python -c "import ampalibe;print(ampalibe.env)" > .env`;
             echo -e "~\033[32m 👌 \033[0m | Env file created";
-        python -c "import ampalibe;print(ampalibe.conf)" > conf.py;
+        `$python -c "import ampalibe;print(ampalibe.conf)" > conf.py`;
             echo -e "~\033[32m 👌 \033[0m | Config file created";
-        python -c "import ampalibe;print(ampalibe.core)" > core.py;
+        `$python -c "import ampalibe;print(ampalibe.core)" > core.py`;
             echo -e "~\033[32m 👌 \033[0m | Core file created";
         mkdir -p assets/{public,private}
             echo -e "~\033[32m 👌 \033[0m | Project Ampalibe initiated. \033[32mYoupii !!! 😎 \033[0m";
@@ -48,7 +61,7 @@ elif [ "$1" == "run" ]; then
         source .env;
             echo -e "~\033[32m 👌\033[0m | Env Loaded";
             echo -e "~\033[32m 👌\033[0m | Ampalibe running...";
-        python -c 'import core;core.ampalibe.run(core.Configuration())'
+        `$python -c 'import core;core.ampalibe.run(core.Configuration())'`
     else
         >&2 echo -e "~\033[31m ERROR 👌\033[0m | Incorrect number of args for run"
         exit 1

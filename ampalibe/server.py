@@ -1,13 +1,13 @@
 import os
-from threading import Thread
+import pickle
 import uvicorn
 from typing import Dict
-from .utils import analyse, funcs, trt_payload_in
-from multiprocessing import Process
 from threading import Thread
+from .messenger import Messenger
 from .requete import Request as Model
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
+from .utils import analyse, funcs, trt_payload_in
 
 _req = None
 conf = None
@@ -51,6 +51,17 @@ async def main(request: Request) -> Dict:
     sender_id, payload = analyse(data)
     _req.verif_user(sender_id)
     action = _req.get_action(sender_id)
+
+    if payload == '/__next':
+        bot = Messenger(conf.ACCESS_TOKEN)
+        if os.path.isfile(f'.__{sender_id}'):
+            elements = pickle.load(open(f'.__{sender_id}', 'rb'))
+            bot.send_result(sender_id, elements, next=True)
+            return {'status': 'ok'}
+    try:
+        os.remove(f'.__{sender_id}')
+    except FileNotFoundError:
+        print("ah bon?")
 
     if action and funcs['action'].get(action):
             Thread(

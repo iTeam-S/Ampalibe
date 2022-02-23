@@ -1,5 +1,7 @@
+import imp
 import os
 import json
+import pickle
 import requests
 from retry import retry
 import requests_toolbelt
@@ -139,7 +141,7 @@ class Messenger:
         return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_result(self, dest_id, elements, **kwargs):
+    def send_result(self, dest_id, elements, next=False, **kwargs):
         """
         this method display the result in a structured 
         form at the user(form: template generic),
@@ -162,7 +164,7 @@ class Messenger:
         """
         
         for i in range(len(elements)):
-            for j in range(elements[i]['buttons']):
+            for j in range(len(elements[i]['buttons'])):
                 elements[i]['buttons'][j]['payload'] = trt_payload_out(elements[i]['buttons'][j]['payload'])
 
         dataJSON = {
@@ -175,15 +177,26 @@ class Messenger:
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
-                        "elements": elements,
+                        "elements": elements[:10],
                     },
                 },
             }
         }
 
-        if kwargs.get("next"):
-            dataJSON['message']['quick_replies'] = kwargs.get("next")
-
+        if len(elements)>10 and next:
+            dataJSON['message']['quick_replies'] = [
+                {
+                    "content_type": "text",
+                    "title": 'Next',
+                    "payload": "/__next",
+                    "image_url":
+                        "https://icon-icons.com/downloadimage.php"
+                        + "?id=81300&root=1149/PNG/512/&file=" +
+                        "1486504364-chapter-controls-forward-play"
+                        + "-music-player-video-player-next_81300.png"
+                }
+            ]
+            pickle.dump(elements[10:], open(f'.__{dest_id}', 'wb'))
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
 

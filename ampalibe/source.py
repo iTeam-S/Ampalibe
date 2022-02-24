@@ -73,7 +73,6 @@ def main(sender_id, cmd, **extends):
 
 
 conf = """from os import environ as env
-# Charge tous les variables dans le fichier .env
 
 
 class Configuration:

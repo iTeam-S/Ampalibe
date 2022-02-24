@@ -1,3 +1,5 @@
+import urllib.parse
+
 funcs = {'commande': {}, 'action': {}}
 
 
@@ -58,12 +60,16 @@ def action(*args, **kwargs):
 
 
 def trt_payload_in(payload):
+
     """
     A function that will  take as parameter the payload and as output a dictionary .
     example :
         input ==> ({{"id"==="1"}} ,{{"nom"==="user"}})
         output ==> {id= 1,name="user"}
     """
+
+    payload = urllib.parse.unquote(payload)
+
     res = {}
     while '{{' in payload:
         start = payload.index('{{')
@@ -85,5 +91,5 @@ def trt_payload_out(payload):
         tmp = ''
         for key_data, val_data in payload.data.items():
             tmp += f'{{{{{key_data}==={val_data}}}}} '
-        return payload.payload + ' ' + tmp
-    return payload
+        return urllib.parse.quote(payload.payload + ' ' + tmp)
+    return urllib.parse.quote(payload)

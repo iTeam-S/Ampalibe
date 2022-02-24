@@ -38,18 +38,32 @@ def analyse(data):
 
 
 def command(*args, **kwargs):
+    """
+    A decorator that will process texts sent by a user from Facebook. 
+    This decorator returns the list of functions that the bot must process.
+    """
     def call_fn(function):
         funcs['commande'][args[0]] = function
     return call_fn
 
 
 def action(*args, **kwargs):
+    """
+    A decorator that will process action of the user in Faebook. 
+    This decorator returns the list of functions that the bot must process.
+    """
     def call_fn(function):
         funcs['action'][args[0]] = function
     return call_fn
 
 
 def trt_payload_in(payload):
+    """
+    A function that will  take as parameter the payload and as output a dictionary .
+    example :
+        input ==> ({{"id"==="1"}} ,{{"nom"==="user"}})
+        output ==> {id= 1,name="user"}
+    """
     res = {}
     while '{{' in payload:
         start = payload.index('{{')
@@ -61,10 +75,12 @@ def trt_payload_in(payload):
 
 
 def trt_payload_out(payload):
-    '''
-        text payload processing
-        payload object to text
-    '''
+    """
+    A function that will  take as parameter the object payload and as output a string .
+    example :
+        input ==> ("etudiant",id=1,name="user")
+        output ==> ({{"id"==="1"}},{{"name"==="user"}})
+    """
     if isinstance(payload, Payload):
         tmp = ''
         for key_data, val_data in payload.data.items():

@@ -41,8 +41,8 @@ def analyse(data):
 
 def command(*args, **kwargs):
     """
-    A decorator that will process texts sent by a user from Facebook. 
-    This decorator returns the list of functions that the bot must process.
+        A decorator that registers the function as the route 
+            of a processing per command sent.
     """
     def call_fn(function):
         funcs['commande'][args[0]] = function
@@ -51,8 +51,8 @@ def command(*args, **kwargs):
 
 def action(*args, **kwargs):
     """
-    A decorator that will process action of the user in Faebook. 
-    This decorator returns the list of functions that the bot must process.
+        A decorator that registers the function as the route
+            of a defined action handler.
     """
     def call_fn(function):
         funcs['action'][args[0]] = function
@@ -62,10 +62,10 @@ def action(*args, **kwargs):
 def trt_payload_in(payload):
 
     """
-    A function that will  take as parameter the payload and as output a dictionary .
-    example :
-        input ==> ({{"id"==="1"}} ,{{"nom"==="user"}})
-        output ==> {id= 1,name="user"}
+    processing of payloads received in a sequence of structured parameters
+    
+    @params: payload [String]
+    @return: payload [String] , structured parameters Dict
     """
 
     payload = urllib.parse.unquote(payload)
@@ -82,10 +82,10 @@ def trt_payload_in(payload):
 
 def trt_payload_out(payload):
     """
-    A function that will  take as parameter the object payload and as output a string .
-    example :
-        input ==> ("etudiant",id=1,name="user")
-        output ==> ({{"id"==="1"}},{{"name"==="user"}})
+    Processing of a Payload type as a character string
+    
+    @params: payload [ Payload | String ]
+    @return: String
     """
     if isinstance(payload, Payload):
         tmp = ''

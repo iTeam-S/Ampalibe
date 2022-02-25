@@ -5,15 +5,10 @@ import mysql.connector
 class Request:
     def __init__(self, conf):
         '''
-            Init the database
-            [conf] => {
-                DB_HOST = ,
-                DB_USER = ,
-                DB_PASSWORD = ,
-                DB_NAME = ,
-                DB_PORT = 
-            }
-
+            object to interact with database
+            
+            @params: conf [ Configuration object ]
+            @return: Request object
         '''
         self.ADAPTER = conf.ADAPTER
         if self.ADAPTER == 'MYSQL':
@@ -32,7 +27,7 @@ class Request:
 
     def __connect(self):
         """
-        The function which connect to the Database.
+        The function which connect object to the database.
         """
         if self.ADAPTER == 'MYSQL':
             self.db = mysql.connector.connect(**self.DB_CONF)
@@ -43,7 +38,8 @@ class Request:
 
     def __init_db(self):
         '''
-            Creation des tables necessaires à l'applicatifs
+           Creation of table if not exist
+           Check the necessary table if exists
         '''
         if self.ADAPTER == 'SQLite':
             req = '''
@@ -73,7 +69,7 @@ class Request:
     
     def verif_db(fonction):
         '''
-            The function that checks if the database 
+            decorator that checks if the database 
             is connected or not before doing an operation.
         '''
         def trt_verif(*arg, **kwarg):
@@ -92,10 +88,10 @@ class Request:
     @verif_db
     def verif_user(self, user_id):
         '''
-            Function to insert new user and/or update the date 
+            method to insert new user and/or update the date 
             of last use if the user already exists.
 
-            Parameter :  user_id
+            @params :  user_id
             
         '''
         # Insertion dans la base si non present
@@ -116,9 +112,10 @@ class Request:
     @verif_db
     def get_action(self, user_id):
         '''
-            Get action user
+           get current action of an user
 
-            Parameter :  user_id
+            @params :  user_id
+            @return : current action [ type of String/None ]
         '''
         if self.ADAPTER == 'MYSQL':
             req = 'SELECT action FROM amp_user WHERE user_id = %s'
@@ -131,9 +128,10 @@ class Request:
     @verif_db
     def set_action(self, user_id, action):
         '''
-            Define aciton of an user 
+            define a current action if an user 
 
-            Parameter :  user_id
+            @params :  user_id
+            @return:  None
         '''
         if self.ADAPTER == 'MYSQL':
             req = 'UPDATE amp_user set action = %s WHERE user_id = %s'
@@ -145,9 +143,10 @@ class Request:
     @verif_db
     def __get_temp(self, user_id):
         '''
-            Get temp parameter of an user
+            get all temporary data of an user
 
-            Parameter :  user_id
+            @params :  user_id
+            @return: JSON string 
         '''
         if self.ADAPTER == 'MYSQL':
             req = 'SELECT tmp FROM amp_user WHERE user_id = %s'
@@ -159,9 +158,10 @@ class Request:
     @verif_db
     def set_temp(self, user_id, key, value):
         '''
-            Insert or set a temp parameter of an user
+           set a temp parameter of an user
 
-            Parameter :  user_id
+            @params:  user_id
+            @return:  None
         '''
         data = self.__get_temp(user_id)
         if not data:
@@ -180,9 +180,11 @@ class Request:
     @verif_db
     def get_temp(self, user_id, key):
         '''
-            Get temp parameter of an user
+            get one temporary data of an user
 
-            Parameter :  user_id ,key_temp
+            @parmas :  user_id 
+                       key
+            @return: data
         '''
         data = self.__get_temp(user_id)
         if not data:
@@ -193,9 +195,11 @@ class Request:
     @verif_db
     def del_temp(self, user_id, key):
         '''
-            Delete temp parameter of an user
+            delete temporary parameter of an user
 
-            Parameter :  user_id ,key_temp
+            @parameter :  user_id
+                          key
+            @return: None 
         '''
         data = self.__get_temp(user_id)
         if not data:

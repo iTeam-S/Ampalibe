@@ -7,4 +7,4 @@ from .source import env, conf, core, env_cmd
 
 __version__ = '0.0.1'
 __author__ = 'iTeam-$'
-__contributors__ = 'gaetan1903, '
+__contributors__ = 'gaetan1903, rivo2302 '

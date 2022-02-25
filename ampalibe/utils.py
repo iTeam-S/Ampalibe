@@ -11,8 +11,8 @@ class Payload:
 
 def analyse(data):
     '''
-        Fonction analysant les données reçu de Facebook
-        Donnée de type Dictionnaire attendu (JSON parsé)
+        Function analyzing data received from Facebook
+        The data received are of type Json .
     '''
     def struct_atts(data):
         return data['payload']['url']
@@ -21,17 +21,17 @@ def analyse(data):
         messaging = event['messaging']
         for message in messaging:
             if message.get('message'):
-                # recuperation de l'id de l'utilisateur
+                # Get user_id
                 sender_id = message['sender']['id']
                 if message['message'].get('attachments'):
-                    # recuperations des fichiers envoyés.
+                    # Get file name
                     data = message['message'].get('attachments')
                     return sender_id, ','.join(list(map(struct_atts, data)))
                 elif message['message'].get('quick_reply'):
-                    # cas d'une reponse de type QUICK_REPLY
+                    # if the response is a quick reply
                     return  sender_id, message['message']['quick_reply'].get('payload')
                 elif message['message'].get('text'):
-                    # cas d'une reponse par text simple.
+                    # if the response is a simple text
                     return  sender_id, message['message'].get('text')
             if message.get('postback'):
                 recipient_id = message['sender']['id']
@@ -40,19 +40,36 @@ def analyse(data):
 
 
 def command(*args, **kwargs):
+    """
+        A decorator that registers the function as the route 
+            of a processing per command sent.
+    """
     def call_fn(function):
         funcs['commande'][args[0]] = function
     return call_fn
 
 
 def action(*args, **kwargs):
+    """
+        A decorator that registers the function as the route
+            of a defined action handler.
+    """
     def call_fn(function):
         funcs['action'][args[0]] = function
     return call_fn
 
 
 def trt_payload_in(payload):
+
+    """
+    processing of payloads received in a sequence of structured parameters
+    
+    @params: payload [String]
+    @return: payload [String] , structured parameters Dict
+    """
+
     payload = urllib.parse.unquote(payload)
+
     res = {}
     while '{{' in payload:
         start = payload.index('{{')
@@ -64,10 +81,12 @@ def trt_payload_in(payload):
 
 
 def trt_payload_out(payload):
-    '''
-        text payload processing
-        payload object to text
-    '''
+    """
+    Processing of a Payload type as a character string
+    
+    @params: payload [ Payload | String ]
+    @return: String
+    """
     if isinstance(payload, Payload):
         tmp = ''
         for key_data, val_data in payload.data.items():

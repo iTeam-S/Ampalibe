@@ -5,7 +5,10 @@ import mysql.connector
 class Request:
     def __init__(self, conf):
         '''
-            Initialisation: Connexion à la base de données
+            object to interact with database
+            
+            @params: conf [ Configuration object ]
+            @return: Request object
         '''
         self.ADAPTER = conf.ADAPTER
         if self.ADAPTER == 'MYSQL':
@@ -23,6 +26,9 @@ class Request:
         self.__init_db()
 
     def __connect(self):
+        """
+        The function which connect object to the database.
+        """
         if self.ADAPTER == 'MYSQL':
             self.db = mysql.connector.connect(**self.DB_CONF)
             self.cursor = self.db.cursor()
@@ -32,7 +38,8 @@ class Request:
 
     def __init_db(self):
         '''
-            Creation des tables necessaires à l'applicatifs
+           Creation of table if not exist
+           Check the necessary table if exists
         '''
         if self.ADAPTER == 'SQLite':
             req = '''
@@ -62,8 +69,8 @@ class Request:
     
     def verif_db(fonction):
         '''
-            Un decorateur de verification de la
-            connexion au serveur avant traitement.
+            decorator that checks if the database 
+            is connected or not before doing an operation.
         '''
         def trt_verif(*arg, **kwarg):
             if arg[0].ADAPTER == 'MYSQL':
@@ -81,8 +88,11 @@ class Request:
     @verif_db
     def verif_user(self, user_id):
         '''
-            Fonction d'insertion du nouveau utilisateur
-            et/ou mise à jour de la date de dernière utilisation.
+            method to insert new user and/or update the date 
+            of last use if the user already exists.
+
+            @params :  user_id
+            
         '''
         # Insertion dans la base si non present
         # Mise à jour du last_use si déja présent
@@ -102,7 +112,10 @@ class Request:
     @verif_db
     def get_action(self, user_id):
         '''
-            Recuperer l'action de l'utilisateur
+           get current action of an user
+
+            @params :  user_id
+            @return : current action [ type of String/None ]
         '''
         if self.ADAPTER == 'MYSQL':
             req = 'SELECT action FROM amp_user WHERE user_id = %s'
@@ -115,7 +128,10 @@ class Request:
     @verif_db
     def set_action(self, user_id, action):
         '''
-            Definir l'action de l'utilisateur
+            define a current action if an user 
+
+            @params :  user_id
+            @return:  None
         '''
         if self.ADAPTER == 'MYSQL':
             req = 'UPDATE amp_user set action = %s WHERE user_id = %s'
@@ -126,6 +142,12 @@ class Request:
     
     @verif_db
     def __get_temp(self, user_id):
+        '''
+            get all temporary data of an user
+
+            @params :  user_id
+            @return: JSON string 
+        '''
         if self.ADAPTER == 'MYSQL':
             req = 'SELECT tmp FROM amp_user WHERE user_id = %s'
         else:
@@ -136,7 +158,10 @@ class Request:
     @verif_db
     def set_temp(self, user_id, key, value):
         '''
-            Inserer des données temporaire dans la table
+           set a temp parameter of an user
+
+            @params:  user_id
+            @return:  None
         '''
         data = self.__get_temp(user_id)
         if not data:
@@ -155,7 +180,11 @@ class Request:
     @verif_db
     def get_temp(self, user_id, key):
         '''
-            Recuperation des données temporaire d'un utilisateur
+            get one temporary data of an user
+
+            @parmas :  user_id 
+                       key
+            @return: data
         '''
         data = self.__get_temp(user_id)
         if not data:
@@ -165,6 +194,13 @@ class Request:
     
     @verif_db
     def del_temp(self, user_id, key):
+        '''
+            delete temporary parameter of an user
+
+            @parameter :  user_id
+                          key
+            @return: None 
+        '''
         data = self.__get_temp(user_id)
         if not data:
             return

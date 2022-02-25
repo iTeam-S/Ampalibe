@@ -17,5 +17,5 @@ IF /I "%1" == "init" (
 )
 IF /I "%1" == "run" (
     call .env.bat
-    python -c "import core;core.ampalibe.run(core.Configuration())"
+    python -c "import core;core.ampalibe.init.run(core.Configuration())"
 )

@@ -51,24 +51,24 @@ set AMP_PORT=4555
 core = """import ampalibe
 from conf import Configuration
 
-'''
-    Main function, where messages received on
-    the facebook page come in.
-
-    @param user_id: 
-        sender facebook id
-    @param cmd: 
-        message content
-    @param extends: 
-        contain list of others
-        data sent by facebook (sending time, ...)
-'''
-req = ampalibe.Req(Configuration())
-bot = ampalibe.Messenger(Configuration.ACCESS_TOKEN)
+bot = ampalibe.init(Configuration())
 
 
 @ampalibe.command('/')
 def main(sender_id, cmd, **extends):
+    '''
+    main function where messages received on
+    the facebook page come in.
+
+    @param sender_id String: 
+        sender facebook id
+    @param cmd String: 
+        message content
+    @param extends Dict: 
+        contain list of others
+            data sent by facebook (sending time, ...)
+            data sent by your payload if not set in parameter
+    '''
     print("Hello World")"""
 
 

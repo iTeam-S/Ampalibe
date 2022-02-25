@@ -59,14 +59,14 @@ class Server:
 
         if payload == '/__next':
             bot = Messenger(conf.ACCESS_TOKEN)
-            if os.path.isfile(f'.__{sender_id}'):
-                elements = pickle.load(open(f'.__{sender_id}', 'rb'))
+            if os.path.isfile(f'assets/private/.__{sender_id}'):
+                elements = pickle.load(open(f'assets/private/.__{sender_id}', 'rb'))
                 bot.send_result(sender_id, elements, next=True)
                 return {'status': 'ok'}
         try:
-            os.remove(f'.__{sender_id}')
+            os.remove(f'assets/private/.__{sender_id}')
         except FileNotFoundError:
-            print("ah bon?")
+            pass
 
         if action and funcs['action'].get(action):
                 Thread(

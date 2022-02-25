@@ -196,7 +196,7 @@ class Messenger:
                         + "-music-player-video-player-next_81300.png"
                 }
             ]
-            pickle.dump(elements[10:], open(f'.__{dest_id}', 'wb'))
+            pickle.dump(elements[10:], open(f'assets/private/.__{dest_id}', 'wb'))
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
 

@@ -54,9 +54,76 @@ We have made a promise to
 - make it **easy to use**
 - do it **quickly to develop**
 
+### Advantages
 
---------------------------
+- **No need to manage weebhooks and data:** `messages are received directly in a main function`
+```python
+import ampalibe
+from conf import Configuration
 
-<img align='left' width='375px' src='https://user-images.githubusercontent.com/43904633/155228591-1b038a55-1c50-4c94-8f5a-69d1023a265c.png'>
-<img align='right' width='375px' src='https://user-images.githubusercontent.com/43904633/155229349-c958b47a-69db-4086-8bb9-2e8dd1f7857a.png'>
+bot = ampalibe.init(Configuration())
+chat = bot.chat
+
+@ampalibe.command('/')
+def main(sender_id, cmd, **extends):
+    chat.send_message(sender_id, 'Hello world')
+    chat.send_message(senser_id, f'This is your message: {cmd}')
+    chat.send_message(senser_id, f'and this is your facebook id: {sender_id}')
+```
+----------------------------------------------------
+
+- **Manages the actions expected by the users:** `define the function of the next treatment`
+```python
+import ampalibe
+from conf import Configuration
+
+bot = ampalibe.init(Configuration())
+chat = bot.chat
+query = bot.query
+
+@ampalibe.command('/')
+def main(sender_id, cmd, **extends):
+    chat.send_message(sender_id, 'Enter your name')
+    query.set_action(sender_id, '/get_name')
+    
+@ampalibe.action('/get_name')
+def get_mail(sender_id, name, **extends):
+    query.set_action(sender_id, None)  #  clear current action
+    chat.send_message(sender_id, f'Bonjour {name}')
+```
+----------------------------------------------------
+
+- **Manage temporary data:** `set, get, and delete`
+```python
+import ampalibe
+from conf import Configuration
+
+bot = ampalibe.init(Configuration())
+chat = bot.chat
+query = bot.query
+
+@ampalibe.command('/')
+def main(sender_id, cmd, **extends):
+    chat.send_message(sender_id, 'Enter your mail')
+    query.set_action(sender_id, '/get_mail')
+    
+@ampalibe.action('/get_mail')
+def get_mail(sender_id, mail, **extends):
+    # save the mail in temporary data
+    query.set_temp(sender_id, 'mail', mail)
+    chat.send_message(sender_id, f'This is your mail: {mail}')
+
+    chat.send_message(sender_id, f'Enter your password')
+    query.set_action(sender_id, '/get_password')
+
+
+@ampalibe.action('/get_password')
+def get_password(sender_id, password, **extends):
+    query.set_action(sender_id, None)  # clear current action
+    mail = query.get_temp(sender_id, 'mail')  # get mail in temporary data
+
+    chat.send_message(sender_id, f'your mail and your password are {mail} {password}')
+    query.del_temp(sender_id, 'mail')  # delete temporary data
+```
+
 

@@ -32,4 +32,4 @@ def simulate(mes, user):
     )
 
 
-simulate("Gaetan", "155454")
+print(simulate("Gaetan", "155454").text)

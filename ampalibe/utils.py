@@ -1,5 +1,6 @@
 import urllib.parse
 
+
 funcs = {'commande': {}, 'action': {}}
 
 
@@ -7,6 +8,41 @@ class Payload:
     def __init__(self, payload, **kwargs) -> None:
         self.payload = payload
         self.data = kwargs
+
+    @staticmethod
+    def trt_payload_in(payload):
+        """
+        processing of payloads received in a sequence of structured parameters
+        
+        @params: payload [String]
+        @return: payload [String] , structured parameters Dict
+        """
+
+        payload = urllib.parse.unquote(payload)
+
+        res = {}
+        while '{{' in payload:
+            start = payload.index('{{')
+            end = payload.index('}}')
+            items = payload[start+2:end].split('===')
+            res[items[0]] = items[1]
+            payload = payload.replace(payload[start:end+2], '')
+        return payload.strip(), res
+
+    @staticmethod
+    def trt_payload_out(payload):
+        """
+        Processing of a Payload type as a character string
+        
+        @params: payload [ Payload | String ]
+        @return: String
+        """
+        if isinstance(payload, Payload):
+            tmp = ''
+            for key_data, val_data in payload.data.items():
+                tmp += f'{{{{{key_data}==={val_data}}}}} '
+            return urllib.parse.quote(payload.payload + ' ' + tmp)
+        return urllib.parse.quote(payload)
 
 
 def analyse(data):
@@ -57,39 +93,3 @@ def action(*args, **kwargs):
     def call_fn(function):
         funcs['action'][args[0]] = function
     return call_fn
-
-
-def trt_payload_in(payload):
-
-    """
-    processing of payloads received in a sequence of structured parameters
-    
-    @params: payload [String]
-    @return: payload [String] , structured parameters Dict
-    """
-
-    payload = urllib.parse.unquote(payload)
-
-    res = {}
-    while '{{' in payload:
-        start = payload.index('{{')
-        end = payload.index('}}')
-        items = payload[start+2:end].split('===')
-        res[items[0]] = items[1]
-        payload = payload.replace(payload[start:end+2], '')
-    return payload.strip(), res
-
-
-def trt_payload_out(payload):
-    """
-    Processing of a Payload type as a character string
-    
-    @params: payload [ Payload | String ]
-    @return: String
-    """
-    if isinstance(payload, Payload):
-        tmp = ''
-        for key_data, val_data in payload.data.items():
-            tmp += f'{{{{{key_data}==={val_data}}}}} '
-        return urllib.parse.quote(payload.payload + ' ' + tmp)
-    return urllib.parse.quote(payload)

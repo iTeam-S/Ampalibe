@@ -5,7 +5,7 @@ import pickle
 import requests
 from retry import retry
 import requests_toolbelt
-from .utils import trt_payload_out
+from .utils import Payload
 
 class Analyse:
     def __init__(self, res) -> None:
@@ -36,6 +36,9 @@ class Messenger:
     
         Returns:
             Response: POST request to the facebook API to send a message to the user
+        
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text
         """
         self.send_action(dest_id, 'typing_on')
         data_json = {
@@ -77,6 +80,9 @@ class Messenger:
 
         Returns:
             Response: POST request to the facebook API to send an action to the user
+        
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
         """
         data_json = {
             'messaging_type': "RESPONSE",
@@ -111,10 +117,14 @@ class Messenger:
 
         Returns:
             Response: POST request to the facebook API to send a quick_reply to the user
+        
+        Ref: 
+            https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
         """
 
         for i in range(len(quick_rep)):
-            quick_rep[i]['payload'] = trt_payload_out(quick_rep[i]['payload'])
+            if quick_rep[i].get('payload'):
+                quick_rep[i]['payload'] = Payload.trt_payload_out(quick_rep[i]['payload'])
 
         data_json = {
             'messaging_type': "RESPONSE",
@@ -161,11 +171,14 @@ class Messenger:
 
         Returns:
             Response: POST request to the facebook API to send a template generic to the user
+        
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic
         """
         
         for i in range(len(elements)):
             for j in range(len(elements[i]['buttons'])):
-                elements[i]['buttons'][j]['payload'] = trt_payload_out(elements[i]['buttons'][j]['payload'])
+                elements[i]['buttons'][j]['payload'] = Payload.trt_payload_out(elements[i]['buttons'][j]['payload'])
 
         dataJSON = {
             'messaging_type': "RESPONSE",
@@ -220,6 +233,9 @@ class Messenger:
 
         Returns:
             Response: POST request to the facebook API to send a template generic to the user
+        
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages#url
         """
 
         dataJSON = {
@@ -266,6 +282,9 @@ class Messenger:
             dest_id (str): user id for destination
             persistent_menu (list of dict): the elements of the persistent menu to enable
             action (str, optional): the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
+        
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu
         """
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
@@ -273,30 +292,6 @@ class Messenger:
             dataJSON = {
                 "psid": dest_id,
                 persistent_menu: persistent_menu
-                # "persistent_menu": [
-                #         {
-                #             "locale": "default",
-                #             "composer_input_disabled": False,
-                #             "call_to_actions": [
-                #                 {
-                #                     "type": "postback",
-                #                     "title": '🔎🤖 BOT',
-                #                     "payload": "_SHOW_MENU_BOT"
-                #                 },
-                #                 {
-                #                     "type": "postback",
-                #                     "title": '👨‍🎓📚 Moodle',
-                #                     "payload": "_SHOW_MENU_MOODLE"
-                #                 },
-                #                 {
-                #                     "type": "postback",
-                #                     "title": '🚶‍♂️🚶‍♂' +
-                #                     translate('liberer', lang),
-                #                     "payload": "_CANCEL_ACTION"
-                #                 }
-                #             ]
-                #         }
-                #     ]
             }
 
             res = requests.post(
@@ -330,6 +325,9 @@ class Messenger:
 
         Returns:
             Response: POST request to the facebook API to send a file to the user
+        
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages#file
         """
         if filename_ is None:
             filename_ = file

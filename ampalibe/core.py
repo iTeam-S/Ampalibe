@@ -1,13 +1,12 @@
 import os
 import pickle
 import uvicorn
-from typing import Dict
+from .requete import Model
 from threading import Thread
 from .messenger import Messenger
-from .requete import Request as Model
+from .utils import funcs, analyse, Payload
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
-from .utils import analyse, funcs, trt_payload_in
 
 _req = None
 conf = None
@@ -42,7 +41,7 @@ class Server:
         Content of webhook
     '''
     @webserver.get('/')
-    async def verif(request: Request) -> Dict:
+    async def verif(request: Request):
         fb_token = request.query_params.get("hub.verify_token")
 
         if fb_token == conf.VERIF_TOKEN:
@@ -51,7 +50,7 @@ class Server:
 
 
     @webserver.post('/')
-    async def main(request: Request) -> Dict:
+    async def main(request: Request):
         data = await request.json()
         sender_id, payload = analyse(data)
         _req.verif_user(sender_id)
@@ -74,7 +73,7 @@ class Server:
                     args=(sender_id, payload)
                 ).start()
         else:
-            payload, kw = trt_payload_in(payload)
+            payload, kw = Payload.trt_payload_in(payload)
             Thread(
                 target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
                 args=(sender_id, payload),

@@ -2,7 +2,7 @@ import json
 import sqlite3
 import mysql.connector
 
-class Request:
+class Model:
     def __init__(self, conf):
         '''
             object to interact with database

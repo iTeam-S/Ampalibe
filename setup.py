@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampalibe",                  # This is the name of the package
-    version="0.0.1",                      # The initial release version
+    version="0.1.0-dev",                      # The initial release version
     author="iTeam-$",                         # Full name of the author
     description="Ampalibe is a light open source framework.",
     long_description=long_description,  # Long description read from the readme

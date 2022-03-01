@@ -7,4 +7,4 @@ API
    ampalibe.command
    ampalibe.action
    ampalibe.Model
-   ampalibe.Messenger
+   ampalibe.messenger.Messenger

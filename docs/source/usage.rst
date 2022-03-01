@@ -39,6 +39,7 @@ Understanding of files
 
 .. image:: https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/structure.png
 
+
 .. hlist::
    :columns: 1
 
@@ -62,8 +63,10 @@ Before starting
 
 How to complete the environment variable file
 
+
 .. raw:: html
    <iframe width="1280" height="720" src="https://www.youtube.com/embed/KoD_-Ho__04?list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 
 Run the app

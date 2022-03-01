@@ -39,4 +39,20 @@ Understanding of files
 
 .. image:: https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/structure.png
 
+.. hlist::
+   :columns: 1
+
+   * ``assets/``: statics file folder
+      * ``public/``: reachable via url
+      * ``private/``: not accessible via url
+   
+   * ``env``: environment variable file
+
+   * ``conf.py``: configuration file that retrieves environment variables 
+
+   * ``core.py``: file containing the starting point of the code
+
+
+Before starting
+-----------------
 

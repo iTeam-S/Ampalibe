@@ -42,17 +42,39 @@ Understanding of files
 .. hlist::
    :columns: 1
 
-   * ``assets/``: statics file folder
-      * ``public/``: reachable via url
-      * ``private/``: not accessible via url
+   * ``assets/`` statics file folder
+      * ``public/`` reachable via url
+      * ``private/`` not accessible via url
    
-   * ``env``: environment variable file
+   * ``.env`` environment variable file
 
-   * ``conf.py``: configuration file that retrieves environment variables 
+   * ``conf.py`` configuration file that retrieves environment variables 
 
-   * ``core.py``: file containing the starting point of the code
+   * ``core.py`` file containing the starting point of the code
+
+   .. important::
+
+      .env file is env.bat in Windows
 
 
 Before starting
 -----------------
+
+How to complete the environment variable file
+
+.. raw:: html
+   <iframe width="1280" height="720" src="https://www.youtube.com/embed/KoD_-Ho__04?list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+Run the app
+-----------------
+
+In the project folder, type
+
+.. code-block:: console
+
+   $ ampalibe run 
+
+
+
 

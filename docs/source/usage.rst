@@ -65,7 +65,8 @@ How to complete the environment variable file
 
 .. raw:: html
 
-   <iframe src="https://www.youtube.com/embed/KoD_-Ho__04?list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi" title="Before starting" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <iframe width="1280" height="720" src="https://www.youtube.com/embed/KoD_-Ho__04?list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 
 Run the app

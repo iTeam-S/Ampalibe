@@ -1,4 +1,5 @@
 from .requete import Model
+from .messenger import Messenger
 from .utils import action, command
 from .core import webserver, Extra as init
 

@@ -59,6 +59,17 @@ elif [ "$1" == "run" ]; then
             exit 1
         fi
         source .env;
+            echo -e """\033[36m
+                                                         0o
+                                                          Oo
+                                                         coooool
+                                                        looooooool
+                                                       loooooooooool
+     _    __  __ ____   _    _     ___ ____  _____     looooooooooool
+    / \  |  \/  |  _ \ / \  | |   |_ _| __ )| ____|    looooooooooool
+   / _ \ | |\/| | |_) / _ \ | |    | ||  _ \|  _|       loooooooooool
+  / ___ \| |  | |  __/ ___ \| |___ | || |_) | |___        looooooool
+ /_/   \_\_|  |_|_| /_/   \_\_____|___|____/|_____|         oooooo \033[0m"""
             echo -e "~\033[32m 👌\033[0m | Env Loaded";
             echo -e "~\033[32m 👌\033[0m | Ampalibe running...";
         if [ $python = "python3" ]; then

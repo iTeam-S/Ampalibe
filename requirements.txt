@@ -1,5 +1,5 @@
 fastapi
-mysql-connector
+mysql-connector-python
 uvicorn
 retry
 requests_toolbelt

@@ -1,30 +1,30 @@
 env = """# PAGE ACCESS TOKEN 
-AMP_ACCESS_TOKEN=
+export AMP_ACCESS_TOKEN=
 
 # PAGE VERIF TOKEN
-AMP_VERIF_TOKEN= 
+export AMP_VERIF_TOKEN= 
 
 
 # DATABASE AUTHENTIFICATION
-ADAPTER=SQLITE
-# ADAPTER=MYSQL
+export ADAPTER=SQLITE
+#export ADAPTER=MYSQL
 
 ####### CASE MYSQL ADAPTER
-DB_HOST=
-DB_USER=
-DB_PASSWORD=
-DB_NAME=
-DB_PORT=3306
+export DB_HOST=
+export DB_USER=
+export DB_PASSWORD=
+export DB_NAME=
+export DB_PORT=3306
 
 ####### CASE SQLITE ADAPTER
-DB_FILE=ampalibe.db
+export DB_FILE=ampalibe.db
 
 # APPLICATION CONFIGURATION
-AMP_HOST=0.0.0.0
-AMP_PORT=4555
+export AMP_HOST=0.0.0.0
+export AMP_PORT=4555
 
 # URL APPLICATION
-AMP_URL=
+export AMP_URL=
 """
 
 env_cmd = """:: PAGE ACCESS TOKEN 
@@ -76,7 +76,7 @@ def main(sender_id, cmd, **extends):
             data sent by facebook (sending time, ...)
             data sent by your payload if not set in parameter
     '''
-    print("Hello World")"""
+    bot.chat.send_message(sender_id,"Hello word")"""
 
 
 conf = """from os import environ as env

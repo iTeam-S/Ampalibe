@@ -1,10 +1,8 @@
-from .server import run
-from .server import req as Req
+from .requete import Model
 from .messenger import Messenger
-from .requete import Request as Model
 from .utils import action, command
-from .source import env, conf, core, env_cmd
+from .core import webserver, Extra as init
 
-__version__ = '0.0.1'
+__version__ = '0.1.0-dev'
 __author__ = 'iTeam-$'
-__contributors__ = 'gaetan1903, '
+__contributors__ = ['gaetan193', 'rivo2302', 'rootkit7628', 'SergioDev22']

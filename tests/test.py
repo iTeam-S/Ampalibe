@@ -25,11 +25,11 @@ def simulate(mes, user):
     }
     header = {'content-type': 'application/json; charset=utf-8'}
     return requests.post(
-        'http://127.0.0.1:8000',
+        'http://127.0.0.1:4555',
         json=data_json,
         headers=header,
         params={"TEST": '1'}
     )
 
 
-simulate("Hello", "155454")
+print(simulate("Gaetan", "155454").text)

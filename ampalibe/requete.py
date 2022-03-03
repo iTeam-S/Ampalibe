@@ -41,7 +41,8 @@ class Model:
            Creation of table if not exist
            Check the necessary table if exists
         '''
-        if self.ADAPTER == 'SQLite':
+        
+        if self.ADAPTER == 'MYSQL':
             req = '''
                 CREATE TABLE IF NOT EXISTS `amp_user` (
                     `id` INT NOT NULL AUTO_INCREMENT,

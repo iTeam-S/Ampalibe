@@ -1,3 +1,4 @@
+import imp
 import os
 import json
 import pickle
@@ -5,7 +6,6 @@ import requests
 from retry import retry
 import requests_toolbelt
 from .utils import Payload
-
 
 class Analyse:
     def __init__(self, res) -> None:
@@ -157,8 +157,8 @@ class Messenger:
         form at the user(form: template generic),
         
         For this, messenger only validates 10 templates
-        for the first display, so we put the optional parameter
-        <**kwargs> to manage these numbers if it is a number of 
+        for the first display, so we put the parameter
+        <next> to manage these numbers if it is a number of 
         elements more than 10,
 
         So, there is a quick_reply which acts as a "next page"
@@ -168,6 +168,7 @@ class Messenger:
             dest_id (str): user id facebook for the destination
             elements (list of dict): the list of the specific elements to define the
             structure for the template
+            next(bool) : this params activate the next page when elements have a length more than ten
 
         Returns:
             Response: POST request to the facebook API to send a template generic to the user
@@ -369,25 +370,58 @@ class Messenger:
         Analyse(res)
         return res
 
-    def send_template(self, dest_id,elements,payload):   
-        res = elements
-        if res:
-            page = int(json.loads(req.get_temp(dest_id)).get("__page"))
-            deb_indice = (page-1) * 10 if page else 1
+    
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_media(self,dest_id,fb_url,media_types):
+        """
+            Method that sends files
+            media as image and video
+            via facebook link
+
+        Args:
+            destId (str): user id facebook for the destination
+            fb_url (str): url of the media to send on facebook
+                for this: To get the Facebook URL of an image or video, follow these steps:
+                    -Click on the image or video thumbnail to open the full-size view
+                    -Copy the URL address from your browser's address bar.
+            media_types (str): the type of the media who to want send, available["image","video"]
+
+        Returns:
+            Response: POST request to the facebook API to send a media file using url facebook
             
-            if len(res) > deb_indice + 10:
-                self.send_result(
-                    dest_id, res[deb_indice:deb_indice + 10],
-                    next=[
-                        {
-                            "content_type": "text",
-                            "title": "⏭️PAGE SUIVANTE",
-                            "payload": payload,
-                        }
-                    ]
-                )
-                req.set_temp(dest_id,"__page",page+1)
-            else:
-                self.send_result(dest_id, res[deb_indice:deb_indice + 10])
-        else:
-            self.send_message(dest_id, "No Elements dispo")
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/template/media
+        """
+        self.send_action(dest_id, 'typing_on')
+        dataJSON = {
+            "recipient":{
+                "id": dest_id
+            },
+            "message":{
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "media",
+                        "elements": [
+                            {
+                            "media_type": media_types,
+                            "url": fb_url
+                            }
+                        ]
+                    }
+                }    
+            }
+        }
+
+        header = {'content-type': 'application/json; charset=utf-8'}
+        params = {"access_token": self.token}
+        self.send_action(dest_id, 'typing_off')
+
+        res = requests.post(
+            'https://graph.facebook.com/v2.6/me/messages',
+            json=dataJSON,
+            headers=header,
+            params=params
+        )
+        Analyse(res)
+        return res

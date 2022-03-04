@@ -52,7 +52,7 @@ class Server:
     @webserver.post('/')
     async def main(request: Request):
         data = await request.json()
-        sender_id, payload = analyse(data)
+        sender_id, payload, message = analyse(data)
         _req.verif_user(sender_id)
         action = _req.get_action(sender_id)
 
@@ -62,18 +62,19 @@ class Server:
                 elements = pickle.load(open(f'assets/private/.__{sender_id}', 'rb'))
                 bot.send_result(sender_id, elements, next=True)
                 return {'status': 'ok'}
-        try:
+
+        if os.path.isfile(f'assets/private/.__{sender_id}'):
             os.remove(f'assets/private/.__{sender_id}')
-        except FileNotFoundError:
-            pass
 
         if action and funcs['action'].get(action):
                 Thread(
                     target=funcs['action'].get(action),
-                    args=(sender_id, payload)
+                    args=(sender_id, payload),
+                    kwargs={'message': message}
                 ).start()
         else:
             payload, kw = Payload.trt_payload_in(payload)
+            kw['message'] = message
             Thread(
                 target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
                 args=(sender_id, payload),

@@ -62,17 +62,17 @@ def analyse(data):
                 if message['message'].get('attachments'):
                     # Get file name
                     data = message['message'].get('attachments')
-                    return sender_id, ','.join(list(map(struct_atts, data)))
+                    return sender_id, ','.join(list(map(struct_atts, data))), message
                 elif message['message'].get('quick_reply'):
                     # if the response is a quick reply
                     return  sender_id, message['message']['quick_reply'].get('payload')
                 elif message['message'].get('text'):
                     # if the response is a simple text
-                    return  sender_id, message['message'].get('text')
+                    return  sender_id, message['message'].get('text'), message
             if message.get('postback'):
                 recipient_id = message['sender']['id']
                 pst_payload = message['postback']['payload']
-                return recipient_id, pst_payload
+                return recipient_id, pst_payload, message
 
 
 def command(*args, **kwargs):

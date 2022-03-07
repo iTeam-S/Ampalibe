@@ -151,7 +151,7 @@ class Messenger:
         return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_result(self, dest_id, elements, next=False, **kwargs):
+    def send_result(self, dest_id, elements, quick_rep=None, next=False):
         """
         this method display the result in a structured 
         form at the user(form: template generic),
@@ -168,6 +168,7 @@ class Messenger:
             dest_id (str): user id facebook for the destination
             elements (list of dict): the list of the specific elements to define the
             structure for the template
+            quick_rep(list of dict): addition quick reply at the bottom of the template
             next(bool) : this params activate the next page when elements have a length more than ten
 
         Returns:
@@ -211,6 +212,10 @@ class Messenger:
                 }
             ]
             pickle.dump(elements[10:], open(f'assets/private/.__{dest_id}', 'wb'))
+        
+        if quick_rep:
+            dataJSON['message']['quick_replies'] = quick_rep
+
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
 

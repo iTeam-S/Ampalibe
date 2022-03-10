@@ -65,7 +65,7 @@ def analyse(data):
                     return sender_id, ','.join(list(map(struct_atts, data))), message
                 elif message['message'].get('quick_reply'):
                     # if the response is a quick reply
-                    return  sender_id, message['message']['quick_reply'].get('payload')
+                    return  sender_id, message['message']['quick_reply'].get('payload'), message
                 elif message['message'].get('text'):
                     # if the response is a simple text
                     return  sender_id, message['message'].get('text'), message

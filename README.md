@@ -126,4 +126,38 @@ def get_password(sender_id, password, **extends):
     query.del_temp(sender_id, 'mail')  # delete temporary data
 ```
 
+- **Manage Payload of quick_reply or result:** `send data with Payload object and get it in destination function's parameter`
+```python
+import ampalibe
+from ampalibe import Payload
+from conf import Configuration
+
+bot = ampalibe.init(Configuration())
+chat = bot.chat
+
+
+@ampalibe.command('/')
+def main(sender_id, cmd, **extends):
+    quick_rep = [
+        {
+            "content_type": "text",
+            "title": 'Angela',
+            "payload": Payload('/membre', name='Angela', ref='2016-sac')
+        },
+        {
+            "content_type": "text",
+            "title": 'Rivo',
+            "payload": Payload('/membre', name='Rivo')
+        }
+    ]
+    chat.send_quick_reply(sender_id, quick_rep, 'Who?')
+    
+
+@ampalibe.command('/membre')
+def get_membre(sender_id, cmd, name, **extends):
+    if extends.get('ref'):
+        chat.send_message(sender_id, 'your ref is ' + extends.get('ref'))
+    else:
+        chat.send_message(sender_id, "Hello " + nom)
+```
 

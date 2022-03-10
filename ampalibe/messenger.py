@@ -23,7 +23,7 @@ class Messenger:
             access_token (str): A facebook page access token
         """
         self.token = access_token
-        self.url = "https://graph.facebook.com/v8.0/me"
+        self.url = "https://graph.facebook.com/v13.0/me"
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_message(self, dest_id, message, prio=False):
@@ -292,7 +292,13 @@ class Messenger:
         if action == "PUT":
             dataJSON = {
                 "psid": dest_id,
-                persistent_menu: persistent_menu
+                persistent_menu: [
+                    {
+                        "locale": "default",
+                        "composer_input_disabled": 'false',
+                        "call_to_actions": persistent_menu
+                    }
+                ]
             }
 
             res = requests.post(

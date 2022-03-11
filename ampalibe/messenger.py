@@ -266,7 +266,7 @@ class Messenger:
         return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def persistent_menu(self, dest_id, persistent_menu, action='PUT'):
+    def persistent_menu(self, dest_id, persistent_menu, action='PUT', **kwargs):
         """
         this is a method to enable a persistent 
         menu for messenger
@@ -283,6 +283,9 @@ class Messenger:
             dest_id (str): user id for destination
             persistent_menu (list of dict): the elements of the persistent menu to enable
             action (str, optional): the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
+            
+            locale [optionnel]
+            composer_input_disabled [optionnel]
         
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu
@@ -294,8 +297,8 @@ class Messenger:
                 "psid": dest_id,
                 persistent_menu: [
                     {
-                        "locale": "default",
-                        "composer_input_disabled": 'false',
+                        "locale": kwargs.get("locale", "default"),
+                        "composer_input_disabled": kwargs.get("composer_input_disabled", "false"),
                         "call_to_actions": persistent_menu
                     }
                 ]

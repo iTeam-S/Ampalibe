@@ -442,7 +442,7 @@ class Messenger:
         return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def get_started(self) :
+    def get_started(self,payload='/') :
         """
             Method that GET STARTED button
             when the user talh first to the bot.
@@ -456,7 +456,7 @@ class Messenger:
 
         dataJSON = { 
                 "get_started":{
-                    "payload": "_GET_STARTED_"
+                    "payload": payload
                 }
             }
 

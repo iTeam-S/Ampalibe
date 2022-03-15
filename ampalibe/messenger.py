@@ -270,6 +270,7 @@ class Messenger:
         Analyse(res)
         return res
 
+    
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def persistent_menu(self, dest_id, persistent_menu, action='PUT', **kwargs):
         """
@@ -300,7 +301,7 @@ class Messenger:
         if action == "PUT":
             dataJSON = {
                 "psid": dest_id,
-                persistent_menu: [
+                "persistent_menu": [
                     {
                         "locale": kwargs.get("locale", "default"),
                         "composer_input_disabled": kwargs.get("composer_input_disabled", "false"),
@@ -432,7 +433,38 @@ class Messenger:
         self.send_action(dest_id, 'typing_off')
 
         res = requests.post(
-            'https://graph.facebook.com/v2.6/me/messages',
+            'https://graph.facebook.com/v6.0/me/messages',
+            json=dataJSON,
+            headers=header,
+            params=params
+        )
+        Analyse(res)
+        return res
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def get_started(self,payload='/') :
+        """
+            Method that GET STARTED button
+            when the user talh first to the bot.
+
+        Returns:
+            Response: POST request to the facebook API to send a media file using url facebook
+            
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/get-started-button
+        """
+
+        dataJSON = { 
+                "get_started":{
+                    "payload": payload
+                }
+            }
+
+        header = {'content-type': 'application/json; charset=utf-8'}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            'https://graph.facebook.com/v6.0/me/messenger_profile',
             json=dataJSON,
             headers=header,
             params=params

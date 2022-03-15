@@ -60,6 +60,8 @@ from conf import Configuration
 
 bot = ampalibe.init(Configuration())
 
+#Call the function who send Get_started button
+bot.chat.get_started(payload='/')
 
 @ampalibe.command('/')
 def main(sender_id, cmd, **extends):
@@ -76,7 +78,9 @@ def main(sender_id, cmd, **extends):
             data sent by facebook (sending time, ...)
             data sent by your payload if not set in parameter
     '''
-    bot.chat.send_message(sender_id,"Hello word")"""
+    
+    bot.chat.send_message(sender_id,"Hello word")
+    """
 
 
 conf = """from os import environ as env
@@ -104,3 +108,6 @@ class Configuration:
     APP_PORT = int(env.get('AMP_PORT'))
     APP_URL = env.get('AMP_URL')
 """
+
+
+

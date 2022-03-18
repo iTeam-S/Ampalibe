@@ -60,8 +60,8 @@ from conf import Configuration
 
 bot = ampalibe.init(Configuration())
 
-#Call the function who send Get_started button
-bot.chat.get_started(payload='/')
+# create a get started option to get permission of user.
+bot.chat.get_started()
 
 @ampalibe.command('/')
 def main(sender_id, cmd, **extends):
@@ -79,7 +79,7 @@ def main(sender_id, cmd, **extends):
             data sent by your payload if not set in parameter
     '''
     
-    bot.chat.send_message(sender_id,"Hello word")
+    bot.chat.send_message(sender_id, "Hello, Ampalibe")
     """
 
 

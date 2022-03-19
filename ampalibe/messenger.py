@@ -25,20 +25,22 @@ class Messenger:
         self.token = access_token
         self.url = "https://graph.facebook.com/v13.0/me"
 
+
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_message(self, dest_id, message, prio=False):
         """
-        This method sends a message to user given
+            This method allows you to send a text message to the given recipient,
+            Note that the number of characters to send is limited to 2000 characters
 
-        Args:
-            dest_id (str): user id facebook for the destination
-            message (str): message want to send
-    
-        Returns:
-            Response: POST request to the facebook API to send a message to the user
+            Args:
+                dest_id (str): user id facebook for the destination
+                message (str): message want to send
         
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text
+            Returns:
+                Response: POST request to the facebook API to send a message to the user
+            
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text
         """
         self.send_action(dest_id, 'typing_on')
         data_json = {
@@ -67,22 +69,23 @@ class Messenger:
         Analyse(res)
         return res
 
+
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_action(self, dest_id, action):
         """
-        This method is used to simulate an action on messages.
-        example: view, writing.
-        Action available: ['mark_seen', 'typing_on', 'typing_off']
+            This method is used to simulate an action on messages.
+            example: view, writing.
+            Action available: ['mark_seen', 'typing_on', 'typing_off']
 
-        Args:
-            dest_id (str): user id facebook for the destination
-            action (str): action ['mark_seen', 'typing_on', 'typing_off']
+            Args:
+                dest_id (str): user id facebook for the destination
+                action (str): action ['mark_seen', 'typing_on', 'typing_off']
 
-        Returns:
-            Response: POST request to the facebook API to send an action to the user
-        
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
+            Returns:
+                Response: POST request to the facebook API to send an action to the user
+            
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
         """
         data_json = {
             'messaging_type': "RESPONSE",
@@ -104,22 +107,25 @@ class Messenger:
         Analyse(res)
         return res
 
+
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_quick_reply(self, dest_id, quick_rep, text):
         """
-        This is a method to send a <quick_reply>
-        to the user
+            Quick replies provide a way to present a set of up to 13 buttons 
+            in-conversation that contain a title and optional image, and appear
+            prominently above the composer. You can also use quick replies 
+            to request a person's location, email address, and phone number.
 
-        Args:
-            dest_id (str): user id facebook for the destoination
-            quick_rep (list of dict): list of the different quick_reply to send a user
-            text (str): A text of a little description for each <quick_reply>
+            Args:
+                dest_id (str): user id facebook for the destoination
+                quick_rep (list of dict): list of the different quick_reply to send a user
+                text (str): A text of a little description for each <quick_reply>
 
-        Returns:
-            Response: POST request to the facebook API to send a quick_reply to the user
-        
-        Ref: 
-            https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
+            Returns:
+                Response: POST request to the facebook API to send a quick_reply to the user
+            
+            Ref: 
+                https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
         """
 
         for i in range(len(quick_rep)):
@@ -150,32 +156,36 @@ class Messenger:
         Analyse(res)
         return res
 
+
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_result(self, dest_id, elements, quick_rep=None, next=False):
         """
-        this method display the result in a structured 
-        form at the user(form: template generic),
+            The method send_result represent a Message templates who offer a way for you 
+            to offer a richer in-conversation experience than standard text messages by integrating
+            buttons, images, lists, and more alongside text a single message. Templates can be use for 
+            many purposes, such as displaying product information, asking the messagerecipient to choose 
+            from a pre-determined set of options, and showing search results.
         
-        For this, messenger only validates 10 templates
-        for the first display, so we put the parameter
-        <next> to manage these numbers if it is a number of 
-        elements more than 10,
+            For this, messenger only validates 10 templates
+            for the first display, so we put the parameter
+            <next> to manage these numbers if it is a number of 
+            elements more than 10,
 
-        So, there is a quick_reply which acts as a "next page"
-        displaying all requested templates
+            So, there is a quick_reply which acts as a "next page"
+            displaying all requested templates
 
-        Args:
-            dest_id (str): user id facebook for the destination
-            elements (list of dict): the list of the specific elements to define the
-            structure for the template
-            quick_rep(list of dict): addition quick reply at the bottom of the template
-            next(bool) : this params activate the next page when elements have a length more than ten
+            Args:
+                dest_id (str): user id facebook for the destination
+                elements (list of dict): the list of the specific elements to define the
+                structure for the template
+                quick_rep(list of dict): addition quick reply at the bottom of the template
+                next(bool) : this params activate the next page when elements have a length more than ten
 
-        Returns:
-            Response: POST request to the facebook API to send a template generic to the user
-        
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic
+            Returns:
+                Response: POST request to the facebook API to send a template generic to the user
+            
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic
         """
         
         for i in range(len(elements)):
@@ -226,22 +236,25 @@ class Messenger:
         Analyse(res)
         return res
 
+
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_file_url(self, dest_id, url, filetype='file'):
         """
-        this method sent attachment by link.
-        [image,video,pdf,docx,...]
-        
-        Args:
-            dest_id (str): user id facebook for destination
-            url (str): the origin url for the file
-            filetype (str, optional): type of the file["video","image",...]. Defaults to 'file'.
+            The Messenger Platform allows you to attach assets to messages, including audio, 
+            video, images, and files.All this is the role of this Method. The maximum attachment
+            size is 25 MB. The maximum resolution for images is 85 Megapixel. There are three ways
+            to attach an asset to a message:
+            
+            Args:
+                dest_id (str): user id facebook for destination
+                url (str): the origin url for the file
+                filetype (str, optional): type of the file["video","image",...]. Defaults to 'file'.
 
-        Returns:
-            Response: POST request to the facebook API to send a template generic to the user
-        
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/send-messages#url
+            Returns:
+                Response: POST request to the facebook API to send a template generic to the user
+            
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages#url
         """
 
         dataJSON = {
@@ -274,27 +287,20 @@ class Messenger:
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def persistent_menu(self, dest_id, persistent_menu, action='PUT', **kwargs):
         """
-        this is a method to enable a persistent 
-        menu for messenger
-        
-        it sits at the bottom of the screen 
-        
-        it is not necessarily permanent but we can play
-        according to the usefulness, this is why we propose
-        the action parameter which is defined its appearance 
-        on the screen. we delete it if in an interface or scene
-        that we don't need it. we updated it if necessary
-
-        Args:
-            dest_id (str): user id for destination
-            persistent_menu (list of dict): the elements of the persistent menu to enable
-            action (str, optional): the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
+            The Persistent Menu disabling the composer best practices allows you to have an always-on 
+            user interface element inside Messenger conversations. This is an easy way to help people 
+            discover and access the core functionality of your Messenger bot at any point in the conversation
             
-            locale [optionnel]
-            composer_input_disabled [optionnel]
-        
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu
+            Args:
+                dest_id (str): user id for destination
+                persistent_menu (list of dict): the elements of the persistent menu to enable
+                action (str, optional): the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
+                
+                locale [optionnel]
+                composer_input_disabled [optionnel]
+            
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu
         """
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
@@ -328,22 +334,23 @@ class Messenger:
             Analyse(res)
             return res
 
+
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_file(self, dest_id, file, filetype="file", filename_=None):
         """
-        this method send a local file
+            this method send an attachment from file
 
-        Args:
-            destId (str): user id facebook for the destination
-            file (str): name of the file in local folder 
-            filetype (str, optional): type of the file["video","image",...]. Defaults to "file".
-            filename_ (str, optional): A filename received for de destination . Defaults to None.
+            Args:
+                destId (str): user id facebook for the destination
+                file (str): name of the file in local folder 
+                filetype (str, optional): type of the file["video","image",...]. Defaults to "file".
+                filename_ (str, optional): A filename received for de destination . Defaults to None.
 
-        Returns:
-            Response: POST request to the facebook API to send a file to the user
-        
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/send-messages#file
+            Returns:
+                Response: POST request to the facebook API to send a file to the user
+            
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages#file
         """
         if filename_ is None:
             filename_ = file
@@ -389,23 +396,22 @@ class Messenger:
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_media(self,dest_id,fb_url,media_types):
         """
-            Method that sends files
-            media as image and video
-            via facebook link
+            Method that sends files media as image and video via facebook link.
+            This model does not allow any external URLs, only those on Facebook.
 
-        Args:
-            destId (str): user id facebook for the destination
-            fb_url (str): url of the media to send on facebook
-                for this: To get the Facebook URL of an image or video, follow these steps:
-                    -Click on the image or video thumbnail to open the full-size view
-                    -Copy the URL address from your browser's address bar.
-            media_types (str): the type of the media who to want send, available["image","video"]
+            Args:
+                destId (str): user id facebook for the destination
+                fb_url (str): url of the media to send on facebook
+                    for this: To get the Facebook URL of an image or video, follow these steps:
+                        -Click on the image or video thumbnail to open the full-size view
+                        -Copy the URL address from your browser's address bar.
+                media_types (str): the type of the media who to want send, available["image","video"]
 
-        Returns:
-            Response: POST request to the facebook API to send a media file using url facebook
-            
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/send-messages/template/media
+            Returns:
+                Response: POST request to the facebook API to send a media file using url facebook
+                
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages/template/media
         """
         self.send_action(dest_id, 'typing_on')
         dataJSON = {
@@ -445,13 +451,13 @@ class Messenger:
     def get_started(self, payload='/') :
         """
             Method that GET STARTED button
-            when the user talh first to the bot.
+            when the user talk first to the bot.
 
-        Returns:
-            Response: POST request to the facebook API to send a media file using url facebook
-            
-        Ref:
-            https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/get-started-button
+            Returns:
+                Response: POST request to the facebook API to send a media file using url facebook
+                
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/get-started-button
         """
 
         dataJSON = { 
@@ -466,6 +472,53 @@ class Messenger:
         res = requests.post(
             'https://graph.facebook.com/v6.0/me/messenger_profile',
             json=dataJSON,
+            headers=header,
+            params=params
+        )
+        Analyse(res)
+        return res
+
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_button(self, dest_id, buttons, text):
+        """
+           The button template sends a text message with 
+           up to three buttons attached. This template gives 
+           the message recipient different options to choose from, 
+           such as predefined answers to questions or actions to take.
+
+            Args:
+                dest_id (str): user id facebook for the destination
+                buttons (list of dict): The list of buttons who want send
+                text (str): A text to describe the fonctionnality of the buttons
+
+            Returns:
+                Response: POST request to the facebook API to send all different buttons
+        """
+        self.send_action(dest_id, 'typing_on')
+        data_json = {
+            "recipient":{
+                "id": dest_id
+            },
+            "message":{
+                "attachment":{
+                    "type":"template",
+                    "payload":{
+                        "template_type":"button",
+                        "text": text,
+                        "buttons": buttons
+                    }
+                }
+            }
+        }
+
+        header = {'content-type': 'application/json; charset=utf-8'}
+        params = {"access_token": self.token}
+
+        self.send_action(dest_id, 'typing_off')
+        res = requests.post(
+            self.url + '/messages',
+            json=data_json,
             headers=header,
             params=params
         )

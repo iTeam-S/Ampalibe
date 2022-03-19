@@ -494,6 +494,9 @@ class Messenger:
 
             Returns:
                 Response: POST request to the facebook API to send all different buttons
+                
+            Ref:
+                https://developers.facebook.com/docs/messenger-platform/send-messages/template/button
         """
         self.send_action(dest_id, 'typing_on')
         data_json = {

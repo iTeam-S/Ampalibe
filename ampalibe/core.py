@@ -67,17 +67,17 @@ class Server:
             os.remove(f'assets/private/.__{sender_id}')
 
         if action and funcs['action'].get(action):
-                Thread(
-                    target=funcs['action'].get(action),
-                    args=(sender_id, payload),
-                    kwargs={'message': message}
-                ).start()
+            Thread(
+                target=funcs['action'].get(action),
+                kwargs={'sender_id': sender_id, 'cmd': payload, 'message': message}
+            ).start()
         else:
             payload, kw = Payload.trt_payload_in(payload)
+            kw['sender_id'] = sender_id
+            kw['cmd'] = payload
             kw['message'] = message
             Thread(
                 target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
-                args=(sender_id, payload),
                 kwargs=kw
             ).start()
 

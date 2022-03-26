@@ -19,3 +19,6 @@ IF /I "%1" == "run" (
     call .env.bat
     python -c "import core;core.ampalibe.init.run(core.Configuration())"
 )
+IF /I "%1" == "version" (
+    python -c "import ampalibe;print(ampalibe.__version__)"
+)

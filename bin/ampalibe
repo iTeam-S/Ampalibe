@@ -14,7 +14,10 @@ else
     python="python3"
 fi
 
-if [ "$1" == "create" ]; then
+if [ "$1" == "version" ]; then
+    echo `$python -c "import ampalibe;print(ampalibe.__version__)"`
+
+elif [ "$1" == "create" ]; then
     if [ $# -eq 2 ]; then
         if [ -d "$2" ]; then
             >&2 echo -e "~\033[31m ERROR !!\033[0m ~ A folder $2 already exists"

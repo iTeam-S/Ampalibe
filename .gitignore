@@ -130,3 +130,5 @@ dmypy.json
 
 # alld bot demo
 demo*
+
+_build/

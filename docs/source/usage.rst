@@ -62,10 +62,23 @@ Before starting
 
 How to complete the environment variable file
 
+.. hlist::
+   :columns: 1
 
-.. raw:: html
-
-  <iframe width="1280" height="720" src="https://www.youtube.com/embed/KoD_-Ho__04?list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+   * **AMP_ACCESS_TOKEN** Facebook Page access token
+   * **AMP_VERIF_TOKEN** Token that Facebook use as part of the recall URL check.
+   * **ADAPTER** type of database used by ampalibe (SQLITE OR MYSQL) 
+      * **FOR MYSQL ADAPTER**
+         * *DB_HOST**
+         * *DB_USER*
+         * *DB_PASSWORD*
+         * *DB_NAME*
+         * *DB_PORT*
+      * **FOR SQLITE ADAPTER**
+         * *DB_FILE*
+   * **AMP_HOST** server listening address
+   * **AMP_PORT** server listening port
+   * **AMP_URL** URL of the server given to Facebook
 
 
 

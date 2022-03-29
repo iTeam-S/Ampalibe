@@ -2,6 +2,7 @@
 
 IF /I "%1" == "create" (
     md %2
+    python -c "print('.env\n.env.bat\n__pycache__/')" >> %2\.gitignore
     python -c "import ampalibe.source;print(ampalibe.source.env_cmd)" > %2\.env.bat
     python -c "import ampalibe.source;print(ampalibe.source.conf)" > %2\conf.py
     python -c "import ampalibe.source;print(ampalibe.source.core)" > %2\core.py
@@ -9,6 +10,7 @@ IF /I "%1" == "create" (
     md %2\assets\private
 )
 IF /I "%1" == "init" (
+    python -c "print('.env\n.env.bat\n__pycache__/')" >> .gitignore
     python -c "import ampalibe.source;print(ampalibe.source.env_cmd)" > .env.bat
     python -c "import ampalibe.source;print(ampalibe.source.conf)" > conf.py
     python -c "import ampalibe.source;print(ampalibe.source.core)" > core.py

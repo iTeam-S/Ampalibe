@@ -157,8 +157,13 @@ class Messenger:
         return res
 
 
-    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_result(self, dest_id, elements, quick_rep=None, next=False):
+        print("Depreceted: Use send_template instead!")
+        self.send_template(dest_id, elements, quick_rep=quick_rep, next=next)
+
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_template(self, dest_id, elements, quick_rep=None, next=False):
         """
             The method send_result represent a Message templates who offer a way for you 
             to offer a richer in-conversation experience than standard text messages by integrating

@@ -25,7 +25,7 @@ elif [ "$1" == "create" ]; then
         fi
         mkdir $2;
             echo -e "~\033[32m 👌 \033[0m | Creating $2 ...";
-            echo -e ".env\n.env.bat\n__pycache__/" > $2/.gitignore;
+            echo -e ".env\n.env.bat\n__pycache__/\nngrok\nngrok.exe" > $2/.gitignore;
         `$python -c "import ampalibe.source;print(ampalibe.source.env)" > $2/.env`;
             echo -e "~\033[32m 👌 \033[0m | Env file created";
         `$python -c "import ampalibe.source;print(ampalibe.source.conf)" > $2/conf.py`;
@@ -42,7 +42,7 @@ elif [ "$1" == "create" ]; then
     fi
 elif [ "$1" == "init" ]; then
     if [ $# -eq 1 ]; then
-        echo -e ".env\n.env.bat\n__pycache__/" >> .gitignore;
+        echo -e ".env\n.env.bat\n__pycache__/\nngrok\nngrok.exe" >> .gitignore;
         `$python -c "import ampalibe.source;print(ampalibe.source.env)" > .env`;
             echo -e "~\033[32m 👌 \033[0m | Env file created";
         `$python -c "import ampalibe.source;print(ampalibe.source.conf)" > conf.py`;

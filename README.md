@@ -54,7 +54,7 @@ We have made a promise to
 - make it **easy to use**
 - do it **quickly to develop**
 
-### Advantages
+### Why use Ampalibe ? 
 
 - **No need to manage weebhooks and data:** `messages are received directly in a main function`
 ```python
@@ -111,7 +111,6 @@ def main(sender_id, cmd, **extends):
 def get_mail(sender_id, mail, **extends):
     # save the mail in temporary data
     query.set_temp(sender_id, 'mail', mail)
-    chat.send_message(sender_id, f'This is your mail: {mail}')
 
     chat.send_message(sender_id, f'Enter your password')
     query.set_action(sender_id, '/get_password')
@@ -126,7 +125,9 @@ def get_password(sender_id, password, **extends):
     query.del_temp(sender_id, 'mail')  # delete temporary data
 ```
 
-- **Manage Payload of quick_reply or result:** `send data with Payload object and get it in destination function's parameter`
+----------------------------------------------------------------------------
+
+- **Manage Payload:** `send data with Payload object and get it in destination function's parameter`
 ```python
 import ampalibe
 from ampalibe import Payload
@@ -155,9 +156,46 @@ def main(sender_id, cmd, **extends):
 
 @ampalibe.command('/membre')
 def get_membre(sender_id, cmd, name, **extends):
+    chat.send_message(sender_id, "Hello " + name)
+
+    # if the arg is not defined in the list of parameters,
+    # it is put in the extends variable
     if extends.get('ref'):
         chat.send_message(sender_id, 'your ref is ' + extends.get('ref'))
-    else:
-        chat.send_message(sender_id, "Hello " + nom)
+
+```
+--------------------------------------------------------------------------
+- **No need to manage the length of the items to send:** `A next page button will be displayed directly`
+```python
+import ampalibe
+from ampalibe import Payload
+from conf import Configuration
+
+bot = ampalibe.init(Configuration())
+chat = bot.chat
+
+@ampalibe.command('/')
+def main(sender_id, cmd, **extends):
+    list_items = [
+        {
+            "title": f"item n°{i+1}",
+            "image_url": "https://i.imgflip.com/6b45bi.jpg",
+            "buttons": [
+                {
+                    "type": "postback",
+                    "title": "Get item",
+                    "payload": Payload("/item", id_item=i+1)
+                }
+            ]
+        }
+        for i in range(30)
+    ]
+    # next=True for displaying directly next page button.
+    chat.send_template(sender_id, list_items, next=True)
+
+@ampalibe.command('/item')
+def get_item(sender_id, id_item):
+    chat.send_message(sender_id, f"item n°{id_item} selected")
+
 ```
 

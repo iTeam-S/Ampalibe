@@ -89,8 +89,16 @@ In the project folder, type
 
 .. code-block:: console
 
-   $ ampalibe run 
+   $ ampalibe run
 
+::
 
+   INFO:     Started server process [26753]
+   INFO:     Waiting for application startup.
+   INFO:     Application startup complete.
+   INFO:     Uvicorn running on http://0.0.0.0:4555 (Press CTRL+C to quit)
 
+.. note::
+
+   Ampalibe use uvicorn to run server, so it is an output of uvicorn
 

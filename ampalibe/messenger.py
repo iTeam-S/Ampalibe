@@ -3,27 +3,46 @@ import os
 import json
 import pickle
 import requests
-from retry import retry
 import requests_toolbelt
+from sys import stderr
+from retry import retry
 from .utils import Payload
 
-class Analyse:
-    def __init__(self, res) -> None:
-        if res.status_code != 200:
-            print(res.status_code, res.text)
 
 
 class Messenger:
-    def __init__(self, access_token):
+    def __init__(self, access_token, log_level='error'):
         """
         Here, We need the <access token> of the facebook page we want
         to apply the bot for the purpose of page and bot interaction
         
         Args:
             access_token (str): A facebook page access token
+            log_level (error, info, quiet): A type of display log
+                error: print only error
+                info: print access log and error log
+                quiet: do not print anything
         """
-        self.token = access_token
+        self.access_token = access_token
         self.url = "https://graph.facebook.com/v13.0/me"
+
+        if log_level not in ('error', 'info', 'quiet'):
+            raise Exception(ValueError, "log_level must be error or info or quiet")
+
+
+    def __analyse(self, res, log_level='error'):
+        if log_level == 'info':
+            print(res.status_code, res.text)
+        elif res.status_code != 200 and log_level == 'error':
+            print(res.status_code, res.text, file=stderr)
+        return res
+
+
+    @property
+    def token(self):
+        if self.access_token.strip() == '':
+            print('Warning! EMPTY PAGE ACCESS TOKEN', file=stderr)
+        return self.access_token
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -66,8 +85,7 @@ class Messenger:
             params=params
         )
         self.send_action(dest_id, 'typing_off')
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -104,8 +122,7 @@ class Messenger:
             headers=header,
             params=params
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -153,13 +170,12 @@ class Messenger:
             headers=header,
             params=params
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
 
     def send_result(self, dest_id, elements, quick_rep=None, next=False):
-        print("Depreceted: Use send_template instead!")
-        self.send_template(dest_id, elements, quick_rep=quick_rep, next=next)
+        print("Deprecated: Use send_template instead!")
+        return self.send_template(dest_id, elements, quick_rep=quick_rep, next=next)
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -238,8 +254,7 @@ class Messenger:
             self.url + '/messages', json=dataJSON,
             headers=header, params=params
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -285,8 +300,7 @@ class Messenger:
             headers=header,
             params=params
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
     
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -325,8 +339,7 @@ class Messenger:
                 self.url + '/custom_user_settings',
                 json=dataJSON, headers=header, params=params
             )
-            Analyse(res)
-            return res
+            return self.__analyse(res)
 
         elif action == "DELETE":
             params['params'] = "(persistent_menu)"
@@ -336,8 +349,7 @@ class Messenger:
                 self.url + '/custom_user_settings',
                 headers=header, params=params
             )
-            Analyse(res)
-            return res
+            return self.__analyse(res)
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -394,8 +406,7 @@ class Messenger:
             self.url + '/messages',
             params=params, headers=header, data=multipart_data
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
     
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -449,8 +460,7 @@ class Messenger:
             headers=header,
             params=params
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def get_started(self, payload='/') :
@@ -480,8 +490,7 @@ class Messenger:
             headers=header,
             params=params
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -530,5 +539,4 @@ class Messenger:
             headers=header,
             params=params
         )
-        Analyse(res)
-        return res
+        return self.__analyse(res)

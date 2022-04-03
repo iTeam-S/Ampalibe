@@ -7,11 +7,18 @@ It provides a new concept for creating bots, it manages webhook sides, processes
 </p>
 
 
-[![Documentation status](https://readthedocs.org/projects/ampalibe/badge/?version=latest)](https://ampalibe.readthedocs.io)
-[![Repository size](https://img.shields.io/github/repo-size/iTeam-S/ampalibe.svg)](https://github.com/iTeam-S/ampalibe)
+[![PyPI - Version](https://img.shields.io/pypi/v/ampalibe?style=for-the-badge)](https://pypi.org/project/ampalibe/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/ampalibe?label=DOWNLOADS&style=for-the-badge)](https://pypi.org/project/ampalibe/)
 
 
 ## Installation
+
+```s
+pip install ampalibe
+```
+
+OR you can install dev version
+
 
 ```s
 pip install https://github.com/iTeam-S/Ampalibe/archive/refs/heads/main.zip

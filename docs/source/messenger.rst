@@ -28,7 +28,7 @@ Note that the number of characters to send is limited to 2000 characters
 
 .. code-block:: python
 
-    chat.send_message('1444555414', "Hello world")
+    chat.send_message(sender_id, "Hello world")
 
 
 send_action
@@ -51,7 +51,7 @@ Action available: ['mark_seen', 'typing_on', 'typing_off']
 
 .. code-block:: python
 
-    chat.send_action('1444555414', "mark_seen")
+    chat.send_action(sender_id, "mark_seen")
 
 
 send_quick_reply
@@ -96,7 +96,7 @@ to request a person's location, email address, and phone number.
         }
     ]
 
-    chat.send_quick_reply('1444555414', quick_rep, 'who do you choose ?')
+    chat.send_quick_reply(sender_id, quick_rep, 'who do you choose ?')
 
 
 send_template
@@ -260,7 +260,7 @@ This model does not allow any external URLs, only those on Facebook.
 
 .. code-block:: python
 
-    chat.send_media('1444555414', "https://www.facebook.com/iTeam.Community/videos/476926027465187", 'video')
+    chat.send_media(sender_id, "https://www.facebook.com/iTeam.Community/videos/476926027465187", 'video')
 
 
 send_button
@@ -292,7 +292,7 @@ such as predefined answers to questions or actions to take.
             "payload": '/contact'
         }
     ]
-    chat.send_button('1444555414', buttons)
+    chat.send_button(sender_id, buttons, "What do you want to do?")
 
 
 get_started

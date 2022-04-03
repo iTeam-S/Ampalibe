@@ -68,7 +68,7 @@ If no corresponding command is found, it launches the main function
         in cmd value, /eat is removed
     '''
     @ampalibe.command('/eat')
-    def spec(sender_id, cmd, **extends)
+    def spec(sender_id, cmd, **extends):
         print(sender_id)  # 1555554455
         print(cmd)  # '1 jackfruit'
 
@@ -77,7 +77,7 @@ If no corresponding command is found, it launches the main function
        ex: /drink_a_jackfruit_juice
     '''
     @ampalibe.command('/drink_a_jackfruit_juice')
-    def spec(sender_id, cmd, **extends)
+    def spec(sender_id, cmd, **extends):
         print(sender_id)  # 1555554455
         print(cmd)  #  a empty value cause the key is removed
 
@@ -270,12 +270,12 @@ for files you use as a URL file, you must put assets/public, in assets/private o
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
-    '''
-        to get a file in assets/public folder, 
-        the route is <adresse>/asset/<file>
-    '''
+        '''
+            to get a file in assets/public folder, 
+            the route is <adresse>/asset/<file>
+        '''
         chat.send_file_url(
             sender_id,
-            Configuration.APP_URL + '/asset/iTeamS.png'  
+            Configuration.APP_URL + '/asset/iTeamS.png', 
             filetype='image'
         )

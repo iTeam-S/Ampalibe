@@ -429,7 +429,6 @@ class Messenger:
             Ref:
                 https://developers.facebook.com/docs/messenger-platform/send-messages/template/media
         """
-        self.send_action(dest_id, 'typing_on')
         dataJSON = {
             "recipient":{
                 "id": dest_id
@@ -452,7 +451,6 @@ class Messenger:
 
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
-        self.send_action(dest_id, 'typing_off')
 
         res = requests.post(
             'https://graph.facebook.com/v6.0/me/messages',

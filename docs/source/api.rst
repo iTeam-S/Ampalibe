@@ -6,6 +6,4 @@ API
 
    ampalibe.command
    ampalibe.action
-   ampalibe.Model
-   ampalibe.messenger.Messenger
    ampalibe.Payload

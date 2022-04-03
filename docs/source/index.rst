@@ -18,5 +18,7 @@ Contents
 .. toctree::
 
    usage
+   quickstart
+   messenger
    api
 

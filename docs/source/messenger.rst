@@ -3,6 +3,12 @@ Messenger API
 
 list of methods for sending messages to messenger
 
+.. note::
+
+   All returns of these functions are a POST Requests <Response>
+
+
+
 send_message
 ____________
 

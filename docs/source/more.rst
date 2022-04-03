@@ -15,7 +15,7 @@ Messenger API methods response is a request <Response> so we can use it to view 
     if res.status_code == 200:
         print("OK! NO problem") 
     else:
-        prin('KO') 
+        print('KO') 
         print(res.text, res.status_code)
 
 

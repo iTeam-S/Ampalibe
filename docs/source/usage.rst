@@ -26,7 +26,7 @@ There will be a created directory named **myfirstbot/** and all the files contai
 
 .. note::
 
-   You can directly create projet without a new directory with **init** command
+   You can directly create project without a new directory with **init** command
 
 .. code-block:: console
 

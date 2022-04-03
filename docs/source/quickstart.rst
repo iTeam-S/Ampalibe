@@ -248,3 +248,34 @@ You can send data with ``Payload`` object and get it in destination function's p
             chat.send_message(sender_id, 'your ref is ' + extends.get('ref'))
 
 
+File management
+----------------
+
+We recommand to make static file in assets folder, 
+
+for files you use as a URL file, you must put assets/public, in assets/private otherwise
+
+.. code-block:: python
+
+    '''
+    Suppose that a logo file is in "assets/public/iTeamS.png" and that we must send it via url
+    '''
+
+    import ampalibe
+    from conf import Configuration
+
+    bot = ampalibe.init(Configuration())
+    chat = bot.chat
+
+
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **extends):
+    '''
+        to get a file in assets/public folder, 
+        the route is <adresse>/asset/<file>
+    '''
+        chat.send_file_url(
+            sender_id,
+            Configuration.APP_URL + '/asset/iTeamS.png'  
+            filetype='image'
+        )

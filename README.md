@@ -41,7 +41,7 @@ ampalibe run
 
 ## Documentation
 
-- [Ampalibe Readthedocs](https://ampalibe.readthedocs.io/) (Not yet ready)
+- [Ampalibe Readthedocs](https://ampalibe.readthedocs.io/)
 
 
 ## About 
@@ -54,7 +54,7 @@ We have made a promise to
 - make it **easy to use**
 - do it **quickly to develop**
 
-### Why use Ampalibe ? 
+## Why use Ampalibe ? 
 
 - **No need to manage weebhooks and data:** `messages are received directly in a main function`
 ```python
@@ -87,9 +87,9 @@ def main(sender_id, cmd, **extends):
     query.set_action(sender_id, '/get_name')
     
 @ampalibe.action('/get_name')
-def get_mail(sender_id, name, **extends):
+def get_name(sender_id, cmd, **extends):
     query.set_action(sender_id, None)  #  clear current action
-    chat.send_message(sender_id, f'Bonjour {name}')
+    chat.send_message(sender_id, f'Hello {cmd}')
 ```
 ----------------------------------------------------
 
@@ -108,20 +108,20 @@ def main(sender_id, cmd, **extends):
     query.set_action(sender_id, '/get_mail')
     
 @ampalibe.action('/get_mail')
-def get_mail(sender_id, mail, **extends):
+def get_mail(sender_id, cmd, **extends):
     # save the mail in temporary data
-    query.set_temp(sender_id, 'mail', mail)
+    query.set_temp(sender_id, 'mail', cmd)
 
     chat.send_message(sender_id, f'Enter your password')
     query.set_action(sender_id, '/get_password')
 
 
 @ampalibe.action('/get_password')
-def get_password(sender_id, password, **extends):
+def get_password(sender_id, cmd, **extends):
     query.set_action(sender_id, None)  # clear current action
     mail = query.get_temp(sender_id, 'mail')  # get mail in temporary data
 
-    chat.send_message(sender_id, f'your mail and your password are {mail} {password}')
+    chat.send_message(sender_id, f'your mail and your password are {mail} {cmd}')
     query.del_temp(sender_id, 'mail')  # delete temporary data
 ```
 

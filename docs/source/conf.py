@@ -21,6 +21,7 @@ html_logo = "_static/ampalibe_logo.png"
 html_favicon = "_static/LOGO.png"
 html_theme_options = {
     'display_version': False,
+    'style_nav_header_background' : '#106262'
 }
 # -- General configuration
 

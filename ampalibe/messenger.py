@@ -134,7 +134,7 @@ class Messenger:
             to request a person's location, email address, and phone number.
 
             Args:
-                dest_id (str): user id facebook for the destoination
+                dest_id (str): user id facebook for the destination
                 quick_rep (list of dict): list of the different quick_reply to send a user
                 text (str): A text of a little description for each <quick_reply>
 
@@ -353,7 +353,7 @@ class Messenger:
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file(self, dest_id, file, filetype="file", filename_=None):
+    def send_file(self, dest_id, file, filetype="file", filename=None):
         """
             this method send an attachment from file
 
@@ -361,7 +361,7 @@ class Messenger:
                 destId (str): user id facebook for the destination
                 file (str): name of the file in local folder 
                 filetype (str, optional): type of the file["video","image",...]. Defaults to "file".
-                filename_ (str, optional): A filename received for de destination . Defaults to None.
+                filename (str, optional): A filename received for de destination . Defaults to None.
 
             Returns:
                 Response: POST request to the facebook API to send a file to the user
@@ -369,8 +369,8 @@ class Messenger:
             Ref:
                 https://developers.facebook.com/docs/messenger-platform/send-messages#file
         """
-        if filename_ is None:
-            filename_ = file
+        if filename is None:
+            filename = file
         params = {
             "access_token": self.token
         }
@@ -388,7 +388,7 @@ class Messenger:
             }),
 
             'filedata': (
-                os.path.basename(filename_),
+                os.path.basename(filename),
                 open(f'data/{dest_id}/{file}', 'rb'),
                 f"{filetype}/{file.split('.')[-1]}"
             )
@@ -410,7 +410,7 @@ class Messenger:
 
     
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_media(self,dest_id,fb_url,media_types):
+    def send_media(self, dest_id, fb_url, media_type):
         """
             Method that sends files media as image and video via facebook link.
             This model does not allow any external URLs, only those on Facebook.
@@ -421,7 +421,7 @@ class Messenger:
                     for this: To get the Facebook URL of an image or video, follow these steps:
                         -Click on the image or video thumbnail to open the full-size view
                         -Copy the URL address from your browser's address bar.
-                media_types (str): the type of the media who to want send, available["image","video"]
+                media_type (str): the type of the media who to want send, available["image","video"]
 
             Returns:
                 Response: POST request to the facebook API to send a media file using url facebook
@@ -441,7 +441,7 @@ class Messenger:
                         "template_type": "media",
                         "elements": [
                             {
-                            "media_type": media_types,
+                            "media_type": media_type,
                             "url": fb_url
                             }
                         ]

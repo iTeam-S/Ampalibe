@@ -2,7 +2,7 @@
 
 which python3 > /dev/null
 if [ ! $? -eq 0 ]; then
-    echo -e "~\033[31m Wait, what? no python in path !! \033[0m\nTest python3"
+    echo -e "~\033[31m Wait, what? no python3 in path !! \033[0m\nTest python"
     which python > /dev/null
     if [ ! $? -eq 0 ]; then
         echo -e "~\033[31m Oh, Give up !! \033[0m\nNo python/python3 in path"

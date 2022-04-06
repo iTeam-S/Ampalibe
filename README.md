@@ -77,8 +77,8 @@ chat = bot.chat
 @ampalibe.command('/')
 def main(sender_id, cmd, **extends):
     chat.send_message(sender_id, 'Hello world')
-    chat.send_message(senser_id, f'This is your message: {cmd}')
-    chat.send_message(senser_id, f'and this is your facebook id: {sender_id}')
+    chat.send_message(sender_id, f'This is your message: {cmd}')
+    chat.send_message(sender_id, f'and this is your facebook id: {sender_id}')
 ```
 ----------------------------------------------------
 

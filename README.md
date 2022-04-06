@@ -176,36 +176,37 @@ def get_membre(sender_id, cmd, name, **extends):
 ```
 --------------------------------------------------------------------------
 - **No need to manage the length of the items to send:** `A next page button will be displayed directly`
-```python
-import ampalibe
-from ampalibe import Payload
-from conf import Configuration
 
-bot = ampalibe.init(Configuration())
-chat = bot.chat
+.. code-block:: python
 
-@ampalibe.command('/')
-def main(sender_id, cmd, **extends):
-    list_items = [
-        {
-            "title": f"item n°{i+1}",
-            "image_url": "https://i.imgflip.com/6b45bi.jpg",
-            "buttons": [
-                {
-                    "type": "postback",
-                    "title": "Get item",
-                    "payload": Payload("/item", id_item=i+1)
-                }
-            ]
-        }
-        for i in range(30)
-    ]
-    # next=True for displaying directly next page button.
-    chat.send_template(sender_id, list_items, next=True)
+   import ampalibe
+   from ampalibe import Payload
+   from conf import Configuration
 
-@ampalibe.command('/item')
-def get_item(sender_id, id_item):
-    chat.send_message(sender_id, f"item n°{id_item} selected")
+   bot = ampalibe.init(Configuration())
+   chat = bot.chat
 
-```
+   @ampalibe.command('/')
+   def main(sender_id, cmd, **extends):
+       list_items = [
+           {
+               "title": f"item n°{i+1}",
+               "image_url": "https://i.imgflip.com/6b45bi.jpg",
+               "buttons": [
+                   {
+                       "type": "postback",
+                       "title": "Get item",
+                       "payload": Payload("/item", id_item=i+1)
+                   }
+               ]
+           }
+           for i in range(30)
+       ]
+       # next=True for displaying directly next page button.
+       chat.send_template(sender_id, list_items, next=True)
+
+   @ampalibe.command('/item')
+   def get_item(sender_id, id_item, **extends):
+       chat.send_message(sender_id, f"item n°{id_item} selected")
+
 

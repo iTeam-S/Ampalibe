@@ -53,7 +53,7 @@ class Server:
     async def main(request: Request):
         data = await request.json()
         sender_id, payload, message = analyse(data)
-        _req.verif_user(sender_id)
+        _req._verif_user(sender_id)
         action = _req.get_action(sender_id)
 
         if payload == '/__next':

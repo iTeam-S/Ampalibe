@@ -90,7 +90,6 @@ Each developer is **free to choose the structure he wants**, by just importing t
 
 We can make our functions everywhere, even as methods
 
-
 ``core.py`` file 
 
 .. code-block:: python
@@ -144,4 +143,39 @@ We can make our functions everywhere, even as methods
         def username(sender_id, cmd, **extends):
             bot.chat.send_message(sender_id, 'OK ' + cmd)
             bot.query.set_action(sender_id, None)
+
+
+.. note:: 
+
+    if you want use a MVC Pattern
+    
+    here is an example of an MVC template that can be used: `Ampalibe MVC Template <https://github.com/gaetan1903/Ampalibe_MVC_Template>`_
+
+
+Custom endpoint
+=================
+
+The web server part and the endpoints are managed directly by Ampalibe
+
+However, a custom end point can be created using the `FastAPI <https://fastapi.tiangolo.com/tutorial/first-steps/>`_ object instance
+
+
+.. code-block:: python
+
+    import ampalibe
+    from ampalibe import webserver
+    from conf import Configuration
+
+    bot = ampalibe.init(Configuration())
+
+
+    @webserver.get('/test')
+    def test():
+        return 'Hello, test'
+
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **extends):
+        bot.chat.send_message(sender_id, "Hello, Ampalibe")
+
+    
 

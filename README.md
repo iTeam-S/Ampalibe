@@ -29,6 +29,9 @@ pip install https://github.com/iTeam-S/Ampalibe/archive/refs/heads/main.zip
 
 
 ## Usage
+
+> command-line __ampalibe__ is __ampalibe.bat__ for _Windows_
+
 ```s
 ampalibe create myproject
 ```

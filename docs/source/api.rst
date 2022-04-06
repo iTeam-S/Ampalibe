@@ -7,3 +7,4 @@ API
    ampalibe.command
    ampalibe.action
    ampalibe.Payload
+   ampalibe.Model

@@ -3,6 +3,9 @@ import sqlite3
 import mysql.connector
 
 class Model:
+    '''
+        Object for interact with database with pre-defined function
+    '''
     def __init__(self, conf):
         '''
             object to interact with database
@@ -87,7 +90,7 @@ class Model:
         return trt_verif
 
     @verif_db
-    def verif_user(self, user_id):
+    def _verif_user(self, user_id):
         '''
             method to insert new user and/or update the date 
             of last use if the user already exists.

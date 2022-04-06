@@ -1,9 +1,8 @@
-Quickstart
-==========
-
+Usage
+=========
 
 A Minimal Application
----------------------
+-----------------------
 
 A minimal Ampalibe application looks something like this:
 
@@ -41,7 +40,7 @@ So what did that code do?
 
 
 Command
-------------------
+---------
 
 Ampalibe's philosophy says that all received messages, whether it is a simple or payload message, or an image, is considered to be commands
 
@@ -86,7 +85,7 @@ If no corresponding command is found, it launches the main function
    When we create a function decorated by ampalibe.command, ``**extends`` parameter must be present
 
 Action
-------------------
+----------
 
 At some point, we will need to point the user to a specific function, to retrieve user-specific data, for example, ask for his email, ask for the word the person wants to search for.
 
@@ -157,7 +156,7 @@ We define the next function in which the user message entered and can obtain all
 
 
 Temporary data
--------------------
+-----------------
 
 For each processing of each message, we will need to store information temporarily,
 like saving the login while waiting to ask for the password
@@ -198,7 +197,7 @@ the methods used are **set_temp**, **get_temp**, **del_temp**
 
 
 Payload Management
--------------------
+----------------------
 
 Ampalibe facilitates the management of payloads with the possibility of sending arguments.
 
@@ -249,7 +248,7 @@ You can send data with ``Payload`` object and get it in destination function's p
 
 
 File management
-----------------
+-------------------
 
 We recommand to make static file in assets folder, 
 

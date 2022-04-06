@@ -1,4 +1,3 @@
-import sys
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -6,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampalibe",                  # This is the name of the package
-    version="1.0.1",                      # The initial release version
+    version="1.0.2",                      # The initial release version
     author="iTeam-$",                         # Full name of the author
     description="Ampalibe is a light open source framework.",
     long_description=long_description,  # Long description read from the readme
@@ -28,5 +27,5 @@ setuptools.setup(
         "retry", "requests_toolbelt", "requests"
     ],  # depandance
     include_package_data=True, # Include all data file with the package
-    scripts=['bin/ampalibe' if sys.platform != 'win32' else 'bin/ampalibe.bat']
+    scripts=['bin/ampalibe', 'bin/ampalibe.bat']
 )

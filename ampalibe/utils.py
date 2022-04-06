@@ -5,7 +5,13 @@ funcs = {'commande': {}, 'action': {}}
 
 
 class Payload:
+    '''
+        Object for Payload Management
+    '''
     def __init__(self, payload, **kwargs) -> None:
+        '''
+            Object for Payload Management
+        '''
         self.payload = payload
         self.data = kwargs
 

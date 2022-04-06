@@ -1,5 +1,5 @@
-Usage
-=====
+Get Started
+============
 
 .. _installation:
 
@@ -17,6 +17,11 @@ Creation of a new project
 
 After installation, an ``ampalibe`` executable is available in your system path, 
 and we will create our project with this command.
+
+.. important::
+
+   command-line ``ampalibe`` is ``ampalibe.bat`` for **Windows**
+
 
 .. code-block:: console
 

@@ -1,3 +1,4 @@
+import requests
 import urllib.parse
 
 
@@ -102,3 +103,19 @@ def action(*args, **kwargs):
     def call_fn(function):
         funcs['action'][args[0]] = function
     return call_fn
+
+
+def download_file(url, file):
+    '''
+        Downloading a file from an url.
+        
+        Args:
+            @url: direct link for the attachment
+            @file: filename with path
+    '''
+    res = requests.get(url, allow_redirects=True)
+
+    with open(file, 'wb') as file:
+        file.write(res.content)
+
+    return file

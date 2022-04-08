@@ -115,7 +115,7 @@ def download_file(url, file):
     '''
     res = requests.get(url, allow_redirects=True)
 
-    with open(file, 'wb') as file:
-        file.write(res.content)
+    with open(file, 'wb') as f:
+        f.write(res.content)
 
     return file

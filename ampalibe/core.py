@@ -1,4 +1,5 @@
 import os
+import sys
 import pickle
 import uvicorn
 from .requete import Model
@@ -72,6 +73,11 @@ class Server:
                 kwargs={'sender_id': sender_id, 'cmd': payload, 'message': message}
             ).start()
         else:
+            if action:
+                print(
+                    f'Warning! action: {action} Not found',
+                    file=sys.stderr
+                )
             payload, kw = Payload.trt_payload_in(payload)
             kw['sender_id'] = sender_id
             kw['cmd'] = payload

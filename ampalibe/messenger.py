@@ -1,4 +1,3 @@
-import imp
 import os
 import json
 import pickle
@@ -211,7 +210,8 @@ class Messenger:
         
         for i in range(len(elements)):
             for j in range(len(elements[i]['buttons'])):
-                elements[i]['buttons'][j]['payload'] = Payload.trt_payload_out(elements[i]['buttons'][j]['payload'])
+                if elements[i]['buttons'][j].get('payload'):
+                    elements[i]['buttons'][j]['payload'] = Payload.trt_payload_out(elements[i]['buttons'][j]['payload'])
 
         dataJSON = {
             'messaging_type': "RESPONSE",

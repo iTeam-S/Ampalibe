@@ -1,11 +1,12 @@
 import setuptools
+import ampalibe
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="ampalibe",                  # This is the name of the package
-    version="1.0.2",                      # The initial release version
+    version=ampalibe.__version__,                      # The initial release version
     author="iTeam-$",                         # Full name of the author
     description="Ampalibe is a light open source framework.",
     long_description=long_description,  # Long description read from the readme

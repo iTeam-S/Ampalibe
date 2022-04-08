@@ -1,6 +1,5 @@
 import json
-import sqlite3
-import mysql.connector
+
 
 class Model:
     '''
@@ -33,9 +32,13 @@ class Model:
         The function which connect object to the database.
         """
         if self.ADAPTER == 'MYSQL':
+            import mysql.connector
+
             self.db = mysql.connector.connect(**self.DB_CONF)
             self.cursor = self.db.cursor()
         else:
+            import sqlite3
+
             self.db = sqlite3.connect(self.DB_CONF)
             self.cursor = self.db.cursor()
 

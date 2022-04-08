@@ -32,4 +32,4 @@ def simulate(mes, user):
     )
 
 
-print(simulate("/users", "155454").text)
+print(simulate("/traduire", "155454").text)

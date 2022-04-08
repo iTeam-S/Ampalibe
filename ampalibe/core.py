@@ -61,7 +61,7 @@ class Server:
             bot = Messenger(conf.ACCESS_TOKEN)
             if os.path.isfile(f'assets/private/.__{sender_id}'):
                 elements = pickle.load(open(f'assets/private/.__{sender_id}', 'rb'))
-                bot.send_result(sender_id, elements, next=True)
+                bot.send_template(sender_id, elements, next=True)
                 return {'status': 'ok'}
 
         if os.path.isfile(f'assets/private/.__{sender_id}'):

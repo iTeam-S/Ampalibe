@@ -17,6 +17,11 @@ fi
 if [ "$1" == "version" ]; then
     echo `$python -c "import ampalibe;print(ampalibe.__version__)"`
 
+elif [ "$1" == "env" ]; then
+    echo ""
+    `$python -c "import ampalibe.source;print(ampalibe.source.env)" > .env`;
+    echo -e "~\033[32m 👌 \033[0m | Env file created";
+
 elif [ "$1" == "create" ]; then
     if [ $# -eq 2 ]; then
         if [ -d "$2" ]; then

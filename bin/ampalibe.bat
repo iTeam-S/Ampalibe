@@ -1,5 +1,9 @@
 @ echo off
 
+IF /I "%1" == "env" (
+    python -c "import ampalibe.source;print(ampalibe.source.env_cmd)" > .env.bat
+)
+
 IF /I "%1" == "create" (
     md %2
     python -c "print('.env\n.env.bat\n__pycache__/\nngrok\nngrok.exe')" >> %2\.gitignore

@@ -5,4 +5,3 @@ from .utils import action, command, Payload
 
 __version__ = '1.0.3-dev'
 __author__ = 'iTeam-$'
-__contributors__ = ['@gaetan193', '@rivo2302', '@rootkit7628', '@SergioDev22']

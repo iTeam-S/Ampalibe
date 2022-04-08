@@ -50,6 +50,9 @@ ampalibe run
 
 - [Ampalibe Readthedocs](https://ampalibe.readthedocs.io/)
 
+#### Other resource
+
+- Videos available soon
 
 ## About 
 
@@ -206,3 +209,8 @@ def get_membre(sender_id, cmd, name, **extends):
      chat.send_message(sender_id, f"item n°{id_item} selected")
 
 ``` 
+
+
+## Contributors
+
+![Image des contributeurs GitHub](https://contrib.rocks/image?repo=iTeam-S/Ampalibe)

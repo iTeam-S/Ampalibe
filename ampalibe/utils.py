@@ -15,6 +15,9 @@ class Payload:
         self.payload = payload
         self.data = kwargs
 
+    def __str__(self):
+        return self.payload
+
     @staticmethod
     def trt_payload_in(payload):
         """
@@ -24,7 +27,7 @@ class Payload:
         @return: payload [String] , structured parameters Dict
         """
 
-        payload = urllib.parse.unquote(payload)
+        payload = urllib.parse.unquote(str(payload))
 
         res = {}
         while '{{' in payload:

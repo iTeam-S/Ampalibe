@@ -18,7 +18,10 @@ if [ "$1" == "version" ]; then
     echo `$python -c "import ampalibe;print(ampalibe.__version__)"`
 
 elif [ "$1" == "env" ]; then
-    echo ""
+    if ! [ -f "core.py" ]; then
+        >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
+        exit 1
+    fi
     `$python -c "import ampalibe.source;print(ampalibe.source.env)" > .env`;
     echo -e "~\033[32m 👌 \033[0m | Env file created";
 

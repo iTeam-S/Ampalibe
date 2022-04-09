@@ -208,7 +208,7 @@ class Messenger:
                 https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic
         """
         
-        for i in range(len(elements)):
+        for i in range(10):
             for j in range(len(elements[i]['buttons'])):
                 if elements[i]['buttons'][j].get('payload'):
                     elements[i]['buttons'][j]['payload'] = Payload.trt_payload_out(elements[i]['buttons'][j]['payload'])

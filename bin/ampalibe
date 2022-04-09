@@ -66,35 +66,37 @@ elif [ "$1" == "init" ]; then
         
     fi
 elif [ "$1" == "run" ]; then
-    if [ $# -eq 1 ]; then
-        if ! [ -f "core.py" ]; then
-            >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
-            exit 1
-        fi
-        source .env;
-            echo -e """\033[36m
-                                                         0o
-                                                          Oo
-                                                         coooool
-                                                        looooooool
-                                                       loooooooooool
-     _    __  __ ____   _    _     ___ ____  _____     looooooooooool
-    / \  |  \/  |  _ \ / \  | |   |_ _| __ )| ____|    looooooooooool
-   / _ \ | |\/| | |_) / _ \ | |    | ||  _ \|  _|       loooooooooool
-  / ___ \| |  | |  __/ ___ \| |___ | || |_) | |___        looooooool
- /_/   \_\_|  |_|_| /_/   \_\_____|___|____/|_____|         oooooo \033[0m
- 
- """
-            echo -e "~\033[32m 👌\033[0m | Env Loaded";
-            echo -e "~\033[32m 👌\033[0m | Ampalibe running...";
-        if [ $python = "python3" ]; then
-            python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
-        else
-            python -c 'import core;core.ampalibe.init.run(core.Configuration())'
-        fi
-    else
-        >&2 echo -e "~\033[31m ERROR 👌\033[0m | Incorrect number of args for run"
+    if ! [ -f "core.py" ]; then
+        >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
         exit 1
+    fi
+    source .env;
+        echo -e """\033[36m
+                                                        0o
+                                                        Oo
+                                                        coooool
+                                                    looooooool
+                                                    loooooooooool
+    _    __  __ ____   _    _     ___ ____  _____     looooooooooool
+/ \  |  \/  |  _ \ / \  | |   |_ _| __ )| ____|    looooooooooool
+/ _ \ | |\/| | |_) / _ \ | |    | ||  _ \|  _|       loooooooooool
+/ ___ \| |  | |  __/ ___ \| |___ | || |_) | |___        looooooool
+/_/   \_\_|  |_|_| /_/   \_\_____|___|____/|_____|         oooooo \033[0m
+
+"""
+        echo -e "~\033[32m 👌\033[0m | Env Loaded";
+        echo -e "~\033[32m 👌\033[0m | Ampalibe running...";
+
+    if [ "$2" = "--dev" ]; then
+        watchmedo auto-restart --patterns="*.py;.env;.env.bat" --recursive \
+            ampalibe run
+        exit
+    fi
+
+    if [ $python = "python3" ]; then
+        python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
+    else
+        python -c 'import core;core.ampalibe.init.run(core.Configuration())'
     fi
 else
     >&2 echo -e "~\033[31m ERROR !! \033[0m | Missing knowing argument"

@@ -4,3 +4,4 @@ uvicorn
 retry
 requests_toolbelt
 requests
+watchdog

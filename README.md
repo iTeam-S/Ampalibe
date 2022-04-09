@@ -52,7 +52,8 @@ ampalibe run
 
 #### Other resource
 
-- Videos available soon
+- [ [Youtube] Create a Facebook Bot Messenger with AMPALIBE Framework](https://www.youtube.com/watch?v=Sg2P9uFJEF4)
+- More Videos available soon
 
 ## About 
 

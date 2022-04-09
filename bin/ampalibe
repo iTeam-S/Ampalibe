@@ -96,6 +96,13 @@ elif [ "$1" == "run" ]; then
 
         exit
     fi
+
+    if [ $python = "python3" ]; then
+        python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
+    else
+        python -c 'import core;core.ampalibe.init.run(core.Configuration())'
+    fi
+
 else
     >&2 echo -e "~\033[31m ERROR !! \033[0m | Missing knowing argument"
     exit 1

@@ -88,15 +88,13 @@ elif [ "$1" == "run" ]; then
         echo -e "~\033[32m 👌\033[0m | Ampalibe running...";
 
     if [ "$2" = "--dev" ]; then
-        watchmedo auto-restart --patterns="*.py;.env;.env.bat" --recursive \
-            ampalibe run
-        exit
-    fi
+        if [ $python = "python3" ]; then
+            watchmedo auto-restart --patterns="*.py;.env;.env.bat" --recursive -- python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
+        else
+            watchmedo auto-restart --patterns="*.py;.env;.env.bat" --recursive -- python -c 'import core;core.ampalibe.init.run(core.Configuration())'
+        fi
 
-    if [ $python = "python3" ]; then
-        python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
-    else
-        python -c 'import core;core.ampalibe.init.run(core.Configuration())'
+        exit
     fi
 else
     >&2 echo -e "~\033[31m ERROR !! \033[0m | Missing knowing argument"

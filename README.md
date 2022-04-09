@@ -57,9 +57,9 @@ ampalibe run --dev
 
 #### Other resource
 
-- [ [Youtube] Create a Facebook Bot Messenger with AMPALIBE Framework (EN) ](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5FcKJpBTp0-_nDm0kIQ5sY)
-- [ [Youtube] Tutoriel Framework Ampalibe (FR)](https://www.youtube.com/watch?v=BgMZUQLbBb8&list=PLz95IHSyn29U4PA1bAUw3VT0VFFbq1LuP)
-- [ [Youtube] Ampalibe Framework Episode (Teny Vary Masaka) ](https://www.youtube.com/watch?v=JviUTIH0eSs&list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi)
+- [ [Youtube] Create a Facebook Bot Messenger with AMPALIBE Framework (EN) ](hhttps://www.youtube.com/playlist?list=PL0zWFyU4-Sk5FcKJpBTp0-_nDm0kIQ5sY)
+- [ [Youtube] Tutoriel Framework Ampalibe (FR)](https://www.youtube.com/playlist?list=PLz95IHSyn29U4PA1bAUw3VT0VFFbq1LuP)
+- [ [Youtube] Ampalibe Framework Episode (Teny Vary Masaka) ](https://www.youtube.com/playlist?list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi)
 
 ## About 
 

@@ -8,6 +8,8 @@ and offers a *simple* and *quick* functions to use it.
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
 
+you can also see video resource links `here <https://github.com/iTeam-S/Ampalibe#other-resource>`_
+
 .. note::
 
    This project is under active development.

@@ -15,7 +15,7 @@ It provides a new concept for creating bots, it manages webhook sides, processes
 ## Installation
 
 ```s
-pip install ampalibe
+pip install ampalibe==1.0.3
 ```
 
 OR you can install dev version
@@ -52,8 +52,9 @@ ampalibe run
 
 #### Other resource
 
-- [ [Youtube] Create a Facebook Bot Messenger with AMPALIBE Framework](https://www.youtube.com/watch?v=Sg2P9uFJEF4)
-- More Videos available soon
+- [ [Youtube] Create a Facebook Bot Messenger with AMPALIBE Framework (EN) ](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5FcKJpBTp0-_nDm0kIQ5sY)
+- [ [Youtube] Tutoriel Framework Ampalibe (FR)](https://www.youtube.com/watch?v=BgMZUQLbBb8&list=PLz95IHSyn29U4PA1bAUw3VT0VFFbq1LuP)
+- [ [Youtube] Ampalibe Framework Episode (Teny Vary Masaka) ](https://www.youtube.com/watch?v=JviUTIH0eSs&list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi)
 
 ## About 
 

@@ -46,6 +46,11 @@ to run project, just use
 ampalibe run
 ```
 
+for dev mode with __Hot Reload__
+```s
+ampalibe run --dev
+```
+
 ## Documentation
 
 - [Ampalibe Readthedocs](https://ampalibe.readthedocs.io/)

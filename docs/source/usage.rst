@@ -96,6 +96,13 @@ In the project folder, type
 
    $ ampalibe run
 
+
+for dev mode with **Hot Reload**
+
+.. code-block:: console
+
+   $ ampalibe run --dev
+
 ::
 
    INFO:     Started server process [26753]

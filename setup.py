@@ -8,7 +8,7 @@ setuptools.setup(
     name="ampalibe",                  # This is the name of the package
     version=ampalibe.__version__,                      # The initial release version
     author="iTeam-$",                         # Full name of the author
-    description="Ampalibe is a light open source framework.",
+    description="Ampalibe is a light open source framework for bot messenger.",
     long_description=long_description,  # Long description read from the readme
     long_description_content_type="text/markdown",
     packages=['ampalibe'],  # List of all modules to be installed

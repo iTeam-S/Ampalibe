@@ -87,6 +87,10 @@ def main(sender_id, cmd, **extends):
     chat.send_message(sender_id, f'This is your message: {cmd}')
     chat.send_message(sender_id, f'and this is your facebook id: {sender_id}')
 ```
+
+<img src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/1.gif"/>
+
+
 ----------------------------------------------------
 
 - **Manages the actions expected by the users:** `define the function of the next treatment`
@@ -108,6 +112,10 @@ def get_name(sender_id, cmd, **extends):
     query.set_action(sender_id, None)  #  clear current action
     chat.send_message(sender_id, f'Hello {cmd}')
 ```
+
+<img src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/2.gif"/>
+
+
 ----------------------------------------------------
 
 - **Manage temporary data:** `set, get, and delete`
@@ -141,6 +149,9 @@ def get_password(sender_id, cmd, **extends):
     chat.send_message(sender_id, f'your mail and your password are {mail} {cmd}')
     query.del_temp(sender_id, 'mail')  # delete temporary data
 ```
+
+<img src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/3.gif"/>
+
 
 ----------------------------------------------------------------------------
 
@@ -181,6 +192,10 @@ def get_membre(sender_id, cmd, name, **extends):
         chat.send_message(sender_id, 'your ref is ' + extends.get('ref'))
 
 ```
+
+<img src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/4.gif"/>
+
+
 --------------------------------------------------------------------------
 - **No need to manage the length of the items to send:** `A next page button will be displayed directly`
 
@@ -217,6 +232,10 @@ def get_membre(sender_id, cmd, name, **extends):
 
 ``` 
 
+<img src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/5.gif"/>
+
+
+----------------------------------------------------------------------------------
 
 ## Contributors
 

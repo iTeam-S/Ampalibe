@@ -73,7 +73,7 @@ We have made a promise to
 
 ## Why use Ampalibe ? 
 
-- **No need to manage weebhooks and data:** `messages are received directly in a main function`
+- **No need to manage webhooks and data:** `messages are received directly in a main function`
 ```python
 import ampalibe
 from conf import Configuration

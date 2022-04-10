@@ -19,6 +19,7 @@ Contents
 
 .. toctree::
 
+   intro
    usage
    quickstart
    messenger

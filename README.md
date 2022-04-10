@@ -15,7 +15,7 @@ It provides a new concept for creating bots, it manages webhook sides, processes
 ## Installation
 
 ```s
-pip install ampalibe==1.0.3.a
+pip install ampalibe==1.0.4.a
 ```
 
 OR you can install dev version

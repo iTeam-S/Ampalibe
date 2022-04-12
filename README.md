@@ -10,8 +10,8 @@
  </h4>
  
 <p>
-Ampalibe is a light Python framework for quickly creating bots Facebook Messenger. </br>
-It provides a new concept for creating bots, it manages webhook sides, processes data sent by facebook and provides api messengers with advanced functions ( payload management. items length, ...) .
+ <b>Ampalibe</b> is a light Python framework for quickly creating Facebook Messenger bots.
+It provides a new concept, it manages webhooks, processes data sent by Facebook and provides <a href="https://developers.facebook.com/docs/messenger-platform/">API Messenger</a> with advanced functions such as payload management, item length, and more.
 </p>
 
 <p>

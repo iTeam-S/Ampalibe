@@ -409,7 +409,7 @@ class Messenger:
 
             'filedata': (
                 os.path.basename(filename),
-                open(f'data/{dest_id}/{file}', 'rb'),
+                open(file, 'rb'),
                 f"{filetype}/{file.split('.')[-1]}"
             )
         }

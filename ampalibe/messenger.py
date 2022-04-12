@@ -125,7 +125,7 @@ class Messenger:
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_quick_reply(self, dest_id, quick_rep, text):
+    def send_quick_reply(self, dest_id, quick_rep, text, next=False):
         """
             Quick replies provide a way to present a set of up to 13 buttons 
             in-conversation that contain a title and optional image, and appear
@@ -136,6 +136,7 @@ class Messenger:
                 dest_id (str): user id facebook for the destination
                 quick_rep (list of dict): list of the different quick_reply to send a user
                 text (str): A text of a little description for each <quick_reply>
+                next(bool) : this params activate the next page when elements have a length more than ten
 
             Returns:
                 Response: POST request to the facebook API to send a quick_reply to the user
@@ -144,11 +145,11 @@ class Messenger:
                 https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
         """
 
-        for i in range(len(quick_rep)):
+        for i in range(len(quick_rep[:12])):
             if quick_rep[i].get('payload'):
                 quick_rep[i]['payload'] = Payload.trt_payload_out(quick_rep[i]['payload'])
 
-        data_json = {
+        dataJSON = {
             'messaging_type': "RESPONSE",
             'recipient': {
                 "id": dest_id
@@ -156,16 +157,35 @@ class Messenger:
 
             'message': {
                 'text': text,
-                'quick_replies': quick_rep[:13]
+                'quick_replies': quick_rep[:12]
             }
         }
+
+        if len(quick_rep)>13 and next:
+            dataJSON['message']['quick_replies'].append(
+                {
+                    "content_type": "text",
+                    "title": 'More',
+                    "payload": "/__more",
+                    "image_url":
+                        "https://icon-icons.com/downloadimage.php"
+                        + "?id=81300&root=1149/PNG/512/&file=" +
+                        "1486504364-chapter-controls-forward-play"
+                        + "-music-player-video-player-next_81300.png"
+                }
+            )
+            pickle.dump((quick_rep[13:], text), open(f'assets/private/.__{dest_id}', 'wb'))
+        else:
+            if len(quick_rep)>12:
+                quick_rep[12]['payload'] = Payload.trt_payload_out(quick_rep[12]['payload'])
+                dataJSON['message']['quick_replies'].append(quick_rep[12])
 
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
 
         res = requests.post(
             self.url + '/messages',
-            json=data_json,
+            json=dataJSON,
             headers=header,
             params=params
         )

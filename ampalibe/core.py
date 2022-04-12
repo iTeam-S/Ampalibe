@@ -57,11 +57,17 @@ class Server:
         _req._verif_user(sender_id)
         action = _req.get_action(sender_id)
 
-        if payload == '/__next':
+        if payload in ('/__next', '/__more'):
             bot = Messenger(conf.ACCESS_TOKEN)
             if os.path.isfile(f'assets/private/.__{sender_id}'):
                 elements = pickle.load(open(f'assets/private/.__{sender_id}', 'rb'))
-                bot.send_template(sender_id, elements, next=True)
+
+                print(elements)
+                if payload == '/__next':
+                    bot.send_template(sender_id, elements, next=True)
+                else:
+                    bot.send_quick_reply(sender_id, elements[0], elements[1], next=True)
+
                 return {'status': 'ok'}
 
         if os.path.isfile(f'assets/private/.__{sender_id}'):

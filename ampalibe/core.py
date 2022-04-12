@@ -62,7 +62,6 @@ class Server:
             if os.path.isfile(f'assets/private/.__{sender_id}'):
                 elements = pickle.load(open(f'assets/private/.__{sender_id}', 'rb'))
 
-                print(elements)
                 if payload == '/__next':
                     bot.send_template(sender_id, elements, next=True)
                 else:

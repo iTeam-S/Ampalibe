@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# utile pour l'output de l'erreur
+rouge='\e[0;31m'
+neutre='\e[0;m'
+vert='\e[0;32m'
+
+# fonction affichant un output d'aide au cas de mauvaise utilisation de la commande
+usage() { 
+    echo -e "\nUsage: ${vert}$0 {create,init,run,version,help} \n${neutre}" 1>&2;
+    echo -e "create ...: create a new project in a new directory specified\n" 1>&2;
+    echo -e "init: create a new project in current dir\n" 1>&2;
+    echo -e "version: show the current version\n" 1>&2;
+    echo -e "run [--dev]: run the server, autoreload if --dev is specified\n" 1>&2;
+    echo -e "help: show this current help\n" 1>&2;
+    exit 1;
+}
+
+
 which python3 > /dev/null
 if [ ! $? -eq 0 ]; then
     echo -e "~\033[31m Wait, what? no python3 in path !! \033[0m\nTest python"
@@ -46,6 +63,7 @@ elif [ "$1" == "create" ]; then
             echo -e "~\033[36m TIPS\033[0m |\033[36m cd $2 && ampalibe run\033[0m for lauching project."
     else
         echo -e "~\033[31m ERROR !!\033[0m | Incorrect number of args for create"
+        usage
         exit 1
     fi
 elif [ "$1" == "init" ]; then
@@ -105,5 +123,5 @@ elif [ "$1" == "run" ]; then
 
 else
     >&2 echo -e "~\033[31m ERROR !! \033[0m | Missing knowing argument"
-    exit 1
+    usage;
 fi

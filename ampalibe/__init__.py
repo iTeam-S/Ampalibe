@@ -1,5 +1,5 @@
 from .requete import Model
-from .messenger import Messenger
+from .messenger import Messenger, QuickReply
 from .core import webserver, Extra as init
 from .utils import action, command, download_file, Payload
 

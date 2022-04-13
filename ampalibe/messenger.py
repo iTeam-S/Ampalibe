@@ -27,7 +27,7 @@ class QuickReply:
         if self.content_type == 'text' and not self.title:
             raise ValueError("title must be present for text")
 
-        self.image_url = kwargs.get('content_type', 'text')
+        self.image_url = kwargs.get('content_type')
 
     @property
     def value(self):

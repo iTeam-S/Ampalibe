@@ -7,10 +7,11 @@ vert='\e[0;32m'
 
 # fonction affichant un output d'aide au cas de mauvaise utilisation de la commande
 usage() { 
-    echo -e "\nUsage: ${vert}$0 {create,init,run,version,help} \n${neutre}" 1>&2;
+    echo -e "\nUsage: ${vert}$0 {create,init,env,run,version,help} \n${neutre}" 1>&2;
     echo -e "create ...: create a new project in a new directory specified\n" 1>&2;
     echo -e "init: create a new project in current dir\n" 1>&2;
     echo -e "version: show the current version\n" 1>&2;
+    echo -e "env: generate only a .env file\n" 1>&2;
     echo -e "run [--dev]: run the server, autoreload if --dev is specified\n" 1>&2;
     echo -e "help: show this current help\n" 1>&2;
     exit 1;
@@ -107,9 +108,9 @@ elif [ "$1" == "run" ]; then
 
     if [ "$2" = "--dev" ]; then
         if [ $python = "python3" ]; then
-            watchmedo auto-restart --patterns="*.py;.env;.env.bat" --recursive -- python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
         else
-            watchmedo auto-restart --patterns="*.py;.env;.env.bat" --recursive -- python -c 'import core;core.ampalibe.init.run(core.Configuration())'
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python -c 'import core;core.ampalibe.init.run(core.Configuration())'
         fi
 
         exit

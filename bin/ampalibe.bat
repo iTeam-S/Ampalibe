@@ -24,7 +24,7 @@ IF /I "%1" == "init" (
 IF /I "%1" == "run" (
     call .env.bat
     IF /I "%2" == "--dev" (
-        watchmedo auto-restart --patterns="*.py;.env;.env.bat" --recursive -- python -c "import core;core.ampalibe.init.run(core.Configuration())"
+        watchmedo auto-restart --patterns="*.py;.env.bat" --recursive -- python -c "import core;core.ampalibe.init.run(core.Configuration())"
         exit
     )
     python -c "import core;core.ampalibe.init.run(core.Configuration())"

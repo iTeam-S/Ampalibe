@@ -189,6 +189,14 @@ def main(sender_id, cmd, **extends):
             "payload": Payload('/membre', name='Rivo')
         }
     ]
+    ##### FOR v1.0.5+ 
+    '''
+    from ampalibe import QuickReply
+    quick_rep = [
+        QuickReply(title='Angela', payload=Payload('/membre', name='Angela', ref='2016-sac')),
+        QuickReply(title='Rivo', payload=Payload('/membre', name='Rivo'))
+    ]   
+    '''
     chat.send_quick_reply(sender_id, quick_rep, 'Who?')
     
 

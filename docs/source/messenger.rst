@@ -98,6 +98,28 @@ to request a person's location, email address, and phone number.
 
     chat.send_quick_reply(sender_id, quick_rep, 'who do you choose ?')
 
+OR 
+
+.. code-block:: python
+    
+    from ampalibe import QuickReply
+    ... 
+
+    quick_rep = [
+        QuickReply(
+            title="Angela",
+            payload="/membre",
+            image_url="https://i.imgflip.com/6b45bi.jpg"
+        ),
+        QuickReply(
+            title="Rivo",
+            payload="/membre",
+            image_url="https://i.imgflip.com/6b45bi.jpg"
+        ),
+    ]
+
+    chat.send_quick_reply(sender_id, quick_rep, 'who do you choose ?')
+
 
 send_template
 _____________

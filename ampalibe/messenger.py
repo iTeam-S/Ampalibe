@@ -8,6 +8,43 @@ from retry import retry
 from .utils import Payload
 
 
+class QuickReply:
+
+    def __init__(self, **kwargs):
+        '''
+            Object that can be used to generated a quick_reply
+        '''
+        self.content_type = kwargs.get('content_type', 'text')
+        if self.content_type not in ('text', 'user_phone_number', 'user_email'):
+            raise ValueError("content_type can only be 'text', 'user_phone_number', 'user_email'")
+
+        self.title = kwargs.get('title')
+        self.payload = kwargs.get('payload')
+
+        if self.content_type == 'text' and not self.payload:
+            raise ValueError("payload must be present for text")
+
+        if self.content_type == 'text' and not self.title:
+            raise ValueError("title must be present for text")
+
+        self.image_url = kwargs.get('image_url')
+
+    @property
+    def value(self):
+        res = {'content_type': self.content_type}
+
+        if self.content_type == 'text':
+            res['title'] = self.title
+            res['payload'] = self.payload
+
+            if self.image_url:
+                res['image_url'] = self.image_url 
+        return res
+
+    def __str__(self):
+        return str(self.value)
+
+
 
 class Messenger:
     def __init__(self, access_token, log_level='error'):
@@ -146,6 +183,8 @@ class Messenger:
         """
 
         for i in range(len(quick_rep[:12])):
+            if isinstance(quick_rep[i], QuickReply):
+                quick_rep[i] = quick_rep[i].value
             if quick_rep[i].get('payload'):
                 quick_rep[i]['payload'] = Payload.trt_payload_out(quick_rep[i]['payload'])
 

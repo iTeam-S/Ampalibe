@@ -1,15 +1,25 @@
 # Ampalibe
 <p align="center"> <img height="300" src="https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/ampalibe_logo.png"/></p>
-
-<p align="center">
-Ampalibe is a light Python framework for quickly creating bots Facebook Messenger. </br>
-It provides a new concept for creating bots, it manages webhook sides, processes data sent by facebook and provides api messengers with advanced functions ( payload management. items length, ...) .
+<div align="center">
+ <h4>
+    <a href="https://github.com/iTeam-S/Ampalibe#other-resource">Video Tutorials</a>
+  <span> · </span>
+    <a href="https://amapalibe.readthedocs.io">Documentation</a>
+  <span> · </span>
+    <a href="https://github.com/iTeam-S/Ampalibe/issues/">Report Bug</a>
+ </h4>
+ 
+<p>
+ <b>Ampalibe</b> is a light Python framework for quickly creating Facebook Messenger bots.
+It provides a new concept, it manages webhooks, processes data sent by Facebook and provides <a href="https://developers.facebook.com/docs/messenger-platform/">API Messenger</a> with advanced functions such as payload management, item length, and more.
 </p>
 
-
-[![PyPI - Version](https://img.shields.io/pypi/v/ampalibe?style=for-the-badge)](https://pypi.org/project/ampalibe/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/ampalibe?label=DOWNLOADS&style=for-the-badge)](https://pypi.org/project/ampalibe/)
-[![Python Supprted Version](https://img.shields.io/pypi/pyversions/ampalibe?style=for-the-badge)](https://pypi.org/project/ampalibe/)
+<p>
+ <a href='https://pypi.org/project/ampalibe/'> <img src='https://img.shields.io/pypi/v/ampalibe?style=for-the-badge'/></a>
+ <a href='https://pypi.org/project/ampalibe/'> <img src='https://img.shields.io/pypi/dm/ampalibe?label=DOWNLOADS&style=for-the-badge'/></a>
+ <a href='https://pypi.org/project/ampalibe/'> <img src='https://img.shields.io/pypi/pyversions/ampalibe?style=for-the-badge'/></a>
+</p>
+</div>
 
 
 ## Installation

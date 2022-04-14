@@ -4,7 +4,7 @@
  <h4>
     <a href="https://github.com/iTeam-S/Ampalibe#other-resource">Video Tutorials</a>
   <span> · </span>
-    <a href="https://amapalibe.readthedocs.io">Documentation</a>
+    <a href="https://ampalibe.readthedocs.io">Documentation</a>
   <span> · </span>
     <a href="https://github.com/iTeam-S/Ampalibe/issues/">Report Bug</a>
  </h4>
@@ -190,14 +190,15 @@ def main(sender_id, cmd, **extends):
         }
     ]
     
-    '''
     ##### FOR v1.0.5+ #########
     from ampalibe import QuickReply
+    
     quick_rep = [
         QuickReply(title='Angela', payload=Payload('/membre', name='Angela', ref='2016-sac')),
         QuickReply(title='Rivo', payload=Payload('/membre', name='Rivo'))
     ]   
-    '''
+    ##########################
+    
     chat.send_quick_reply(sender_id, quick_rep, 'Who?')
     
 

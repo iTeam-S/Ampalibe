@@ -44,6 +44,7 @@ class QuickReply:
     def __str__(self):
         return str(self.value)
 
+
 class Button:
     def __init__(self, **kwargs):
 
@@ -122,25 +123,26 @@ class Element:
 
         for i in range(len(self.buttons)):
             if not isinstance(self.buttons[i], Button):
-                raise ValueError("buttons must a type of Button")
+                raise ValueError("buttons must a List of Button")
 
     @property
     def value(self):
         res = {"title": self.title}
 
-        if self.image and self.subtitle:
-            res["image_url"] = self.image
+        if self.subtitle:
             res["subtitle"] = self.subtitle
 
         if self.image:
             res["image_url"] = self.image
 
         res["buttons"] = [button.value for button in self.buttons]
+        
         return res
 
     def __str__(self):
         return str(self.value)
 
+    
 class Messenger:
     def __init__(self, access_token, log_level='error'):
         """

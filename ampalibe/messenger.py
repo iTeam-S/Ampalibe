@@ -177,7 +177,7 @@ class Messenger:
                         + "-music-player-video-player-next_81300.png"
                 }
             )
-            pickle.dump((quick_rep[13:], text), open(f'assets/private/.__{dest_id}', 'wb'))
+            pickle.dump((quick_rep[13:], text, next), open(f'assets/private/.__{dest_id}', 'wb'))
         else:
             if len(quick_rep)>12:
                 quick_rep[12]['payload'] = Payload.trt_payload_out(quick_rep[12]['payload'])
@@ -203,7 +203,7 @@ class Messenger:
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_template(self, dest_id, elements, quick_rep=None, next=None):
         """
-            The method send_result represent a Message templates who offer a way for you 
+            The method represent a Message templates who offer a way for you 
             to offer a richer in-conversation experience than standard text messages by integrating
             buttons, images, lists, and more alongside text a single message. Templates can be use for 
             many purposes, such as displaying product information, asking the messagerecipient to choose 
@@ -267,11 +267,12 @@ class Messenger:
                         + "-music-player-video-player-next_81300.png"
                 }
             ]
-            pickle.dump(elements[10:], open(f'assets/private/.__{dest_id}', 'wb'))
+            pickle.dump((elements[10:], next), open(f'assets/private/.__{dest_id}', 'wb'))
         
         if quick_rep:
-            if isinstance(quick_rep, QuickReply):
-                quick_rep = quick_rep.value
+            for i in range(len(quick_rep)):
+                if isinstance(quick_rep[i], QuickReply):
+                    quick_rep[i] = quick_rep[i].value
             dataJSON['message']['quick_replies'] = quick_rep
 
         header = {'content-type': 'application/json; charset=utf-8'}

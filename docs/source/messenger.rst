@@ -105,7 +105,7 @@ _____________
 
 .. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/template.png
 
-The method send_result represent a Message templates who offer a way for you 
+The method send_template represent a Message templates who offer a way for you 
 to offer a richer in-conversation experience than standard text messages by integrating
 buttons, images, lists, and more alongside text a single message. Templates can be use for 
 many purposes, such as displaying product information, asking the messagerecipient to choose 

@@ -63,9 +63,9 @@ class Server:
                 elements = pickle.load(open(f'assets/private/.__{sender_id}', 'rb'))
 
                 if payload == '/__next':
-                    bot.send_template(sender_id, elements, next=True)
+                    bot.send_template(sender_id, elements[0], next=elements[1])
                 else:
-                    bot.send_quick_reply(sender_id, elements[0], elements[1], next=True)
+                    bot.send_quick_reply(sender_id, elements[0], elements[1], next=elements[2])
 
                 return {'status': 'ok'}
 

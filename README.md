@@ -35,16 +35,16 @@ OR you can install dev version
 pip install https://github.com/iTeam-S/Ampalibe/archive/refs/heads/main.zip
 ```
 
-if you use mysql as database, you have to install `mysql-connector` or `mysql-connector-python`
+if you use mysql as database, you have to install `mysql-connector` or `mysql-connector-python` with ampalibe
 
 ```s
-pip install mysql-connector
+pip install ampalibe[mysql-connector]
 ```
 
 OR 
 
 ```s
-pip install mysql-connector-python
+pip install ampalibe[mysql-connector-python]
 ```
 
 ## Usage
@@ -116,7 +116,7 @@ We have made a promise to
 
 ## How contribute
 
-1 - Make a fork of the repository
-2 - Clone the repos 
-3 - Ampalibe. TODO List #20
-4 - Create a Pull Request 
+- Make a fork of the repository
+- Clone the repos 
+- Ampalibe. TODO List #20
+- Create a Pull Request 

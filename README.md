@@ -61,6 +61,17 @@ for dev mode with __Hot Reload__
 ampalibe run --dev
 ```
 
+### Register for an Access Token
+
+You will need to configure a Facebook application, a Facebook page, get the access to the page, link the application to the page, configure a webhook for your app before you can really start using __Ampalibe__.
+
+[This app setup guide](https://developers.facebook.com/docs/messenger-platform/getting-started/app-setup) should help
+
+OR 
+
+See [this video](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5FcKJpBTp0-_nDm0kIQ5sY&index=1) on Youtube
+
+
 ## Documentation
 
 - [Ampalibe Readthedocs](https://ampalibe.readthedocs.io/)

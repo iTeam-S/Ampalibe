@@ -57,6 +57,8 @@ Action available: ['mark_seen', 'typing_on', 'typing_off']
 send_quick_reply
 _________________
 
+.. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/quickrep.png
+
 Quick replies provide a way to present a set of up to 13 buttons 
 in-conversation that contain a title and optional image, and appear
 prominently above the composer. 
@@ -71,38 +73,15 @@ to request a person's location, email address, and phone number.
 
     *dest_id (str)*: user id facebook for the destoination
 
-    *quick_rep (list of dict)*: list of the different quick_reply to send a user
+    *quick_rep(list of Button)*: list of the different quick_reply to send a user
     
     *text (str)*: A text of a little description for each <quick_reply>
 
 **Example**:
 
 .. code-block:: python
-
-    quick_rep = [
-        {
-            "content_type": "text",
-            "title": 'Angela',
-            "payload": '/membre',
-            # image is optionnal
-            "image_url": "https://i.imgflip.com/6b45bi.jpg"
-        },
-        {
-            "content_type": "text",
-            "title": 'Rivo',
-            "payload": '/membre',
-            # image is optionnal
-            "image_url": "https://i.imgflip.com/6b45bi.jpg"
-        }
-    ]
-
-    chat.send_quick_reply(sender_id, quick_rep, 'who do you choose ?')
-
-OR 
-
-.. code-block:: python
     
-    from ampalibe import QuickReply
+    from ampalibe.ui import QuickReply
     ... 
 
     quick_rep = [
@@ -124,6 +103,8 @@ OR
 send_template
 _____________
 
+.. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/template.png
+
 The method send_result represent a Message templates who offer a way for you 
 to offer a richer in-conversation experience than standard text messages by integrating
 buttons, images, lists, and more alongside text a single message. Templates can be use for 
@@ -144,9 +125,9 @@ displaying all requested templates
 
     *dest_id (str)*: user id facebook for the destination
     
-    *elements (list of dict)*: the list of the specific elements to define the structure for the template
+    *elements(list of Element)*: the list of the specific elements to define the structure for the template
     
-    *quick_rep(list of dict)*: addition quick reply at the bottom of the template
+    *quick_rep(list of QuickReply)*: addition quick reply at the bottom of the template
     
     *next(bool)*: this params activate the next page when elements have a length more than 10
 
@@ -154,52 +135,30 @@ displaying all requested templates
 
 .. code-block:: python
 
-    list_items = [
-        {
-            "title": "item n°1",
-            "image_url": "https://i.imgflip.com/6b45bi.jpg",
-            "buttons": [
-                {
-                    "type": "postback",
-                    "title": "Get item",
-                    "payload": "/item 1"
-                }
-            ]
-        },
-        {
-            "title": "item n°2",
-            "image_url": "https://i.imgflip.com/6b45bi.jpg",
-            "buttons": [
-                {
-                    "type": "postback",
-                    "title": "Get item",
-                    "payload": "/item 2"
-                }
-            ]
-        },
+    from ampalibe import Payload
+    from ampalibe.ui import Element, Button
 
-    ]
+    ...
 
-    chat.send_template(sender_id, list_items)
+    list_items = []
 
+    for i in range(30):
+        buttons = [
+            Button(
+                type="postback",
+                title="Get item",
+                payload=Payload("/item", id_item=i+1),
+            )
+        ]
 
+        list_items.append(
+            Element(
+                title="iTem",
+                image_url="https://i.imgflip.com/6b45bi.jpg",
+                buttons=buttons,
+            )
+        )
 
-.. code-block:: python
-
-    list_items = [
-        {
-            "title": f"item n°{i+1}",
-            "image_url": "https://i.imgflip.com/6b45bi.jpg",
-            "buttons": [
-                {
-                    "type": "postback",
-                    "title": "Get item",
-                    "payload": Payload("/item", id_item=i+1)
-                }
-            ]
-        }
-        for i in range(30)
-    ]
     # next=True for displaying directly next page button.
     chat.send_template(sender_id, list_items, next=True)
 
@@ -288,6 +247,8 @@ This model does not allow any external URLs, only those on Facebook.
 send_button
 ____________
 
+.. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/button.png
+
 The button template sends a text message with 
 up to three buttons attached. This template gives 
 the message recipient different options to choose from, 
@@ -299,7 +260,7 @@ such as predefined answers to questions or actions to take.
 
     *dest_id (str)*: user id facebook for the destination
     
-    *buttons (list of dict)*: The list of buttons who want send
+    *buttons(list of Button)*: The list of buttons who want send
 
     *text (str)*: A text to describe the fonctionnality of the buttons
 
@@ -307,13 +268,16 @@ such as predefined answers to questions or actions to take.
 
 .. code-block:: python
 
+    from ampalibe.ui import Button
+
     buttons = [
-        {
-            "type": "postback",
-            "title": "Informations",
-            "payload": '/contact'
-        }
+        Button(
+            type='postback',
+            title='Informations',
+            payload='/contact'
+        )
     ]
+
     chat.send_button(sender_id, buttons, "What do you want to do?")
 
 

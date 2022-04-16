@@ -2,147 +2,14 @@ import os
 import json
 import pickle
 import requests
-import requests_toolbelt
 from sys import stderr
 from retry import retry
+import requests_toolbelt
 from .utils import Payload
+from .ui import QuickReply, Button, Element
 
 
-class QuickReply:
 
-    def __init__(self, **kwargs):
-        '''
-            Object that can be used to generated a quick_reply
-        '''
-        self.content_type = kwargs.get('content_type', 'text')
-        if self.content_type not in ('text', 'user_phone_number', 'user_email'):
-            raise ValueError("content_type can only be 'text', 'user_phone_number', 'user_email'")
-
-        self.title = kwargs.get('title')
-        self.payload = kwargs.get('payload')
-
-        if self.content_type == 'text' and not self.payload:
-            raise ValueError("payload must be present for text")
-
-        if self.content_type == 'text' and not self.title:
-            raise ValueError("title must be present for text")
-
-        self.image_url = kwargs.get('image_url')
-
-    @property
-    def value(self):
-        res = {'content_type': self.content_type}
-
-        if self.content_type == 'text':
-            res['title'] = self.title
-            res['payload'] = self.payload
-
-            if self.image_url:
-                res['image_url'] = self.image_url 
-        return res
-
-    def __str__(self):
-        return str(self.value)
-
-
-class Button:
-    def __init__(self, **kwargs):
-
-        self.type = kwargs.get("type")
-        self.title = kwargs.get("title")
-        self.url = kwargs.get("url")
-        self.payload = kwargs.get("payload")
-
-        if self.type not in (
-            "postback",
-            "web_url",
-            "phone_number",
-            "account_link",
-            "account_unlink",
-        ):
-            raise ValueError(
-                "type must be one of 'postback', 'web_url', 'phone_number', 'account_link', 'account_unlink'"
-            )
-
-        if self.type in ("postback", "phone_number"):
-
-            if not self.payload:
-                raise ValueError("payload must be present")
-
-            if not self.title:
-                raise ValueError("title must be present")
-
-        elif self.type == "web_url":
-            if not self.url:
-                raise ValueError("url must be present for web_url")
-
-            if not self.title:
-                raise ValueError("title must be present for web_url")
-
-        elif self.type == "account_link":
-            if not self.url:
-                raise ValueError("url facebook login must be present for account_link")
-
-    @property
-    def value(self):
-
-        if self.type in ("postback", "phone_number"):
-            return {"type": self.type, "title": self.title, "payload": self.payload}
-
-        elif self.type == "web_url":
-            return {"type": "web_url", "title": self.title, "url": self.url}
-
-        elif self.type == "account_link":
-            return {"type": "account_link", "url": self.url}
-
-        elif self.type == "account_unlink":
-            return {"type": "account_unlink"}
-
-    def __str__(self):
-        return str(self.value)
-
-
-class Element:
-    def __init__(self, **kwargs):
-        self.title = kwargs.get("title")
-        self.subtitle = kwargs.get("subtitle")
-        self.image = kwargs.get("image_url")
-        self.buttons = kwargs.get("buttons")
-
-        if not self.title:
-            raise ValueError("Element must be have a title")
-
-        if not self.buttons:
-            raise ValueError("Element must be have a buttons")
-
-        if not isinstance(self.buttons, list):
-            raise ValueError("buttons must be a list of Button")
-
-        if len(self.buttons) > 3:
-            raise ValueError("buttons must be three maximum")
-
-        for i in range(len(self.buttons)):
-            if not isinstance(self.buttons[i], Button):
-                raise ValueError("buttons must a List of Button")
-
-    @property
-    def value(self):
-        res = {"title": self.title}
-
-        if self.subtitle:
-            res["subtitle"] = self.subtitle
-
-        if self.image:
-            res["image_url"] = self.image
-
-        res["buttons"] = [button.value for button in self.buttons]
-        
-        return res
-
-    def __str__(self):
-        return str(self.value)
-
-    
 class Messenger:
     def __init__(self, access_token, log_level='error'):
         """
@@ -268,9 +135,9 @@ class Messenger:
 
             Args:
                 dest_id (str): user id facebook for the destination
-                quick_rep (list of dict): list of the different quick_reply to send a user
+                quick_rep (list of dict) || (list of QuickRep): list of the different quick_reply to send a user
                 text (str): A text of a little description for each <quick_reply>
-                next(bool) : this params activate the next page when elements have a length more than ten
+                next(bool) || (text): this params activate the next page when elements have a length more than ten
 
             Returns:
                 Response: POST request to the facebook API to send a quick_reply to the user
@@ -301,7 +168,7 @@ class Messenger:
             dataJSON['message']['quick_replies'].append(
                 {
                     "content_type": "text",
-                    "title": 'More',
+                    "title": 'More' if next==True else str(next),
                     "payload": "/__more",
                     "image_url":
                         "https://icon-icons.com/downloadimage.php"
@@ -334,7 +201,7 @@ class Messenger:
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_template(self, dest_id, elements, quick_rep=None, next=False):
+    def send_template(self, dest_id, elements, quick_rep=None, next=None):
         """
             The method send_result represent a Message templates who offer a way for you 
             to offer a richer in-conversation experience than standard text messages by integrating
@@ -352,10 +219,10 @@ class Messenger:
 
             Args:
                 dest_id (str): user id facebook for the destination
-                elements (list of dict): the list of the specific elements to define the
+                elements (list of dict) || (list of Element): the list of the specific elements to define the
                 structure for the template
-                quick_rep(list of dict): addition quick reply at the bottom of the template
-                next(bool) : this params activate the next page when elements have a length more than ten
+                quick_rep (list of dict) || (list of QuickReply): addition quick reply at the bottom of the template
+                next(bool) || (text): this params activate the next page when elements have a length more than ten
 
             Returns:
                 Response: POST request to the facebook API to send a template generic to the user
@@ -391,7 +258,7 @@ class Messenger:
             dataJSON['message']['quick_replies'] = [
                 {
                     "content_type": "text",
-                    "title": 'Next',
+                    "title": 'Next' if next==True else str(next),
                     "payload": "/__next",
                     "image_url":
                         "https://icon-icons.com/downloadimage.php"
@@ -403,6 +270,8 @@ class Messenger:
             pickle.dump(elements[10:], open(f'assets/private/.__{dest_id}', 'wb'))
         
         if quick_rep:
+            if isinstance(quick_rep, QuickReply):
+                quick_rep = quick_rep.value
             dataJSON['message']['quick_replies'] = quick_rep
 
         header = {'content-type': 'application/json; charset=utf-8'}
@@ -659,7 +528,7 @@ class Messenger:
 
             Args:
                 dest_id (str): user id facebook for the destination
-                buttons (list of dict): The list of buttons who want send
+                buttons (list of dict) || (list of Button): The list of buttons who want send
                 text (str): A text to describe the fonctionnality of the buttons
 
             Returns:
@@ -673,7 +542,7 @@ class Messenger:
             if isinstance(buttons[i], Button):
                 buttons[i] = buttons[i].value
             if buttons[i].get('payload'):
-                    buttons[i]['payload'] = Payload.trt_payload_out(buttons[i]['payload'])
+                buttons[i]['payload'] = Payload.trt_payload_out(buttons[i]['payload'])
 
         self.send_action(dest_id, 'typing_on')
         data_json = {

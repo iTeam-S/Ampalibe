@@ -666,6 +666,13 @@ class Messenger:
             Ref:
                 https://developers.facebook.com/docs/messenger-platform/send-messages/template/button
         """
+
+        for i in range(len(buttons)):
+            if isinstance(buttons[i], Button):
+                buttons[i] = buttons[i].value
+            if buttons[i].get('payload'):
+                    buttons[i]['payload'] = Payload.trt_payload_out(buttons[i]['payload'])
+
         self.send_action(dest_id, 'typing_on')
         data_json = {
             "recipient":{

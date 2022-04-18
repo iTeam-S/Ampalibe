@@ -17,6 +17,8 @@ It provides a new concept, it manages webhooks, processes data sent by Facebook 
 <p>
  <a href='https://pypi.org/project/ampalibe/'> <img src='https://img.shields.io/pypi/v/ampalibe?style=for-the-badge'/></a>
  <a href='https://pypi.org/project/ampalibe/'> <img src='https://img.shields.io/pypi/dm/ampalibe?label=DOWNLOADS&style=for-the-badge'/></a>
+ <a href='https://github.com/iTeam-S/'> <img src='https://img.shields.io/badge/Team-iTeam--$-teal?style=for-the-badge'/></a>
+ <a href='#'> <img src='https://img.shields.io/badge/Maintained-Yes-darkgreen?style=for-the-badge'/></a>
  <a href='https://pypi.org/project/ampalibe/'> <img src='https://img.shields.io/pypi/pyversions/ampalibe?style=for-the-badge'/></a>
 </p>
 </div>

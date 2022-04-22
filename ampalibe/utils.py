@@ -110,8 +110,9 @@ def download_file(url, file):
         Downloading a file from an url.
         
         Args:
-            @url: direct link for the attachment
-            @file: filename with path
+            url: direct link for the attachment
+
+            file: filename with path
     '''
     res = requests.get(url, allow_redirects=True)
 

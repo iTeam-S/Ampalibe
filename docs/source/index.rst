@@ -25,4 +25,5 @@ Contents
    messenger
    more
    api
+   command
 

@@ -12,6 +12,19 @@ To use Ampalibe, first install it using pip:
 
    $ pip install ampalibe
 
+if you use mysql as database, you have to install `mysql-connector` or `mysql-connector-python` with ampalibe
+
+.. code-block:: console
+
+   $ pip install ampalibe[mysql-connector]
+
+OR 
+
+.. code-block:: console
+
+   $ pip install ampalibe[mysql-connector-python]
+
+
 Creation of a new project
 -------------------------
 
@@ -114,3 +127,12 @@ for dev mode with **Hot Reload**
 
    Ampalibe use uvicorn to run server, so it is an output of uvicorn
 
+
+You will need to configure a Facebook application, a Facebook page, get the access to the page, link the application to the page, configure a webhook for your app before you can really start using __Ampalibe__.
+
+
+`This app setup guide <https://developers.facebook.com/docs/messenger-platform/getting-started/app-setup/>`_ should help
+
+OR 
+
+See `this video <https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5FcKJpBTp0-_nDm0kIQ5sY&index=1/>`_ on Youtube

@@ -1,5 +1,5 @@
-API
-===
+Api
+====
 
 .. autosummary::
    :toctree: generated
@@ -8,3 +8,4 @@ API
    ampalibe.action
    ampalibe.Payload
    ampalibe.Model
+   ampalibe.download_file

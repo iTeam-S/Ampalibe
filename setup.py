@@ -14,7 +14,6 @@ setuptools.setup(
     packages=['ampalibe'],  # List of all modules to be installed
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -22,7 +21,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],                      # Information to filter the project on PyPi website
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     py_modules=["ampalibe"],                      # Name of the python package
     install_requires=[
         "fastapi", "uvicorn", "retry", "requests",

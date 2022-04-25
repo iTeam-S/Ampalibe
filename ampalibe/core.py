@@ -34,7 +34,7 @@ class Extra:
         global _req
         conf = cnf
         _req = Model(cnf)
-        uvicorn.run(webserver, port=cnf.APP_PORT, host=cnf.APP_HOST)
+        uvicorn.run('ampalibe:webserver', port=cnf.APP_PORT, host=cnf.APP_HOST, workers=int(cnf.WORKERS))
 
 
 class Server:

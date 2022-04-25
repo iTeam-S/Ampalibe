@@ -25,6 +25,9 @@ export AMP_PORT=4555
 
 # URL APPLICATION
 export AMP_URL=
+
+# Number of worker processes
+export WORKERS=1
 """
 
 env_cmd = """:: PAGE ACCESS TOKEN 
@@ -54,6 +57,9 @@ set AMP_PORT=4555
 
 :: URL APPLICATION
 set AMP_URL=
+
+:: Number of worker processes
+set WORKERS=1
 """
 core = """import ampalibe
 from conf import Configuration
@@ -107,6 +113,8 @@ class Configuration:
     APP_HOST = env.get('AMP_HOST')
     APP_PORT = int(env.get('AMP_PORT'))
     APP_URL = env.get('AMP_URL')
+
+    WORKERS = env.get('WORKERS', 1)
 """
 
 

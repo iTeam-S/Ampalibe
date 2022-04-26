@@ -45,9 +45,6 @@ if [ -z "${python}" ] ; then
     fi
 fi
 
-
-echo $python
-
 if [ "$1" == "version" ]; then
     echo `$python -c "import ampalibe;print(ampalibe.__version__)"`
 

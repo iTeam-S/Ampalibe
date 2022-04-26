@@ -3,7 +3,7 @@ Command-line
 
 .. code-block:: console
     
-    $ ampalibe [ -x <PYTHONPATH> ] {options}
+    $ ampalibe [-x <PYTHONPATH>] {options}
 
 options:
 

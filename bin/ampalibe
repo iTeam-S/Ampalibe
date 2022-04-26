@@ -7,7 +7,7 @@ vert='\e[0;32m'
 
 # fonction affichant un output d'aide au cas de mauvaise utilisation de la commande
 usage() { 
-    echo -e "\nUsage: ${vert}$0 {create,init,env,run,version,help} \n${neutre}" 1>&2;
+    echo -e "\nUsage: ${vert}$0 [ -x PYTHONPATH ] {create,init,env,run,version,help} \n${neutre}" 1>&2;
     echo -e "create ...: create a new project in a new directory specified\n" 1>&2;
     echo -e "init: create a new project in current dir\n" 1>&2;
     echo -e "version: show the current version\n" 1>&2;
@@ -17,20 +17,36 @@ usage() {
     exit 1;
 }
 
+# Analyse des parametres entrée avec la commande
+while getopts ":x:" option; do
+    case "${option}" in
+        x)
+            python=${OPTARG}
+            ;;
+    esac
+done
+shift $((OPTIND-1))
 
-which python3 > /dev/null
-if [ ! $? -eq 0 ]; then
-    echo -e "~\033[31m Wait, what? no python3 in path !! \033[0m\nTest python"
-    which python > /dev/null
+# verification du parametre du path
+
+if [ -z "${python}" ] ; then
+    which python3 > /dev/null
     if [ ! $? -eq 0 ]; then
-        echo -e "~\033[31m Oh, Give up !! \033[0m\nNo python/python3 in path"
-        exit 1
+        echo -e "~\033[31m Wait, what? no python3 in path !! \033[0m\nTest python"
+        which python > /dev/null
+        if [ ! $? -eq 0 ]; then
+            echo -e "~\033[31m Oh, Give up !! \033[0m\nNo python/python3 in path"
+            exit 1
+        else
+            python="python"
+        fi
     else
-        python="python"
+        python="python3"
     fi
-else
-    python="python3"
 fi
+
+
+echo $python
 
 if [ "$1" == "version" ]; then
     echo `$python -c "import ampalibe;print(ampalibe.__version__)"`

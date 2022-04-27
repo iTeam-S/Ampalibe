@@ -43,7 +43,7 @@ class QuickReply:
 class Button:
     def __init__(self, **kwargs):
 
-        self.type = kwargs.get("type")
+        self.type = kwargs.get("type", "postback")
         self.title = kwargs.get("title")
         self.url = kwargs.get("url")
         self.payload = kwargs.get("payload")

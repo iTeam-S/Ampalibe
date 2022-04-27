@@ -317,7 +317,7 @@ discover and access the core functionality of your Messenger bot at any point in
 
     *dest_id (str)*: user id for destination
 
-    *persistent_menu (list of dict)*: the elements of the persistent menu to enable
+    *persistent_menu (list of dict) | (list of Button)*: the elements of the persistent menu to enable
 
     *action (str, optional)*: the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
     
@@ -329,17 +329,12 @@ discover and access the core functionality of your Messenger bot at any point in
 
 .. code-block:: python
 
+    from ampalibe.ui import Button
+    ...
+
     persistent_menu = [
-        {
-            "type": "postback",
-            "title": "Menu",
-            "payload": "/menu"
-        },
-        {
-            "type": "postback",
-            "title": "Logout",
-            "payload": "/logout"
-        }
+        Button(type='postback', title='Menu', payload='/payload')
+        Button(type='postback', title='Logout', payload='/logout')
     ]
 
     chat.persistent_menu(sender_id, persistent_menu)

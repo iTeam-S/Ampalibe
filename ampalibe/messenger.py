@@ -340,7 +340,7 @@ class Messenger:
             
             Args:
                 dest_id (str): user id for destination
-                persistent_menu (list of dict): the elements of the persistent menu to enable
+                persistent_menu (list of dict) || (list of Button): the elements of the persistent menu to enable
                 action (str, optional): the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
                 
                 locale [optionnel]
@@ -351,6 +351,9 @@ class Messenger:
         """
         header = {'content-type': 'application/json; charset=utf-8'}
         params = {"access_token": self.token}
+        
+        persistent_menu = [ persistent.value if isinstance(persistent, Button) else persistent for persistent in persistent_menu] 
+
         if action == "PUT":
             dataJSON = {
                 "psid": dest_id,

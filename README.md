@@ -27,7 +27,7 @@ It provides a new concept, it manages webhooks, processes data sent by Facebook 
 ## Installation
 
 ```s
-pip install ampalibe==1.0.4
+pip install ampalibe==1.0.5
 ```
 
 OR you can install dev version

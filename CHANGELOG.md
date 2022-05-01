@@ -39,3 +39,26 @@
 - Add  python version 3.6 support 
 - Add `download_file` options to direct download a link
 - Add `ampalibe env` command to generate only env
+
+
+## Ampalibe 1.0.5
+
+### FIX 
+
+- Fix Ampalibe ASCII broken
+- Fix send_file Messenger API
+- Remove mysql-connector dependancy
+
+
+### NEW FEATURES
+
+- Quick Reply Auto Next for item length more than 13
+- Help Messsage for Linux
+- Add QuickReply Object
+- Add Button Object
+- Add Element Object
+- Customize text of next quick_reply
+- Customize text of next generic template
+- Number of processes workers in production mode
+- Persistent Menu to Object ( List Buttons )
+

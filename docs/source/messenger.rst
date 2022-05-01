@@ -97,7 +97,26 @@ to request a person's location, email address, and phone number.
         ),
     ]
 
+    # next=True in parameter for displaying directly next list quick_reply
     chat.send_quick_reply(sender_id, quick_rep, 'who do you choose ?')
+
+.. code-block:: python
+    
+    from ampalibe.ui import QuickReply
+    ... 
+
+    quick_rep = [
+        QuickReply(
+            title=f"response {i+1}",
+            payload= Payload("/response", item=i+1)
+            image_url="https://i.imgflip.com/6b45bi.jpg"
+        ) 
+
+        for i in range(30)
+    ]
+
+    # put a value in `next` parameter to show directly next options with the specified word.
+    chat.send_quick_reply(sender_id, quick_rep, 'who do you choose ?', next='See More')
 
 
 send_template
@@ -162,6 +181,8 @@ displaying all requested templates
     # next=True for displaying directly next page button.
     chat.send_template(sender_id, list_items, next=True)
 
+    # next=<word> for displaying directly next page button with custom text.
+    # chat.send_template(sender_id, list_items, next='Next page')
 
 send_file_url
 _____________

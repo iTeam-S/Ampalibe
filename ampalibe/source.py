@@ -110,8 +110,8 @@ class Configuration:
     ACCESS_TOKEN = env.get('AMP_ACCESS_TOKEN')
     VERIF_TOKEN = env.get('AMP_VERIF_TOKEN')
 
-    APP_HOST = env.get('AMP_HOST')
-    APP_PORT = int(env.get('AMP_PORT'))
+    APP_HOST = env.get('AMP_HOST', '0.0.0.0')
+    APP_PORT = int(env.get('AMP_PORT', 4555))
     APP_URL = env.get('AMP_URL')
 
     WORKERS = env.get('WORKERS', 1)

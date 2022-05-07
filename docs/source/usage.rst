@@ -97,6 +97,8 @@ How to complete the environment variable file
    * **AMP_HOST** server listening address
    * **AMP_PORT** server listening port
    * **AMP_URL** URL of the server given to Facebook
+   * **WORKERS** Number of processes workers in production mode
+
 
 
 

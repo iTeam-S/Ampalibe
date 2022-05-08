@@ -96,6 +96,17 @@ See [this video](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5F
 - [ [Youtube] Tutoriel Framework Ampalibe (FR)](https://www.youtube.com/playlist?list=PLz95IHSyn29U4PA1bAUw3VT0VFFbq1LuP)
 - [ [Youtube] Ampalibe Framework Episode (Teny Vary Masaka) ](https://www.youtube.com/playlist?list=PLN1d8qaIQgmKmCwy3SMfndiivbgwXJZvi)
 
+
+## Deployment 
+
+**Using container**
+
+> Go to our dir project and run 
+
+```s
+$ docker run -d -v "${PWD}:/usr/src/app" ghcr.io/iteam-s/ampalibe:1.0.5
+```
+
 ## About 
 
 Ampalibe is a word of Malagasy 🇲🇬 origin designating the fruit jackfruit.

@@ -18,10 +18,22 @@ usage() {
 }
 
 # Analyse des parametres entrée avec la commande
-while getopts ":x:" option; do
+while getopts "x:p:" option; do
     case "${option}" in
         x)
             python=${OPTARG}
+            ;;
+        p)
+            port=${OPTARG}
+
+            regex_number='^[0-9]+$'
+            if ! [[ $port =~ $regex_number ]] ; then
+                echo "Not a number $port"
+              usage              
+            fi
+            ;;
+        *)
+            usage
             ;;
     esac
 done
@@ -103,6 +115,9 @@ elif [ "$1" == "run" ]; then
         exit 1
     fi
     source .env;
+    if [ ! -z "${port}" ] ; then
+        export AMP_PORT=$port;
+    fi
         echo -e """\033[36m
                                                          0o
                                                           Oo

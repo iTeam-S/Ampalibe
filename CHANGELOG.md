@@ -62,3 +62,10 @@
 - Number of processes workers in production mode
 - Persistent Menu to Object ( List Buttons )
 
+
+
+## Ampalibe 1.0.6
+
+- ADD port argument in command-line for linux
+- Docker deployement in your own server
+- Docker Deployement with heroku 

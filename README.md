@@ -27,7 +27,7 @@ It provides a new concept, it manages webhooks, processes data sent by Facebook 
 ## Installation
 
 ```s
-pip install ampalibe==1.0.5
+pip install ampalibe
 ```
 
 OR you can install dev version
@@ -104,8 +104,23 @@ See [this video](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5F
 > Go to our dir project and run 
 
 ```s
-$ docker run -d -v "${PWD}:/usr/src/app" ghcr.io/iteam-s/ampalibe:1.0.5
+$ docker run -d -v "${PWD}:/usr/src/app" ghcr.io/iteam-s/ampalibe
 ```
+
+**Using heroku**
+
+- Go to heroku docs for [docker deploys](https://devcenter.heroku.com/articles/container-registry-and-runtime) 
+
+- Change your Dockerfile like this
+
+```dockerfile
+FROM ghcr.io/iteam-s/ampalibe
+
+ADD . /usr/src/app/
+
+CMD ampalibe -p $PORT run
+```
+- Customize your Dockerfile if necessary
 
 ## About 
 
@@ -127,9 +142,3 @@ We have made a promise to
 ![Image des contributeurs GitHub](https://contrib.rocks/image?repo=iTeam-S/Ampalibe)
 
 
-## How contribute
-
-- Make a fork of the repository
-- Clone the repos 
-- Ampalibe. TODO List #20
-- Create a Pull Request 

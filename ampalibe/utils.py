@@ -4,6 +4,23 @@ import urllib.parse
 
 funcs = {'commande': {}, 'action': {}}
 
+class Cmd(str):
+    '''
+        Object for text of message
+    '''
+    __atts = []
+
+    def __init__(self, text):
+        str.__init__(text)
+
+    def set_atts(self, atts):
+        for att in atts:
+            self.__atts.append(att)
+
+    @property
+    def attachments(self):
+        return self.__atts
+
 
 class Payload:
     '''
@@ -72,17 +89,21 @@ def analyse(data):
                 if message['message'].get('attachments'):
                     # Get file name
                     data = message['message'].get('attachments')
-                    return sender_id, ','.join(list(map(struct_atts, data))), message
+                    # creation de l'objet cmd personalisé
+                    atts = list(map(struct_atts, data))
+                    cmd = Cmd(atts[0])
+                    cmd.set_atts(atts)
+                    return sender_id, cmd, message
                 elif message['message'].get('quick_reply'):
                     # if the response is a quick reply
-                    return  sender_id, message['message']['quick_reply'].get('payload'), message
+                    return  sender_id, Cmd(message['message']['quick_reply'].get('payload')), message
                 elif message['message'].get('text'):
                     # if the response is a simple text
-                    return  sender_id, message['message'].get('text'), message
+                    return  sender_id, Cmd(message['message'].get('text')), message
             if message.get('postback'):
                 recipient_id = message['sender']['id']
                 pst_payload = message['postback']['payload']
-                return recipient_id, pst_payload, message
+                return recipient_id, Cmd(pst_payload), message
 
 
 def command(*args, **kwargs):

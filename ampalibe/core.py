@@ -5,9 +5,9 @@ import uvicorn
 from .requete import Model
 from threading import Thread
 from .messenger import Messenger
-from .utils import funcs, analyse, Payload
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
+from .utils import funcs, analyse, Cmd, Payload
 
 _req = None
 conf = None
@@ -80,12 +80,12 @@ class Server:
         else:
             if action:
                 print(
-                    f'Warning! action: {action} Not found',
+                    f'Warning! action: "{action}" Not found',
                     file=sys.stderr
                 )
             payload, kw = Payload.trt_payload_in(payload)
             kw['sender_id'] = sender_id
-            kw['cmd'] = payload
+            kw['cmd'] = Cmd(payload)
             kw['message'] = message
             Thread(
                 target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),

@@ -104,7 +104,7 @@ See [this video](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5F
 > Go to our dir project and run 
 
 ```s
-$ docker run -d -v "${PWD}:/usr/src/app" ghcr.io/iteam-s/ampalibe
+$ docker run -d -v "${PWD}:/usr/src/app" -p 4555:4555 ghcr.io/iteam-s/ampalibe
 ```
 
 **Using heroku**

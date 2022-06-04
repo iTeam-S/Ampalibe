@@ -34,15 +34,23 @@ class Extra:
         global _req
         conf = cnf
         _req = Model(cnf)
-        uvicorn.run('ampalibe:webserver', port=cnf.APP_PORT, host=cnf.APP_HOST, workers=int(cnf.WORKERS))
+        # Verif if WORKERS attribute exists
+        if hasattr(cnf, 'WORKERS'):
+            uvicorn.run('ampalibe:webserver', port=cnf.APP_PORT, host=cnf.APP_HOST, workers=int(cnf.WORKERS))
+        else:
+            uvicorn.run(webserver, port=cnf.APP_PORT, host=cnf.APP_HOST)
 
 
 class Server:
     '''
         Content of webhook
     '''
+
     @webserver.get('/')
     async def verif(request: Request):
+        '''
+            Main verification for bot server is received here
+        '''
         fb_token = request.query_params.get("hub.verify_token")
 
         if fb_token == conf.VERIF_TOKEN:
@@ -52,9 +60,16 @@ class Server:
 
     @webserver.post('/')
     async def main(request: Request):
+        '''
+            Main Requests for bot messenger is received here.
+        '''
+        testmode = request.query_params.get("testmode")
         data = await request.json()
+
+        # data analysis and decomposition
         sender_id, payload, message = analyse(data)
         _req._verif_user(sender_id)
+        # get action for the current user
         action = _req.get_action(sender_id)
 
         if payload in ('/__next', '/__more'):
@@ -73,10 +88,18 @@ class Server:
             os.remove(f'assets/private/.__{sender_id}')
 
         if action and funcs['action'].get(action):
-            Thread(
-                target=funcs['action'].get(action),
-                kwargs={'sender_id': sender_id, 'cmd': payload, 'message': message}
-            ).start()
+            '''
+                CASE an action is set.
+            '''
+            if not testmode:
+                Thread(
+                    target=funcs['action'].get(action),
+                    kwargs={'sender_id': sender_id, 'cmd': payload, 'message': message}
+                ).start()
+            else:
+                funcs['action'].get(action)(
+                    **{'sender_id': sender_id, 'cmd': payload, 'message': message}
+                )
         else:
             if action:
                 print(
@@ -87,9 +110,12 @@ class Server:
             kw['sender_id'] = sender_id
             kw['cmd'] = Cmd(payload)
             kw['message'] = message
-            Thread(
-                target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
-                kwargs=kw
-            ).start()
+            if not testmode:
+                Thread(
+                    target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
+                    kwargs=kw
+                ).start()
+            else:
+                funcs['commande'].get(payload.split()[0], funcs['commande']['/'])(**kw)
 
         return {'status': 'ok'}

@@ -217,18 +217,14 @@ You can send data with ``Payload`` object and get it in destination function's p
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
         quick_rep = [
-            {
-                "content_type": "text",
-                "title": 'Angela',
-                #  Customise your payload
-                "payload": Payload('/member', name='Angela', ref='2016-sac')
-            },
-            {
-                "content_type": "text",
-                "title": 'Rivo',
-                #  Customise your payload
-                "payload": Payload('/member', name='Rivo')
-            }
+            QuickReply(
+                title='Angela',
+                payload=Payload('/membre', name='Angela', ref='2016-sac')
+            ),
+            QuickReply(
+                title='Rivo',
+                payload=Payload('/membre', name='Rivo', ref='2016-sac')
+            )
         ]
         chat.send_quick_reply(sender_id, quick_rep, 'Who?')
         

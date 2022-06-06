@@ -224,3 +224,33 @@ class Model:
                 req = 'UPDATE amp_user SET tmp = ? WHERE user_id = ?'
             self.cursor.execute(req, (data, user_id))
             self.db.commit()
+
+    @verif_db
+    def get_lang(self, user_id):
+        '''
+            get current lang of an user 
+
+            @params: user_id
+            @return lang or None
+        '''
+        if self.ADAPTER == 'MYSQL':
+            req = 'SELECT lang FROM amp_user WHERE user_id = %s'
+        else:
+            req = 'SELECT lang FROM amp_user WHERE user_id = ?'
+        self.cursor.execute(req, (user_id,))
+        return self.cursor.fetchone()[0]
+    
+    @verif_db
+    def set_lang(self, user_id, lang):
+        '''
+            define a current lang for an user 
+
+            @params :  user_id
+            @return:  None
+        '''
+        if self.ADAPTER == 'MYSQL':
+            req = 'UPDATE amp_user set lang = %s WHERE user_id = %s'
+        else:
+            req = 'UPDATE amp_user set lang = ? WHERE user_id = ?'
+        self.cursor.execute(req, (lang, user_id))
+        self.db.commit()

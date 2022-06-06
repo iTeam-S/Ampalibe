@@ -208,6 +208,7 @@ You can send data with ``Payload`` object and get it in destination function's p
     import ampalibe
     # import the Payload class
     from ampalibe import Payload
+    from ampalibe.ui import QuickReply
     from conf import Configuration
 
     bot = ampalibe.init(Configuration())

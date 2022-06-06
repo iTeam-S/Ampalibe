@@ -71,6 +71,7 @@ class Server:
         _req._verif_user(sender_id)
         # get action for the current user
         action = _req.get_action(sender_id)
+        lang = _req.get_lang(sender_id)
 
         if payload in ('/__next', '/__more'):
             bot = Messenger(conf.ACCESS_TOKEN)
@@ -94,11 +95,17 @@ class Server:
             if not testmode:
                 Thread(
                     target=funcs['action'].get(action),
-                    kwargs={'sender_id': sender_id, 'cmd': payload, 'message': message}
+                    kwargs={
+                        'sender_id': sender_id, 'cmd': payload, 
+                        'message': message, 'lang': lang
+                    }
                 ).start()
             else:
                 funcs['action'].get(action)(
-                    **{'sender_id': sender_id, 'cmd': payload, 'message': message}
+                    **{
+                        'sender_id': sender_id, 'cmd': payload,
+                        'message': message, 'lang': lang
+                    }
                 )
         else:
             if action:
@@ -110,6 +117,7 @@ class Server:
             kw['sender_id'] = sender_id
             kw['cmd'] = Cmd(payload)
             kw['message'] = message
+            kw['lang'] = lang
             if not testmode:
                 Thread(
                     target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),

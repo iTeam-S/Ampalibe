@@ -117,5 +117,19 @@ class Configuration:
     WORKERS = env.get('WORKERS', 1)
 """
 
+langs = """{
+    "hello_world": {
+        "en": "Hello World",
+        "fr": "Bonjour le monde"
+    },
+
+    "ampalibe": {
+        "en": "Jackfruit", 
+        "fr": "Jacquier",
+        "mg": "Ampalibe"
+    }
+}
+"""
+
 
 

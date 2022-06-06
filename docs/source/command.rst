@@ -15,4 +15,6 @@ options:
 
     **env** : generate only a .env file
 
+    **lang** : generate only a langs.json file
+
     **run** [*--dev*] : run the server, autoreload if --dev is specified

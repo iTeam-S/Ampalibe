@@ -12,6 +12,7 @@ usage() {
     echo -e "init: create a new project in current dir\n" 1>&2;
     echo -e "version: show the current version\n" 1>&2;
     echo -e "env: generate only a .env file\n" 1>&2;
+    echo -e "lang: generate only a langs.json file\n" 1>&2;
     echo -e "run [--dev]: run the server, autoreload if --dev is specified\n" 1>&2;
     echo -e "help: show this current help\n" 1>&2;
     exit 1;
@@ -68,6 +69,14 @@ elif [ "$1" == "env" ]; then
     `$python -c "import ampalibe.source;print(ampalibe.source.env)" > .env`;
     echo -e "~\033[32m 👌 \033[0m | Env file created";
 
+elif [ "$1" == "lang" ]; then
+    if ! [ -f "core.py" ]; then
+        >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
+        exit 1
+    fi
+    `$python -c "import ampalibe.source;print(ampalibe.source.langs)" > langs.json`;
+    echo -e "~\033[32m 👌 \033[0m | Lang file created";
+
 elif [ "$1" == "create" ]; then
     if [ $# -eq 2 ]; then
         if [ -d "$2" ]; then
@@ -83,6 +92,8 @@ elif [ "$1" == "create" ]; then
             echo -e "~\033[32m 👌 \033[0m | Config file created";
         `$python -c "import ampalibe.source;print(ampalibe.source.core)" > $2/core.py`;
             echo -e "~\033[32m 👌 \033[0m | Core file created";
+        `$python -c "import ampalibe.source;print(ampalibe.source.langs)" > $2/langs.json`;
+            echo -e "~\033[32m 👌 \033[0m | Langs file created";
         mkdir -p $2/assets/{public,private}
             echo -e "~\033[32m 👌 \033[0m | Project Ampalibe created. \033[32mYoupii !!! 😎 \033[0m";
             echo -e "~\033[36m TIPS\033[0m |\033[0m Fill in .env file."
@@ -101,6 +112,8 @@ elif [ "$1" == "init" ]; then
             echo -e "~\033[32m 👌 \033[0m | Config file created";
         `$python -c "import ampalibe.source;print(ampalibe.source.core)" > core.py`;
             echo -e "~\033[32m 👌 \033[0m | Core file created";
+        `$python -c "import ampalibe.source;print(ampalibe.source.langs)" > langs.json`;
+            echo -e "~\033[32m 👌 \033[0m | Lang file created";
         mkdir -p assets/{public,private}
             echo -e "~\033[32m 👌 \033[0m | Project Ampalibe initiated. \033[32mYoupii !!! 😎 \033[0m";
             echo -e "~\033[36m TIPS\033[0m |\033[36m ampalibe run\033[0m for lauching project."

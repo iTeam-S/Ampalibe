@@ -1,3 +1,6 @@
+import os
+import sys
+import json
 import requests
 import urllib.parse
 
@@ -141,3 +144,31 @@ def download_file(url, file):
         f.write(res.content)
 
     return file
+
+def translate(key, lang):
+    '''
+        translate a keyword or sentence
+    '''
+    if not lang:
+        return key
+
+    if not os.path.isfile("langs.json"):
+        print(
+            "Warning! langs.json not found",
+            file=sys.stderr
+        )
+        from .source import langs
+        with open("langs.json", "w") as fichier:
+            fichier.write(langs)
+            print('langs.json created!')
+        return key
+
+    with open("langs.json") as fichier:
+        trans = json.load(fichier)
+
+    keyword = trans.get(key)
+
+    if keyword:
+        if keyword.get(lang):
+            return keyword.get(lang)
+    return key

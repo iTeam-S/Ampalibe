@@ -4,6 +4,10 @@ IF /I "%1" == "env" (
     python -c "import ampalibe.source;print(ampalibe.source.env_cmd)" > .env.bat
 )
 
+IF /I "%1" == "lang" (
+    python -c "import ampalibe.source;print(ampalibe.source.langs)" > langs.json
+)
+
 IF /I "%1" == "create" (
     md %2
     python -c "print('.env\n.env.bat\n__pycache__/\nngrok\nngrok.exe')" >> %2\.gitignore
@@ -29,6 +33,7 @@ IF /I "%1" == "run" (
     )
     python -c "import core;core.ampalibe.init.run(core.Configuration())"
 )
+
 IF /I "%1" == "version" (
     python -c "import ampalibe;print(ampalibe.__version__)"
 )

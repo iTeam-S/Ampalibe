@@ -92,21 +92,18 @@ class Server:
             '''
                 CASE an action is set.
             '''
-            if not testmode:
+            kw = {
+                'sender_id': sender_id, 'cmd': payload,
+                'message': message, 'lang': lang
+            }
+
+            if testmode:
+                 funcs['action'].get(action)(**kw)
+            else:
                 Thread(
                     target=funcs['action'].get(action),
-                    kwargs={
-                        'sender_id': sender_id, 'cmd': payload, 
-                        'message': message, 'lang': lang
-                    }
+                    kwargs=kw
                 ).start()
-            else:
-                funcs['action'].get(action)(
-                    **{
-                        'sender_id': sender_id, 'cmd': payload,
-                        'message': message, 'lang': lang
-                    }
-                )
         else:
             if action:
                 print(
@@ -115,15 +112,15 @@ class Server:
                 )
             payload, kw = Payload.trt_payload_in(payload)
             kw['sender_id'] = sender_id
-            kw['cmd'] = Cmd(payload)
+            kw['cmd'] = Cmd(payload)  # Remake payload to CMD object
             kw['message'] = message
             kw['lang'] = lang
-            if not testmode:
+            if testmode:
+                funcs['commande'].get(payload.split()[0], funcs['commande']['/'])(**kw)
+            else:
                 Thread(
                     target=funcs['commande'].get(payload.split()[0], funcs['commande']['/']),
                     kwargs=kw
                 ).start()
-            else:
-                funcs['commande'].get(payload.split()[0], funcs['commande']['/'])(**kw)
 
         return {'status': 'ok'}

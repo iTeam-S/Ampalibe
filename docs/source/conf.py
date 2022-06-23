@@ -18,7 +18,7 @@ version = ampalibe.__version__
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_logo = "_static/ampalibe_logo.png"
-html_favicon = "_static/LOGO.png"
+html_favicon = "_static/ampalibe_logo.png"
 html_theme_options = {
     'display_version': False,
     'style_nav_header_background' : '#106262'

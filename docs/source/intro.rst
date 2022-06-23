@@ -183,3 +183,59 @@ No need to manage the length of the items to send: A next page button will be di
 
 
 .. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/5.gif
+
+
+Langage Management
+-------------------------
+
+Language management is directly managed by Ampalibe
+
+**langs.json**
+
+.. code-block:: json
+
+    {
+        "hello_world": {
+            "en": "Hello World",
+            "fr": "Bonjour le monde"
+        },
+
+        "ampalibe": {
+            "en": "Jackfruit", 
+            "fr": "Jacquier",
+            "mg": "Ampalibe"
+        }
+    }
+
+
+**core.py**
+
+.. code-block:: python
+
+    import ampalibe
+    from ampalibe import translate
+    from conf import Configuration
+
+    bot = ampalibe.init(Configuration())
+    chat = bot.chat
+    query = bot.query
+
+    @ampalibe.command('/')
+    def main(sender_id, lang, cmd, **extends):
+        chat.send_message(
+            sender_id, 
+            translate('hello_world', lang)
+        )
+        query.set_lang(sender_id, 'en')
+        query.set_action(sender_id, '/what_my_lang')
+    
+
+    @ampalibe.action('/what_my_lang')
+    def other_func(sender_id, lang, cmd, **extends):
+        query.set_action(sender_id, None)
+
+        chat.send_message(sender_id, 'Your lang is ' + lang + ' now')
+        chat.send_message(
+            sender_id, 
+            translate('hello_world', lang)
+        )

@@ -9,3 +9,4 @@ Api
    ampalibe.Payload
    ampalibe.Model
    ampalibe.download_file
+   ampalibe.translate

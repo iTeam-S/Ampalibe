@@ -180,3 +180,35 @@ def translate(key, lang):
         if keyword.get(lang):
             return keyword.get(lang)
     return key
+
+
+def simulate(message, user, conf, **params):
+    '''
+        Simulate a message send by an user
+    '''
+    data_json = {
+        "object": "page",
+        "entry": [
+            {
+                "messaging": [
+                    {
+                        "message":
+                            {
+                                "text": mes,
+                            },
+                        "sender":
+                            {
+                                "id": user
+                            }
+                    }
+                ]
+            }
+        ]
+    }
+    header = {'content-type': 'application/json; charset=utf-8'}
+    return requests.post(
+        f'http://127.0.0.1:{conf.APP_PORT}',
+        json=data_json,
+        headers=header,
+        params=params
+    )

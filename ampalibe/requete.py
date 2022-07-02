@@ -55,7 +55,7 @@ class Model:
                     `user_id` varchar(50) NOT NULL UNIQUE,
                     `action` varchar(50) DEFAULT NULL,
                     `last_use` datetime NOT NULL DEFAULT current_timestamp(),
-                    `lang` varchar(5) DEFAULT NULL,
+                    `lang` varchar(5) DEFAULT 'fr',
                     `tmp` varchar(255) DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

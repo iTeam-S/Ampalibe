@@ -69,3 +69,15 @@
 - ADD port argument in command-line for linux
 - Docker deployement in your own server
 - Docker Deployement with heroku 
+
+
+## Ampalibe 1.0.7
+
+- ADD `testmode` arg in the server to run without threads 
+- ADD `langage Management`
+    - lang managed directly by ampalibe
+    - add 'ampalibe lang' command to generate langs.json file
+    - add translate function to translate word or sentence
+    - add `set_lang` method to set lang of an user 
+
+- ADD simulate function to simulate a message.

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampalibe",                  # This is the name of the package
-    version='1.0.7',                      # The release version
+    version='1.0.8-dev',                      # The release version
     author="iTeam-$",                         # Full name of the author
     description="Ampalibe is a light open source framework for bot messenger.",
     long_description=long_description,  # Long description read from the readme

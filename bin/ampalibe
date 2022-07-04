@@ -19,7 +19,7 @@ usage() {
 }
 
 # Analyse des parametres entrée avec la commande
-while getopts "x:p:" option; do
+while getopts "x:p:l:" option; do
     case "${option}" in
         x)
             python=${OPTARG}
@@ -32,6 +32,9 @@ while getopts "x:p:" option; do
                 echo "Not a number $port"
               usage              
             fi
+            ;;
+        l) 
+            log=${OPTARG}
             ;;
         *)
             usage
@@ -149,18 +152,18 @@ elif [ "$1" == "run" ]; then
 
     if [ "$2" = "--dev" ]; then
         if [ $python = "python3" ]; then
-            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python3 -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
         else
-            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python -c 'import core;core.ampalibe.init.run(core.Configuration())'
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
         fi
 
         exit
     fi
 
     if [ $python = "python3" ]; then
-        python3 -c 'import core;core.ampalibe.init.run(core.Configuration())'
+        python3 -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
     else
-        python -c 'import core;core.ampalibe.init.run(core.Configuration())'
+        python -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
     fi
 
 else

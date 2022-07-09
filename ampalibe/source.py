@@ -8,13 +8,19 @@ export AMP_VERIF_TOKEN=
 # DATABASE AUTHENTIFICATION
 export ADAPTER=SQLITE
 #export ADAPTER=MYSQL
+#export ADAPTER=POSTGRESQL
 
-####### CASE MYSQL ADAPTER
+####### CASE MYSQL OR POSTGRESQL ADAPTER
 export DB_HOST=
 export DB_USER=
 export DB_PASSWORD=
 export DB_NAME=
-export DB_PORT=3306
+
+# CASE MYSQL ADAPTER
+# export DB_PORT=3306
+# CASE POSTGRESQL ADAPTER
+# export DB_PORT=5432
+
 
 ####### CASE SQLITE ADAPTER
 export DB_FILE=ampalibe.db
@@ -130,6 +136,3 @@ langs = """{
     }
 }
 """
-
-
-

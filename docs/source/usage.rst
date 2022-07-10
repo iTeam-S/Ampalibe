@@ -25,6 +25,13 @@ OR
    $ pip install ampalibe[mysql-connector-python]
 
 
+if you use postgresql as database, you have to install `psycopg2`  with ampalibe
+
+.. code-block:: console
+
+   $ pip install ampalibe[psycopg2]
+
+
 Creation of a new project
 -------------------------
 
@@ -70,6 +77,9 @@ Understanding of files
 
    * ``core.py`` file containing the starting point of the code
 
+   * ``langs.json`` file containing translated strings
+
+   
 .. important::
 
    .env file is env.bat in Windows
@@ -85,8 +95,8 @@ How to complete the environment variable file
 
    * **AMP_ACCESS_TOKEN** Facebook Page access token
    * **AMP_VERIF_TOKEN** Token that Facebook use as part of the recall URL check.
-   * **ADAPTER** type of database used by ampalibe (SQLITE OR MYSQL) 
-      * **FOR MYSQL ADAPTER**
+   * **ADAPTER** type of database used by ampalibe (SQLITE OR MYSQL OR POSTGRESQL) 
+      * **FOR MYSQL ADAPTER OR POSTGRESQL**
          * *DB_HOST**
          * *DB_USER*
          * *DB_PASSWORD*
@@ -130,7 +140,7 @@ for dev mode with **Hot Reload**
    Ampalibe use uvicorn to run server, so it is an output of uvicorn
 
 
-You will need to configure a Facebook application, a Facebook page, get the access to the page, link the application to the page, configure a webhook for your app before you can really start using __Ampalibe__.
+You will need to configure a Facebook application, a Facebook page, get the access to the page, link the application to the page, configure a webhook for your app before you can really start using Ampalibe.
 
 
 `This app setup guide <https://developers.facebook.com/docs/messenger-platform/getting-started/app-setup/>`_ should help

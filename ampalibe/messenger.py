@@ -46,6 +46,29 @@ class Messenger:
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_custom(self, json, endpoint="/messages"):
+        """
+            This method send a custom json, 
+            use for the api not implemented in ampalibe.
+
+            Args:
+                json: A json object
+                endpoint: A endpoint of facebook api
+                    /messages by default like other endpoint
+        """
+        header = {'content-type': 'application/json; charset=utf-8'}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + endpoint,
+            json=json,
+            headers=header,
+            params=params
+        )
+        return self.__analyse(res)
+
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_message(self, dest_id, message, prio=False):
         """
             This method allows you to send a text message to the given recipient,
@@ -195,9 +218,10 @@ class Messenger:
         return self.__analyse(res)
 
 
-    def send_result(self, dest_id, elements, quick_rep=None, next=False):
-        print("Deprecated: Use send_template instead!")
-        return self.send_template(dest_id, elements, quick_rep=quick_rep, next=next)
+    def send_result(self, **ext):
+        raise Exception(
+            "Deprecated: Use send_template instead!"
+        )
 
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)

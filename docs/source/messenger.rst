@@ -360,3 +360,16 @@ discover and access the core functionality of your Messenger bot at any point in
 
     chat.persistent_menu(sender_id, persistent_menu)
 
+
+send_custom
+________________
+
+it uses to implemend an api that not yet implemend in Ampalibe.
+
+refer to other api in this link https://developers.facebook.com/docs/messenger-platform 
+
+**Args**:
+    
+        *custom_json (dict)*: the json who want send
+        *endpoint (str)*: the endpoint if is not '/messages'
+

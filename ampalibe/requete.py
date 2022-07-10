@@ -34,19 +34,15 @@ class Model:
         """
         if self.ADAPTER == "MYSQL":
             import mysql.connector
-
             self.db = mysql.connector.connect(**self.DB_CONF)
-            self.cursor = self.db.cursor()
         elif self.ADAPTER == "POSTGRESQL":
             import psycopg2
-
             self.db = psycopg2.connect(**self.DB_CONF)
-            self.cursor = self.db.cursor()
         else:
             import sqlite3
-
             self.db = sqlite3.connect(self.DB_CONF)
-            self.cursor = self.db.cursor()
+
+        self.cursor = self.db.cursor()
 
     def __init_db(self):
         """

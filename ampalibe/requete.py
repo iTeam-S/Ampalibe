@@ -187,7 +187,8 @@ class Model:
         else:
             req = "SELECT tmp FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (user_id,))
-        return self.cursor.fetchone()[0]
+        res = self.cursor.fetchone()
+        return res if res is None else res[0]
 
     @verif_db
     def set_temp(self, user_id, key, value):

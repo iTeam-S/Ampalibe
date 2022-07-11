@@ -42,14 +42,9 @@ pip install https://github.com/iTeam-S/Ampalibe/archive/refs/heads/main.zip
 if you use mysql as database, you have to install `mysql-connector` or `mysql-connector-python` with ampalibe
 
 ```s
-pip install ampalibe[psycopg2]
+pip install ampalibe[mysql-connector]
 ```
 
-OR 
-
-```s
-pip install ampalibe[mysql-connector-python]
-```
 ----------------------
 
 if you use postgresql as database, you have to install `psycopg2` with ampalibe

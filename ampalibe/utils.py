@@ -182,7 +182,7 @@ def translate(key, lang):
     return key
 
 
-def simulate(message, user, conf, **params):
+def simulate(text, sender_id, conf, **params):
     '''
         Simulate a message send by an user
     '''
@@ -194,11 +194,11 @@ def simulate(message, user, conf, **params):
                     {
                         "message":
                             {
-                                "text": mes,
+                                "text": text,
                             },
                         "sender":
                             {
-                                "id": user
+                                "id": sender_id
                             }
                     }
                 ]

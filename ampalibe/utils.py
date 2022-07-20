@@ -213,9 +213,3 @@ def simulate(text, sender_id, conf, **params):
         params=params
     )
 
-
-def amp_debug(*args):
-    """
-        secure print params into stdout
-    """
-    print(*args, file=sys.stdout)

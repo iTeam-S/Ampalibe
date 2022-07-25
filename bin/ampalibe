@@ -19,7 +19,7 @@ usage() {
 }
 
 # Analyse des parametres entrée avec la commande
-while getopts "x:p:l:" option; do
+while getopts "x:p:" option; do
     case "${option}" in
         x)
             python=${OPTARG}
@@ -32,9 +32,6 @@ while getopts "x:p:l:" option; do
                 echo "Not a number $port"
               usage              
             fi
-            ;;
-        l) 
-            log=${OPTARG}
             ;;
         *)
             usage
@@ -130,7 +127,6 @@ elif [ "$1" == "run" ]; then
         >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
         exit 1
     fi
-    source .env;
     if [ ! -z "${port}" ] ; then
         export AMP_PORT=$port;
     fi
@@ -152,18 +148,18 @@ elif [ "$1" == "run" ]; then
 
     if [ "$2" = "--dev" ]; then
         if [ $python = "python3" ]; then
-            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python3 -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- source .env; python3 -c 'import conf;import core;core.ampalibe.init.run(conf.Configuration())'
         else
-            watchmedo auto-restart --patterns="*.py;.env" --recursive -- python -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- source .env; python -c 'import conf;import core;core.ampalibe.init.run(conf.Configuration())'
         fi
 
         exit
     fi
 
     if [ $python = "python3" ]; then
-        python3 -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
+        source .env; python3 -c 'import conf;import core;core.ampalibe.init.run(conf.Configuration())'
     else
-        python -c 'import core;core.ampalibe.init.run(core.Configuration())' | tee $log
+        source .env; python -c 'import conf;import core;core.ampalibe.init.run(conf.Configuration())'
     fi
 
 else

@@ -41,6 +41,7 @@ class QuickReply:
 
 
 class Button:
+
     def __init__(self, **kwargs):
 
         self.type = kwargs.get("type", "postback")
@@ -98,6 +99,7 @@ class Button:
 
 
 class Element:
+    
     def __init__(self, **kwargs):
         self.title = kwargs.get("title")
         self.subtitle = kwargs.get("subtitle")

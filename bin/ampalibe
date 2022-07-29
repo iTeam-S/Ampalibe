@@ -127,6 +127,10 @@ elif [ "$1" == "run" ]; then
         >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
         exit 1
     fi
+    if ! [ -f "conf.py" ]; then
+        >&2 echo -e "~ \033[31mERROR !! \033[0m | conf.py not found";
+        exit 1
+    fi
     if [ ! -z "${port}" ] ; then
         export AMP_PORT=$port;
     fi

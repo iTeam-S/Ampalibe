@@ -131,4 +131,28 @@ dmypy.json
 # all bot demo
 demo*/
 
-_build/
+_build/.env
+.env.bat
+__pycache__/
+ngrok
+ngrok.exe
+.env
+.env.bat
+__pycache__/
+ngrok
+ngrok.exe
+.env
+.env.bat
+__pycache__/
+ngrok
+ngrok.exe
+.env
+.env.bat
+__pycache__/
+ngrok
+ngrok.exe
+.env
+.env.bat
+__pycache__/
+ngrok
+ngrok.exe

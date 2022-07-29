@@ -148,9 +148,9 @@ elif [ "$1" == "run" ]; then
 
     if [ "$2" = "--dev" ]; then
         if [ $python = "python3" ]; then
-            watchmedo auto-restart --patterns="*.py;.env" --recursive -- source .env; python3 -c 'import conf;import core;core.ampalibe.init.run(conf.Configuration())'
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- source .env; python3 -c 'import core;core.ampalibe.init.run()'
         else
-            watchmedo auto-restart --patterns="*.py;.env" --recursive -- source .env; python -c 'import conf;import core;core.ampalibe.init.run(conf.Configuration())'
+            watchmedo auto-restart --patterns="*.py;.env" --recursive -- source .env; python -c 'import core;core.ampalibe.init.run()'
         fi
 
         exit

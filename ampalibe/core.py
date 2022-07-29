@@ -5,12 +5,13 @@ import uvicorn
 from .requete import Model
 from threading import Thread
 from .messenger import Messenger
+from conf import Configuration
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from .utils import funcs, analyse, Cmd, Payload
 
 _req = None
-conf = None
+
 webserver = FastAPI()
 if os.path.isdir("assets/public"):
     webserver.mount(
@@ -21,24 +22,22 @@ if os.path.isdir("assets/public"):
 
 
 class Extra:
-    def __init__(self, conf) -> None:
-        self.query = Model(conf)
-        self.chat = Messenger(conf.ACCESS_TOKEN)
+    def __init__(self, *args):
+        self.query = Model()
+        self.chat = Messenger()
 
     @staticmethod
-    def run(cnf):
+    def run():
         '''
             function that run framework
         '''
-        global conf
         global _req
-        conf = cnf
-        _req = Model(cnf)
-        # Verif if WORKERS attribute exists
-        if hasattr(cnf, 'WORKERS'):
-            uvicorn.run('ampalibe:webserver', port=cnf.APP_PORT, host=cnf.APP_HOST, workers=int(cnf.WORKERS))
-        else:
-            uvicorn.run(webserver, port=cnf.APP_PORT, host=cnf.APP_HOST)
+        _req = Model()
+        uvicorn.run(
+            webserver,
+            port=Configuration.APP_PORT,
+            host=Configuration.APP_HOST
+        )
 
 
 class Server:
@@ -53,7 +52,7 @@ class Server:
         '''
         fb_token = request.query_params.get("hub.verify_token")
 
-        if fb_token == conf.VERIF_TOKEN:
+        if fb_token == Configuration.VERIF_TOKEN:
             return Response(content=request.query_params["hub.challenge"])
         return 'Failed to verify token'
 
@@ -74,7 +73,7 @@ class Server:
         lang = _req.get_lang(sender_id)
 
         if payload in ('/__next', '/__more'):
-            bot = Messenger(conf.ACCESS_TOKEN)
+            bot = Messenger()
             if os.path.isfile(f'assets/private/.__{sender_id}'):
                 elements = pickle.load(open(f'assets/private/.__{sender_id}', 'rb'))
 

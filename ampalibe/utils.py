@@ -3,6 +3,7 @@ import sys
 import json
 import requests
 import urllib.parse
+from conf import Configuration
 
 
 funcs = {'commande': {}, 'action': {}}
@@ -182,7 +183,7 @@ def translate(key, lang):
     return key
 
 
-def simulate(sender_id, text, conf, **params):
+def simulate(sender_id, text, **params):
     '''
         Simulate a message send by an user
     '''
@@ -207,7 +208,7 @@ def simulate(sender_id, text, conf, **params):
     }
     header = {'content-type': 'application/json; charset=utf-8'}
     return requests.post(
-        f'http://127.0.0.1:{conf.APP_PORT}',
+        f'http://127.0.0.1:{Configuration.APP_PORT}',
         json=data_json,
         headers=header,
         params=params

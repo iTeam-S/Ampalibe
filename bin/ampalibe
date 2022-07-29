@@ -59,7 +59,7 @@ if [ -z "${python}" ] ; then
 fi
 
 if [ "$1" == "version" ]; then
-    echo `$python -c "import ampalibe;print(ampalibe.__version__)"`
+    echo `$python -m ampalibe version`
 
 elif [ "$1" == "env" ]; then
     if ! [ -f "core.py" ]; then

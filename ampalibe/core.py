@@ -2,7 +2,7 @@ import os
 import sys
 import pickle
 import uvicorn
-from .requete import Model
+from .model import Model
 from threading import Thread
 from .messenger import Messenger
 from conf import Configuration

@@ -8,7 +8,7 @@
   <span> · </span>
     <a href="https://github.com/iTeam-S/Ampalibe/issues/">Report Bug</a>
  </h4>
- 
+
 <p>
  <b>Ampalibe</b> is a lightweight Python framework for quickly creating Facebook Messenger bots.
 It provides a new concept, it manages webhooks, processes data sent by Facebook and provides <a href="https://developers.facebook.com/docs/messenger-platform/">API Messenger</a> with advanced functions such as payload management, item length, and more.
@@ -129,7 +129,7 @@ CMD ampalibe -p $PORT run
 
 ## About 
 
-Ampalibe is a word of Malagasy 🇲🇬 origin designating the fruit jackfruit.
+Ampalibe is a word of Malagasy  <img src="https://github.com/RajaRakoto/github-docs/blob/master/dago.gif?raw=true" width=15>  origin designating the fruit jackfruit.
 
 We have made a promise to
  

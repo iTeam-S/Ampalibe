@@ -25,6 +25,7 @@ if sys.argv[0] == '-m' and len(sys.argv) > 1:
        
 
 from .model import Model
+from aiocron import crontab
 from .messenger import Messenger
 from .core import webserver, Extra as init
 from .utils import action, command, Payload

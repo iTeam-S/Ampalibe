@@ -1,18 +1,20 @@
 import os
 import sys
 import pickle
+import asyncio
 import uvicorn
 from .model import Model
 from threading import Thread
-from .messenger import Messenger
 from conf import Configuration
+from .messenger import Messenger
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from .utils import funcs, analyse, Cmd, Payload
 
-_req = None
+_req = None 
+loop = None
 
-webserver = FastAPI()
+webserver = FastAPI(title="Ampalibe server")
 if os.path.isdir("assets/public"):
     webserver.mount(
         "/asset",
@@ -33,6 +35,11 @@ class Extra:
         '''
         global _req
         _req = Model()
+
+        global loop
+        loop = asyncio.get_event_loop()
+        Thread(target=loop.run_forever).start()
+
         uvicorn.run(
             webserver,
             port=Configuration.APP_PORT,
@@ -44,6 +51,14 @@ class Server:
     '''
         Content of webhook
     '''
+
+    @webserver.on_event('shutdown')
+    def shutdow():
+        '''
+            function that shutdown crontab server
+        '''
+        loop.call_soon_threadsafe(loop.stop)
+
 
     @webserver.get('/')
     async def verif(request: Request):

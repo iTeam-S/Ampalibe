@@ -1,0 +1,100 @@
+name: Continious Integration
+
+on:
+  push:
+    branches: [ "ci" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install flake8
+
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 ampalibe --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    - name: Build the Docker image
+      run: bash automate/deploy.sh
+
+    - name: Test du serveur web
+      run: |
+        sudo lsof -i:4555
+        if [ $? -eq 0 ]; then
+          echo "Server Web Running"
+        else
+          echo "Server Web Not Runing" 
+          exit 1
+        fi
+    
+    - name: Envoie du Challenge Webhook
+      run: |
+        response=$(curl -X GET "http://127.0.0.1:4555/?hub.verify_token=AMPALIBE&hub.challenge=CHALLENGE_ACCEPTED&hub.mode=subscribe")
+        if [ $response = "CHALLENGE_ACCEPTED" ]; then
+          echo "OK! : $response"
+        else
+          echo KO!
+          exit 1
+        fi
+
+    - name: "Test du reception de l'evenement text"
+      run: |
+        response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "message": {"text":"TEST_MESSAGE"} }]}]}')
+        if [ $response = '{"status":"ok"}' ]; then
+          echo "Message: OK"
+        else
+          echo KO!
+          exit 1
+        fi
+
+    - name: "Test du reception de l'evenement postback"
+      run: |
+        response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "postback": {"title": "TITLE-FOR-THE-CTA", "payload": "USER-DEFINED-PAYLOAD"} }]}]}')
+        if [ $response = '{"status":"ok"}' ]; then
+          echo "Postback: OK"
+        else
+          echo KO!
+          exit 1
+        fi
+
+    - name: "Test du reception de l'evenement read"
+      run: |
+        response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "read":{"watermark":1458668856253} }]}]}')
+        if [ $response = '{"status":"ok"}' ]; then
+          echo "Read: OK"
+        else
+          echo KO!
+          exit 1
+        fi
+
+    - name: "Test du reception de l'evenement delivery"
+      run: |
+        response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "delivery":{"watermark":1458668856253} }]}]}')
+        if [ $response = '{"status":"ok"}' ]; then
+          echo "Delivré: OK"
+        else
+          echo KO!
+          exit 1
+        fi
+
+    - name: "Test du reception de l'evenement reaction"
+      run: |
+        response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "reaction":{"reaction": "love", "action": "react"} }]}]}')
+        if [ $response = '{"status":"ok"}' ]; then
+          echo "REACTION: OK"
+        else
+          echo KO!
+          exit 1
+        fi
+

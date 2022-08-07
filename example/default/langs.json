@@ -1,0 +1,13 @@
+{
+    "hello_world": {
+        "en": "Hello World",
+        "fr": "Bonjour le monde"
+    },
+
+    "ampalibe": {
+        "en": "Jackfruit", 
+        "fr": "Jacquier",
+        "mg": "Ampalibe"
+    }
+}
+

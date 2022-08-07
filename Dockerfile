@@ -1,8 +1,10 @@
 FROM python:3.10.4
 
-WORKDIR /usr/src/app
+ADD . /opt/
 
-RUN pip install --no-cache-dir ampalibe==1.0.7 mysql-connector
+RUN cd /opt/ampalibe && python setup.py install && rm -r ampalibe.egg-info build dist
+
+WORKDIR /usr/src/app
 
 CMD if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirements.txt ; fi ; \
  ampalibe run 

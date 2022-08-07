@@ -20,8 +20,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],                      # Information to filter the project on PyPi website
-    python_requires='>=3.7',
-    py_modules=["ampalibe"],                      # Name of the python package
+    python_requires='>=3.7',                   # Name of the python package
     install_requires=[
         "fastapi", "uvicorn", "retry", "requests", "colorama",
         "requests_toolbelt", "watchdog", "aiocron"

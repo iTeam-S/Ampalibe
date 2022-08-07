@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 ADD . /usr/src/app
 
-RUN python setup.py install && rm -rf *
+RUN python setup.py install --force && rm -rf *
 
 
 CMD if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirements.txt ; fi ; \

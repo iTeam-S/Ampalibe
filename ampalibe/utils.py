@@ -6,12 +6,13 @@ import urllib.parse
 from conf import Configuration
 
 
-funcs = {'commande': {}, 'action': {}}
+funcs = {'commande': {}, 'action': {}, 'event': {}}
 
 class Cmd(str):
     '''
         Object for text of message
     '''
+    webhook = 'message'
     __atts = []
 
     def __init__(self, text):
@@ -86,10 +87,13 @@ def analyse(data):
 
     for event in data['entry']:
         messaging = event['messaging']
+
         for message in messaging:
+
+            sender_id = message['sender']['id']
+
             if message.get('message'):
-                # Get user_id
-                sender_id = message['sender']['id']
+                
                 if message['message'].get('attachments'):
                     # Get file name
                     data = message['message'].get('attachments')
@@ -104,10 +108,27 @@ def analyse(data):
                 elif message['message'].get('text'):
                     # if the response is a simple text
                     return  sender_id, Cmd(message['message'].get('text')), message
+
             if message.get('postback'):
-                recipient_id = message['sender']['id']
-                pst_payload = message['postback']['payload']
-                return recipient_id, Cmd(pst_payload), message
+                recipient_id = sender_id
+                pst_payload = Cmd(message['postback']['payload'])
+                pst_payload.webhook = 'postback'
+                return recipient_id, pst_payload, message
+
+            if message.get('read'):
+                watermark = Cmd(message['read']['watermark'])
+                watermark.webhook = 'read'
+                return sender_id, watermark, message
+
+            if message.get('delivery'):
+                watermark = Cmd(message['delivery']['watermark'])
+                watermark.webhook = 'delivery'
+                return sender_id, watermark, message
+
+            if message.get('reaction'):
+                reaction = Cmd(message['reaction']['reaction'])
+                reaction.webhook = message['reaction']['action']
+                return sender_id, reaction, message
 
 
 def command(*args, **kwargs):
@@ -127,6 +148,16 @@ def action(*args, **kwargs):
     """
     def call_fn(function):
         funcs['action'][args[0]] = function
+    return call_fn
+
+
+def event(*args, **kwargs):
+    """
+        A decorator that registers the function as the route
+            of a defined event handler.
+    """
+    def call_fn(function):
+        funcs['event'][args[0]] = function
     return call_fn
 
 

@@ -114,5 +114,5 @@ from .model import Model  # noqa: E402
 from aiocron import crontab  # noqa: E402
 from .messenger import Messenger  # noqa: E402
 from .core import webserver, Extra as init  # noqa: E402
-from .utils import action, command, Payload  # noqa: E402
+from .utils import event, action, command, Payload  # noqa: E402
 from .utils import translate, download_file, simulate  # noqa: E402

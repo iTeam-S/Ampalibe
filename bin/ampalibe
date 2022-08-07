@@ -1,21 +1,7 @@
 #!/bin/bash
-
-# utile pour l'output de l'erreur
-rouge='\e[0;31m'
-neutre='\e[0;m'
-vert='\e[0;32m'
-
 # fonction affichant un output d'aide au cas de mauvaise utilisation de la commande
 usage() { 
-    echo -e "\nUsage: ${vert}$0 {create,init,env,run,version,help} \n${neutre}" 1>&2;
-    echo -e "create ...: create a new project in a new directory specified\n" 1>&2;
-    echo -e "init: create a new project in current dir\n" 1>&2;
-    echo -e "version: show the current version\n" 1>&2;
-    echo -e "env: generate only a .env file\n" 1>&2;
-    echo -e "lang: generate only a langs.json file\n" 1>&2;
-    echo -e "run [--dev]: run the server, autoreload if --dev is specified\n" 1>&2;
-    echo -e "help: show this current help\n" 1>&2;
-    exit 1;
+    python -m ampalibe usage
 }
 
 # Analyse des parametres entrée avec la commande

@@ -41,7 +41,7 @@ def init_proj(path):
 
 if sys.argv[0] == '-m' and len(sys.argv) > 1:
     if sys.argv[1] == 'version':
-        print(__version__)
+        print(__version__, " ⭐")
 
     elif sys.argv[1] == 'init':
         print("~\033[32m 👌 \033[0m | Initiating  ...")
@@ -89,6 +89,23 @@ if sys.argv[0] == '-m' and len(sys.argv) > 1:
         ~\033[32m 👌\033[0m | Env Loaded
         ~\033[32m 👌\033[0m | Ampalibe running...
         """), "\n")
+
+    elif sys.argv[1] == "usage":
+        print(
+            inspect.cleandoc(
+                '''
+                    Usage: \033[32m ampalibe { create, init, env, run, version, help } \033[0m
+                    ------
+                    👉 create ...: create a new project in a new directory specified
+                    👉 init: create a new project in current dir
+                    👉 version: show the current version
+                    👉 env: generate only a .env file
+                    👉 lang: generate only a langs.json file
+                    👉 run [--dev]: run the server, autoreload if --dev is specified
+                    help: show this current help
+                '''
+            )
+        )
 
     sys.exit(0)
 

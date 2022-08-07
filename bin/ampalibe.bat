@@ -2,18 +2,21 @@
 
 IF /I "%1" == "env" (
     python -m ampalibe env
+    exit
 )
 
 IF /I "%1" == "lang" (
     python -m ampalibe lang
+    exit
 )
 
 IF /I "%1" == "create" (
     python -m ampalibe create %2
-
+    exit
 )
 IF /I "%1" == "init" (
     python -m ampalibe init
+    exit
 )
 IF /I "%1" == "run" (
 
@@ -35,8 +38,12 @@ IF /I "%1" == "run" (
         exit
     )
     python -c "import core;core.ampalibe.init.run()"
+    exit
 )
 
 IF /I "%1" == "version" (
     python -m ampalibe version
+    exit
 )
+
+python -m ampalibe usage

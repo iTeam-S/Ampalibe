@@ -6,7 +6,7 @@ import colorama
 from .source import *
 
 
-__version__ = '1.0.8-alpha-dev'
+__version__ = '1.1.0-beta-dev'
 __author__ = 'iTeam-$'
 
 
@@ -41,7 +41,7 @@ def init_proj(path):
 
 if sys.argv[0] == '-m' and len(sys.argv) > 1:
     if sys.argv[1] == 'version':
-        print(__version__, " ⭐")
+        print("\033[32m" + __version__, "⭐ \033[0m")
 
     elif sys.argv[1] == 'init':
         print("~\033[32m 👌 \033[0m | Initiating  ...")
@@ -94,15 +94,15 @@ if sys.argv[0] == '-m' and len(sys.argv) > 1:
         print(
             inspect.cleandoc(
                 '''
-                    Usage: \033[32m ampalibe { create, init, env, run, version, help } \033[0m
+                    Usage: ampalibe \033[32m { create, init, env, run, version, help } \033[0m
                     ------
-                    👉 create ...: create a new project in a new directory specified
-                    👉 init: create a new project in current dir
-                    👉 version: show the current version
-                    👉 env: generate only a .env file
-                    👉 lang: generate only a langs.json file
-                    👉 run [--dev]: run the server, autoreload if --dev is specified
-                    help: show this current help
+                    👉 \033[32m create ... : \033[0m create a new project in a new directory specified
+                    👉 \033[32m init: \033[0m create a new project in current dir
+                    👉 \033[32m version: \033[0m show the current version
+                    👉 \033[32m env: \033[0m generate only a .env file
+                    👉 \033[32m lang: \033[0m generate only a langs.json file
+                    👉 \033[32m run [--dev]: \033[0m run the server, autoreload if --dev is specified
+                    👉 \033[32m help: \033[0m show this current help
                 '''
             )
         )

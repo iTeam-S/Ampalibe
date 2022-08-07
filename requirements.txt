@@ -4,3 +4,5 @@ retry
 requests_toolbelt
 requests
 watchdog
+aiocron
+colorama

@@ -1,39 +1,49 @@
 @ echo off
 
 IF /I "%1" == "env" (
-    python -c "import ampalibe.source;print(ampalibe.source.env_cmd)" > .env.bat
+    python -m ampalibe env
+    exit
 )
 
 IF /I "%1" == "lang" (
-    python -c "import ampalibe.source;print(ampalibe.source.langs)" > langs.json
+    python -m ampalibe lang
+    exit
 )
 
 IF /I "%1" == "create" (
-    md %2
-    python -c "print('.env\n.env.bat\n__pycache__/\nngrok\nngrok.exe')" >> %2\.gitignore
-    python -c "import ampalibe.source;print(ampalibe.source.env_cmd)" > %2\.env.bat
-    python -c "import ampalibe.source;print(ampalibe.source.conf)" > %2\conf.py
-    python -c "import ampalibe.source;print(ampalibe.source.core)" > %2\core.py
-    md %2\assets\public
-    md %2\assets\private
+    python -m ampalibe create %2
+    exit
 )
 IF /I "%1" == "init" (
-    python -c "print('.env\n.env.bat\n__pycache__/\nngrok\nngrok.exe')" >> .gitignore
-    python -c "import ampalibe.source;print(ampalibe.source.env_cmd)" > .env.bat
-    python -c "import ampalibe.source;print(ampalibe.source.conf)" > conf.py
-    python -c "import ampalibe.source;print(ampalibe.source.core)" > core.py
-    md assets\public
-    md assets\private
+    python -m ampalibe init
+    exit
 )
 IF /I "%1" == "run" (
-    call .env.bat
-    IF /I "%2" == "--dev" (
-        watchmedo auto-restart --patterns="*.py;.env.bat" --recursive -- python -c "import core;core.ampalibe.init.run(core.Configuration())"
+
+    IF NOT exist "core.py" (
+        echo ERROR !! core.py not found  1>&2
+        echo Please, go to your dir project.
         exit
     )
-    python -c "import core;core.ampalibe.init.run(core.Configuration())"
+
+    IF NOT exist "conf.py" (
+        echo ERROR !! conf.py not found  1>&2
+        exit
+    )
+
+    call .env.bat
+    python -m ampalibe run
+    IF /I "%2" == "--dev" (
+        watchmedo auto-restart --patterns="*.py" --recursive -- python -c "import core;core.ampalibe.init.run()"
+        exit
+    )
+    python -c "import core;core.ampalibe.init.run()"
+    exit
 )
 
 IF /I "%1" == "version" (
-    python -c "import ampalibe;print(ampalibe.__version__)"
+    python -m ampalibe version
+    exit
 )
+
+python -m ampalibe usage

@@ -1,4 +1,5 @@
 import json
+from conf import Configuration
 
 
 class Model:
@@ -6,7 +7,7 @@ class Model:
     Object for interact with database with pre-defined function
     """
 
-    def __init__(self, conf):
+    def __init__(self, conf=Configuration):
         """
         object to interact with database
 

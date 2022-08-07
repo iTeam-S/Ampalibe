@@ -6,13 +6,14 @@ from sys import stderr
 from retry import retry
 import requests_toolbelt
 from .utils import Payload
+from conf import Configuration
 from .ui import QuickReply, Button, Element
 
 
 
 class Messenger:
     
-    def __init__(self, access_token, log_level='error'):
+    def __init__(self, log_level='error'):
         """
         Here, We need the <access token> of the facebook page we want
         to apply the bot for the purpose of page and bot interaction
@@ -24,7 +25,7 @@ class Messenger:
                 info: print access log and error log
                 quiet: do not print anything
         """
-        self.access_token = access_token
+        self.access_token = Configuration.ACCESS_TOKEN
         self.url = "https://graph.facebook.com/v13.0/me"
 
         if log_level not in ('error', 'info', 'quiet'):

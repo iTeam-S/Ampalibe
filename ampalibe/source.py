@@ -32,8 +32,6 @@ export AMP_PORT=4555
 # URL APPLICATION
 export AMP_URL=
 
-# Number of worker processes
-export WORKERS=1
 """
 
 env_cmd = """:: PAGE ACCESS TOKEN 
@@ -68,8 +66,6 @@ set AMP_PORT=4555
 :: URL APPLICATION
 set AMP_URL=
 
-:: Number of worker processes
-set WORKERS=1
 """
 core = """import ampalibe
 from conf import Configuration

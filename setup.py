@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampalibe",                  # This is the name of the package
-    version='1.0.8-dev',                      # The release version
+    version='1.1.0-beta-dev',                      # The release version
     author="iTeam-$",                         # Full name of the author
     description="Ampalibe is a light open source framework for bot messenger.",
     long_description=long_description,  # Long description read from the readme
@@ -23,8 +23,8 @@ setuptools.setup(
     python_requires='>=3.7',
     py_modules=["ampalibe"],                      # Name of the python package
     install_requires=[
-        "fastapi", "uvicorn", "retry", "requests",
-        "requests_toolbelt", "watchdog"
+        "fastapi", "uvicorn", "retry", "requests", "colorama",
+        "requests_toolbelt", "watchdog", "aiocron"
     ],  # depandance
     include_package_data=True, # Include all data file with the package
     scripts=['bin/ampalibe', 'bin/ampalibe.bat']

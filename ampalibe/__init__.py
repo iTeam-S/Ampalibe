@@ -6,7 +6,7 @@ import colorama
 from .source import *
 
 
-__version__ = '1.1.0-beta-dev'
+__version__ = '1.1.0.beta.dev'
 __author__ = 'iTeam-$'
 
 

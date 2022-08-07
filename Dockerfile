@@ -1,8 +1,11 @@
-FROM python:3.10.4
+FROM python:3.8.10
 
 WORKDIR /usr/src/app
 
-RUN pip install --no-cache-dir ampalibe==1.0.7 mysql-connector
+ADD . /usr/src/app
+
+RUN pip install -r requirements.txt && python setup.py install --force && rm -rf *
+
 
 CMD if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirements.txt ; fi ; \
  ampalibe run 

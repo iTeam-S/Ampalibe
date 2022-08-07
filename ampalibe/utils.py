@@ -124,6 +124,11 @@ def analyse(data):
                 watermark.webhook = 'delivery'
                 return sender_id, watermark, message
 
+            if message.get('reaction'):
+                reaction = Cmd(message['reaction']['reaction'])
+                reaction.webhook = message['reaction']['action']
+                return sender_id, reaction, message
+
 
 def command(*args, **kwargs):
     """

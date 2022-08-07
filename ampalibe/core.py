@@ -68,6 +68,19 @@ class Server:
 
         # data analysis and decomposition
         sender_id, payload, message = analyse(data)
+
+        if payload.webhook not in ('message', 'postback'):
+            if funcs['event'].get(payload.webhook):
+                kw = {'sender_id': sender_id, 'watermark': payload, 'message': message}
+                if testmode:
+                    funcs['event'][payload.webhook](**kw)
+                else:
+                    Thread(
+                        target=funcs['event'][payload.webhook],
+                        kwargs=kw
+                    ).start()
+            return {'status': 'ok'}
+
         _req._verif_user(sender_id)
         # get action for the current user
         action = _req.get_action(sender_id)

@@ -2,7 +2,7 @@
 import os
 import sys
 
-sys.path.appned(os.path.dirname(os.path.dirname(os.path.abspath(".."))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(".."))))
 import ampalibe
 
 # -- Project information

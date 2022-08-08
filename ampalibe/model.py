@@ -1,5 +1,5 @@
 import json
-from conf import Configuration
+from conf import Configuration  # type: ignore
 
 
 class Model:
@@ -35,12 +35,15 @@ class Model:
         """
         if self.ADAPTER == "MYSQL":
             import mysql.connector
+
             self.db = mysql.connector.connect(**self.DB_CONF)
         elif self.ADAPTER == "POSTGRESQL":
             import psycopg2
+
             self.db = psycopg2.connect(**self.DB_CONF)
         else:
             import sqlite3
+
             self.db = sqlite3.connect(self.DB_CONF)
 
         self.cursor = self.db.cursor()

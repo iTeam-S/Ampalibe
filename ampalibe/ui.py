@@ -1,39 +1,40 @@
-'''
+"""
     List of All UI Widget Messenger 
-'''
+"""
 
 
 class QuickReply:
-
     def __init__(self, **kwargs):
-        '''
-            Object that can be used to generated a quick_reply
-        '''
-        self.content_type = kwargs.get('content_type', 'text')
-        if self.content_type not in ('text', 'user_phone_number', 'user_email'):
-            raise ValueError("content_type can only be 'text', 'user_phone_number', 'user_email'")
+        """
+        Object that can be used to generated a quick_reply
+        """
+        self.content_type = kwargs.get("content_type", "text")
+        if self.content_type not in ("text", "user_phone_number", "user_email"):
+            raise ValueError(
+                "content_type can only be 'text', 'user_phone_number', 'user_email'"
+            )
 
-        self.title = kwargs.get('title')
-        self.payload = kwargs.get('payload')
+        self.title = kwargs.get("title")
+        self.payload = kwargs.get("payload")
 
-        if self.content_type == 'text' and not self.payload:
+        if self.content_type == "text" and not self.payload:
             raise ValueError("payload must be present for text")
 
-        if self.content_type == 'text' and not self.title:
+        if self.content_type == "text" and not self.title:
             raise ValueError("title must be present for text")
 
-        self.image_url = kwargs.get('image_url')
+        self.image_url = kwargs.get("image_url")
 
     @property
     def value(self):
-        res = {'content_type': self.content_type}
+        res = {"content_type": self.content_type}
 
-        if self.content_type == 'text':
-            res['title'] = self.title
-            res['payload'] = self.payload
+        if self.content_type == "text":
+            res["title"] = self.title
+            res["payload"] = self.payload
 
             if self.image_url:
-                res['image_url'] = self.image_url 
+                res["image_url"] = self.image_url
         return res
 
     def __str__(self):
@@ -41,7 +42,6 @@ class QuickReply:
 
 
 class Button:
-
     def __init__(self, **kwargs):
 
         self.type = kwargs.get("type", "postback")
@@ -99,7 +99,6 @@ class Button:
 
 
 class Element:
-    
     def __init__(self, **kwargs):
         self.title = kwargs.get("title")
         self.subtitle = kwargs.get("subtitle")
@@ -133,10 +132,8 @@ class Element:
             res["image_url"] = self.image
 
         res["buttons"] = [button.value for button in self.buttons]
-        
+
         return res
 
     def __str__(self):
         return str(self.value)
-
- 

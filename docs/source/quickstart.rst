@@ -9,13 +9,13 @@ A minimal Ampalibe application looks something like this:
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Messenger
 
-    bot = ampalibe.init(Configuration())
+    chat = Messenger()
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
-        bot.chat.send_message(sender_id, "Hello, Ampalibe")
+    def main(sender_id, cmd, **ext):
+        chat.send_message(sender_id, "Hello, Ampalibe")
 
 
 So what did that code do?
@@ -25,9 +25,9 @@ So what did that code do?
 
    * ``line 1`` we import ampalibe package.
    
-   * ``line 2`` we import Configuration class which contains our env variable.
+   * ``line 2`` we import Messenger class which contains our messenger api.
 
-   * ``line 4`` we inite ampalibe with configuration and store the result instance. 
+   * ``line 4`` we inite ampalibe Messenger api and store the result instance. 
 
    *  we create a function decorated by ampalibe.command('/') to say Ampalibe that it's the main function.
 
@@ -51,13 +51,13 @@ If no corresponding command is found, it launches the main function
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Messenger
 
-    bot = ampalibe.init(Configuration())
+    chat = Messenger()
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
-        bot.chat.send_message(sender_id, "Hello, Ampalibe")
+    def main(sender_id, cmd, **ext):
+        chat.send_message(sender_id, "Hello, Ampalibe")
 
     '''
         if the message received start with '/eat'
@@ -67,7 +67,7 @@ If no corresponding command is found, it launches the main function
         cmd value contains /eat 1 jackfruit
     '''
     @ampalibe.command('/eat')
-    def spec(sender_id, cmd, **extends):
+    def spec(sender_id, cmd, **ext):
         print(sender_id)  # 1555554455
         print(cmd)  # '1 jackfruit'
 
@@ -76,13 +76,13 @@ If no corresponding command is found, it launches the main function
        ex: /drink_a_jackfruit_juice
     '''
     @ampalibe.command('/drink_a_jackfruit_juice')
-    def spec(sender_id, cmd, **extends):
+    def spec(sender_id, cmd, **ext):
         print(sender_id)  # 1555554455
         print(cmd)  #  /drink_a_jackfruit_juice
 
 .. note::
 
-   When we create a function decorated by ampalibe.command, ``**extends`` parameter must be present
+   When we create a function decorated by ampalibe.command, ``**ext`` parameter must be present
 
 Action
 ----------
@@ -98,19 +98,18 @@ in this example, we will use two things, the **action decorator** and the **quer
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Model, Messenger
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    chat = Messenger()
+    query = Model()
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         chat.send_message(sender_id, 'Enter your name')
         query.set_action(sender_id, '/get_name')
         
     @ampalibe.action('/get_name')
-    def get_name(sender_id,  cmd, **extends):
+    def get_name(sender_id,  cmd, **ext):
         query.set_action(sender_id, None)  #  clear current action
         chat.send_message(sender_id, f'Hello {cmd}')
 
@@ -119,19 +118,18 @@ in this example, we will use two things, the **action decorator** and the **quer
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Model, Messenger
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    chat = Messenger()
+    query = Model()
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         chat.send_message(sender_id, 'Enter a number')
         query.set_action(sender_id, '/get_number')
         
     @ampalibe.action('/get_number')
-    def get_number(sender_id, cmd, **extends):
+    def get_number(sender_id, cmd, **ext):
         query.set_action(sender_id, None)  #  clear current action
         if cmd.isdigit():
             if int(cmd) % 2 == 0:
@@ -166,19 +164,18 @@ the methods used are **set_temp**, **get_temp**, **del_temp**
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Model, Messenger
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    chat = Messenger()
+    query = Model()
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         chat.send_message(sender_id, 'Enter your mail')
         query.set_action(sender_id, '/get_mail')
         
     @ampalibe.action('/get_mail')
-    def get_mail(sender_id, cmd, **extends):
+    def get_mail(sender_id, cmd, **ext):
         # save the mail in temporary data
         query.set_temp(sender_id, 'mail', cmd)
 
@@ -187,7 +184,7 @@ the methods used are **set_temp**, **get_temp**, **del_temp**
 
 
     @ampalibe.action('/get_password')
-    def get_password(sender_id, cmd, **extends):
+    def get_password(sender_id, cmd, **ext):
         query.set_action(sender_id, None)  # clear current action
         # get mail in temporary data
         mail = query.get_temp(sender_id, 'mail')  
@@ -207,16 +204,14 @@ You can send data with ``Payload`` object and get it in destination function's p
 
     import ampalibe
     # import the Payload class
-    from ampalibe import Payload
+    from ampalibe import Messenger, Payload
     from ampalibe.ui import QuickReply
-    from conf import Configuration
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
+    chat = Messenger()
 
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         quick_rep = [
             QuickReply(
                 title='Angela',
@@ -231,7 +226,7 @@ You can send data with ``Payload`` object and get it in destination function's p
         
 
     @ampalibe.command('/member')
-    def get_membre(sender_id, cmd, name, **extends):
+    def get_membre(sender_id, cmd, name, **ext):
         '''
             You can receive the arguments payload in extends or 
             specifying the name of the argument in the parameters
@@ -258,21 +253,21 @@ for files you use as a URL file, you must put assets/public, in assets/private o
     '''
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Messenger
+    from conf import Configuration as config
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
+    chat = Messenger()
 
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         '''
             to get a file in assets/public folder, 
             the route is <adresse>/asset/<file>
         '''
         chat.send_file_url(
             sender_id,
-            Configuration.APP_URL + '/asset/iTeamS.png', 
+            config.APP_URL + '/asset/iTeamS.png', 
             filetype='image'
         )
 
@@ -310,17 +305,17 @@ So you can use it in translate function
 
     import ampalibe
     from ampalibe import translate
-    from conf import Configuration
+    from ampalibe import Model, Messenger
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    chat = Messenger()
+    query = Model()
 
     @ampalibe.command('/')
-    def main(sender_id, lang, cmd, **extends):
+    def main(sender_id, lang, cmd, **ext):
         chat.send_message(
             sender_id, 
             translate('hello_world', lang)
+        )
 
 .. note::
 
@@ -335,7 +330,7 @@ So you can use it in translate function
     from ampalibe import translate
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         print(extends.get('lang'))  # current lang of sender_id
 
 Use the ``set_lang`` method to set the lang of an user. 
@@ -344,14 +339,14 @@ Use the ``set_lang`` method to set the lang of an user.
 
     import ampalibe
     from ampalibe import translate
-    from conf import Configuration
+    from ampalibe import Model, Messenger
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    chat = Messenger()
+    query = Model()
+
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         chat.send_message(
             sender_id, 
             "Hello world"
@@ -361,7 +356,7 @@ Use the ``set_lang`` method to set the lang of an user.
     
 
     @ampalibe.action('/what_my_lang')
-    def other_func(sender_id, lang, cmd, **extends):
+    def other_func(sender_id, lang, cmd, **ext):
         query.set_action(sender_id, None)
 
         chat.send_message(sender_id, 'Your lang is ' + lang + ' now')

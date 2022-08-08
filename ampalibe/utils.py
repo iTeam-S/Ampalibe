@@ -177,6 +177,7 @@ def download_file(url, file):
 
     return file
 
+
 def translate(key, lang):
     '''
         translate a keyword or sentence

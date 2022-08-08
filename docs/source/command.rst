@@ -3,7 +3,7 @@ Command-line
 
 .. code-block:: console
     
-    $ ampalibe [-x <PYTHONPATH> ] [ -p <PORT> ] {options}
+    $ ampalibe [ -p <PORT> ] {options}
 
 options:
 

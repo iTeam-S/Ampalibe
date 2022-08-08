@@ -15,9 +15,9 @@ we use the instances received from the *Model* object as the variable **db**, **
 
     from ampalibe import Model
 
-    class Database(Model):
-        def __init__(self, conf):
-            super().__init__(conf)
+    class CustomModel(Model):
+        def __init__(self):
+            super().__init__()
 
         @Model.verif_db
         def get_list_users(self):
@@ -35,19 +35,17 @@ we use the instances received from the *Model* object as the variable **db**, **
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
-    from model import Database
+    from ampalibe import Messenger
+    from model import CustomModel
 
-    req = Database(Configuration())
-
-
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
+    chat = Messenger()
+    query = CustomModel(Configuration())
 
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
-       print(req.get_list_users())
+    def main(sender_id, cmd, **ext):
+        # query.set_lang(sender_id, 'en') 
+        print(query.get_list_users())
 
 
 .. important::
@@ -97,15 +95,13 @@ We can make our functions everywhere, even as methods
     # importing another file contains ampalibe decorator
     import user
     import ampalibe
-    from conf import Configuration
-    from ampalibe import Payload
+    from ampalibe import Messenger, Payload
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
+    chat = Messenger()
 
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
+    def main(sender_id, cmd, **ext):
         buttons = [
             {
                 "type": "postback",
@@ -119,7 +115,7 @@ We can make our functions everywhere, even as methods
     class Admin:
 
         @ampalibe.command('/login/admin')
-        def login(sender_id, **extends):
+        def login(sender_id, **ext):
             '''
                 function is always calling when payload or message start by /login/admin
             '''
@@ -132,15 +128,15 @@ We can make our functions everywhere, even as methods
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
+    from ampalibe import Messenger
+
+    chat = Messenger()
 
 
     class User:
 
         @ampalibe.action('/get_username')
-        def username(sender_id, cmd, **extends):
+        def username(sender_id, cmd, **ext):
             bot.chat.send_message(sender_id, 'OK ' + cmd)
             bot.query.set_action(sender_id, None)
 
@@ -164,9 +160,8 @@ However, a custom end point can be created using the `FastAPI <https://fastapi.t
 
     import ampalibe
     from ampalibe import webserver
-    from conf import Configuration
-
-    bot = ampalibe.init(Configuration())
+    
+    chat = ampalibe.Messenger()
 
 
     @webserver.get('/test')
@@ -174,8 +169,8 @@ However, a custom end point can be created using the `FastAPI <https://fastapi.t
         return 'Hello, test'
 
     @ampalibe.command('/')
-    def main(sender_id, cmd, **extends):
-        bot.chat.send_message(sender_id, "Hello, Ampalibe")
+    def main(sender_id, cmd, **ext):
+        chat.send_message(sender_id, "Hello, Ampalibe")
 
     
 

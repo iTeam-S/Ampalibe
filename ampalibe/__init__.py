@@ -126,7 +126,7 @@ except ImportError:
     os.makedirs(dir_tmp, exist_ok=True)
     with open(os.path.join(dir_tmp, "conf.py"), "w") as f:
         f.write(conf)
-    sys.path.append(dir_tmp)
+    sys.path.insert(0, dir_tmp)
 finally:
     from .model import Model
     from aiocron import crontab

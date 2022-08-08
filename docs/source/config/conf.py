@@ -3,9 +3,12 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(".."))))
-print(sys.path)
-sys.path.remove(os.path.dirname(os.path.abspath(__file__)))
+
+current_path = os.path.dirname(os.path.abspath(__file__))
+sys.path.remove(current_path)
 import ampalibe
+
+sys.path.insert(0, current_path)
 
 # -- Project information
 

@@ -4,11 +4,16 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(".."))))
 
-current_path = os.path.dirname(os.path.abspath(__file__))
-sys.path.remove(current_path)
-import ampalibe
 
-sys.path.insert(0, current_path)
+current_path = os.path.dirname(os.path.abspath(__file__))
+try:
+    sys.path.remove(current_path)
+    import ampalibe
+except ValueError:
+    import ampalibe
+else:
+    sys.path.insert(0, current_path)
+
 
 # -- Project information
 
@@ -21,9 +26,9 @@ version = ampalibe.__version__
 
 # Html cinfiguration
 html_theme = "sphinx_rtd_theme"
-html_static_path = ["../_static"]
-html_logo = "../_static/ampalibe_logo.png"
-html_favicon = "../_static/ampalibe_logo.png"
+html_static_path = ["_static"]
+html_logo = "_static/ampalibe_logo.png"
+html_favicon = "_static/ampalibe_logo.png"
 html_theme_options = {
     "display_version": False,
     "style_nav_header_background": "#106262",
@@ -44,7 +49,7 @@ intersphinx_mapping = {
 }
 intersphinx_disabled_domains = ["std"]
 
-templates_path = ["../_templates"]
+templates_path = ["_templates"]
 
 # -- Options for HTML output
 

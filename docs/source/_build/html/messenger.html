@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messenger API &mdash; Ampalibe 1.1.0.beta.dev documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/ampalibe_logo.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Supported Database" href="more.html" />
+    <link rel="prev" title="Usage" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #106262" >
+            <a href="index.html" class="icon icon-home"> Ampalibe
+            <img src="_static/ampalibe_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Why use Ampalibe</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Get Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Messenger API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#send-message">send_message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-action">send_action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-quick-reply">send_quick_reply</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-template">send_template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-file-url">send_file_url</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-file">send_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-media">send_media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-button">send_button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-started">get_started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#persistent-menu">persistent_menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-custom">send_custom</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="more.html">Supported Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html#logging-and-structure">Logging and structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html#custom-endpoint">Custom endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="command.html">Command-line</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #106262" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ampalibe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Messenger API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/messenger.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="messenger-api">
+<h1>Messenger API<a class="headerlink" href="#messenger-api" title="Permalink to this headline"></a></h1>
+<p>list of methods for sending messages to messenger</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All returns of these functions are a POST Requests &lt;Response&gt;</p>
+</div>
+<section id="send-message">
+<h2>send_message<a class="headerlink" href="#send-message" title="Permalink to this headline"></a></h2>
+<p>This method allows you to send a text message to the given recipient,
+Note that the number of characters to send is limited to 2000 characters</p>
+<p><strong>Ref</strong>: <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text">https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destination</p>
+<p><em>message (str)</em>: message want to send</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;Hello world&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-action">
+<h2>send_action<a class="headerlink" href="#send-action" title="Permalink to this headline"></a></h2>
+<p>This method is used to simulate an action on messages.
+example: view, writing.</p>
+<p>Action available: [‘mark_seen’, ‘typing_on’, ‘typing_off’]</p>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions">https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destination</p>
+<p><em>action (str)</em>: action [‘mark_seen’, ‘typing_on’, ‘typing_off’]</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chat</span><span class="o">.</span><span class="n">send_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;mark_seen&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-quick-reply">
+<h2>send_quick_reply<a class="headerlink" href="#send-quick-reply" title="Permalink to this headline"></a></h2>
+<img alt="https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/quickrep.png" src="https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/quickrep.png" />
+<p>Quick replies provide a way to present a set of up to 13 buttons
+in-conversation that contain a title and optional image, and appear
+prominently above the composer.</p>
+<p>You can also use quick replies
+to request a person’s location, email address, and phone number.</p>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies">https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destoination</p>
+<p><em>quick_rep(list of Button)</em>: list of the different quick_reply to send a user</p>
+<p><em>text (str)</em>: A text of a little description for each &lt;quick_reply&gt;</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampalibe.ui</span> <span class="kn">import</span> <span class="n">QuickReply</span>
+<span class="o">...</span>
+
+<span class="n">quick_rep</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">QuickReply</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Angela&quot;</span><span class="p">,</span>
+        <span class="n">payload</span><span class="o">=</span><span class="s2">&quot;/membre&quot;</span><span class="p">,</span>
+        <span class="n">image_url</span><span class="o">=</span><span class="s2">&quot;https://i.imgflip.com/6b45bi.jpg&quot;</span>
+    <span class="p">),</span>
+    <span class="n">QuickReply</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Rivo&quot;</span><span class="p">,</span>
+        <span class="n">payload</span><span class="o">=</span><span class="s2">&quot;/membre&quot;</span><span class="p">,</span>
+        <span class="n">image_url</span><span class="o">=</span><span class="s2">&quot;https://i.imgflip.com/6b45bi.jpg&quot;</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># next=True in parameter for displaying directly next list quick_reply</span>
+<span class="n">chat</span><span class="o">.</span><span class="n">send_quick_reply</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">quick_rep</span><span class="p">,</span> <span class="s1">&#39;who do you choose ?&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampalibe.ui</span> <span class="kn">import</span> <span class="n">QuickReply</span>
+<span class="o">...</span>
+
+<span class="n">quick_rep</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">QuickReply</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;response </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">payload</span><span class="o">=</span> <span class="n">Payload</span><span class="p">(</span><span class="s2">&quot;/response&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">image_url</span><span class="o">=</span><span class="s2">&quot;https://i.imgflip.com/6b45bi.jpg&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># put a value in `next` parameter to show directly next options with the specified word.</span>
+<span class="n">chat</span><span class="o">.</span><span class="n">send_quick_reply</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">quick_rep</span><span class="p">,</span> <span class="s1">&#39;who do you choose ?&#39;</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="s1">&#39;See More&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-template">
+<h2>send_template<a class="headerlink" href="#send-template" title="Permalink to this headline"></a></h2>
+<img alt="https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/template.png" src="https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/template.png" />
+<p>The method send_template represent a Message templates who offer a way for you
+to offer a richer in-conversation experience than standard text messages by integrating
+buttons, images, lists, and more alongside text a single message. Templates can be use for
+many purposes, such as displaying product information, asking the messagerecipient to choose
+from a pre-determined set of options, and showing search results.</p>
+<p>For this, messenger only validates 10 templates
+for the first display, so we put the parameter
+&lt;next&gt; to manage these numbers if it is a number of
+elements more than 10.
+So, there is a quick_reply which acts as a “next page”
+displaying all requested templates</p>
+<p><strong>Ref</strong>: <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic">https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destination</p>
+<p><em>elements(list of Element)</em>: the list of the specific elements to define the structure for the template</p>
+<p><em>quick_rep(list of QuickReply)</em>: addition quick reply at the bottom of the template</p>
+<p><em>next(bool)</em>: this params activate the next page when elements have a length more than 10</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">Payload</span>
+<span class="kn">from</span> <span class="nn">ampalibe.ui</span> <span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">Button</span>
+
+<span class="o">...</span>
+
+<span class="n">list_items</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="n">buttons</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;postback&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Get item&quot;</span><span class="p">,</span>
+            <span class="n">payload</span><span class="o">=</span><span class="n">Payload</span><span class="p">(</span><span class="s2">&quot;/item&quot;</span><span class="p">,</span> <span class="n">id_item</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="n">list_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">Element</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;iTem&quot;</span><span class="p">,</span>
+            <span class="n">image_url</span><span class="o">=</span><span class="s2">&quot;https://i.imgflip.com/6b45bi.jpg&quot;</span><span class="p">,</span>
+            <span class="n">buttons</span><span class="o">=</span><span class="n">buttons</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># next=True for displaying directly next page button.</span>
+<span class="n">chat</span><span class="o">.</span><span class="n">send_template</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">list_items</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># next=&lt;word&gt; for displaying directly next page button with custom text.</span>
+<span class="c1"># chat.send_template(sender_id, list_items, next=&#39;Next page&#39;)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-file-url">
+<h2>send_file_url<a class="headerlink" href="#send-file-url" title="Permalink to this headline"></a></h2>
+<p>The Messenger Platform allows you to attach assets to messages, including audio,
+video, images, and files.All this is the role of this Method. The maximum attachment
+size is 25 MB.</p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for destination</p>
+<p><em>url (str)</em>: the origin url for the file</p>
+<p><em>filetype (str, optional)</em>: type of showing file[“video”,”image”,”audio”,”file”]. Defaults to ‘file’.</p>
+</div></blockquote>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages#url">https://developers.facebook.com/docs/messenger-platform/send-messages#url</a></p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chat</span><span class="o">.</span><span class="n">send_file_url</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;https://i.imgflip.com/6b45bi.jpg&#39;</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-file">
+<h2>send_file<a class="headerlink" href="#send-file" title="Permalink to this headline"></a></h2>
+<p>This method send an attachment from file</p>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages#file">https://developers.facebook.com/docs/messenger-platform/send-messages#file</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destination</p>
+<p><em>file (str)</em>: name of the file in local folder</p>
+<p><em>filetype (str, optional)</em>: type of the file[“video”,”image”,…]. Defaults to “file”.</p>
+<p><em>filename (str, optional)</em>: A filename received for de destination . Defaults to name of file in local.</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chat</span><span class="o">.</span><span class="n">send_file</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;mydocument.pdf&quot;</span><span class="p">)</span>
+
+<span class="n">chat</span><span class="o">.</span><span class="n">send_file</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;intro.mp4&quot;</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">&#39;video&#39;</span><span class="p">)</span>
+
+<span class="n">chat</span><span class="o">.</span><span class="n">send_file</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;myvoice.m4a&quot;</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">&#39;audio&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-media">
+<h2>send_media<a class="headerlink" href="#send-media" title="Permalink to this headline"></a></h2>
+<p>Method that sends files media as image and video via facebook link.
+This model does not allow any external URLs, only those on Facebook.</p>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages/template/media">https://developers.facebook.com/docs/messenger-platform/send-messages/template/media</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destination</p>
+<p><em>fb_url (str)</em>: url of the media to send on facebook</p>
+<p><em>media_type (str)</em>: the type of the media who to want send, available[“image”,”video”]</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chat</span><span class="o">.</span><span class="n">send_media</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;https://www.facebook.com/iTeam.Community/videos/476926027465187&quot;</span><span class="p">,</span> <span class="s1">&#39;video&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-button">
+<h2>send_button<a class="headerlink" href="#send-button" title="Permalink to this headline"></a></h2>
+<img alt="https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/button.png" src="https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/button.png" />
+<p>The button template sends a text message with
+up to three buttons attached. This template gives
+the message recipient different options to choose from,
+such as predefined answers to questions or actions to take.</p>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages/template/button">https://developers.facebook.com/docs/messenger-platform/send-messages/template/button</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destination</p>
+<p><em>buttons(list of Button)</em>: The list of buttons who want send</p>
+<p><em>text (str)</em>: A text to describe the fonctionnality of the buttons</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampalibe.ui</span> <span class="kn">import</span> <span class="n">Button</span>
+
+<span class="n">buttons</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Button</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;postback&#39;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Informations&#39;</span><span class="p">,</span>
+        <span class="n">payload</span><span class="o">=</span><span class="s1">&#39;/contact&#39;</span>
+    <span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">chat</span><span class="o">.</span><span class="n">send_button</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">buttons</span><span class="p">,</span> <span class="s2">&quot;What do you want to do?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="get-started">
+<h2>get_started<a class="headerlink" href="#get-started" title="Permalink to this headline"></a></h2>
+<p>Method that GET STARTED button
+when the user talk first to the bot.</p>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/get-started-button">https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/get-started-button</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id facebook for the destination</p>
+<p><em>payload (str)</em>: payload of get started, default: ‘/’</p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chat</span><span class="o">.</span><span class="n">get_started</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="persistent-menu">
+<h2>persistent_menu<a class="headerlink" href="#persistent-menu" title="Permalink to this headline"></a></h2>
+<p>The Persistent Menu disabling the composer best practices allows you to have an always-on
+user interface element inside Messenger conversations. This is an easy way to help people
+discover and access the core functionality of your Messenger bot at any point in the conversation</p>
+<p><strong>Ref</strong>:  <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu">https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>dest_id (str)</em>: user id for destination</p>
+<p><em>persistent_menu (list of dict) | (list of Button)</em>: the elements of the persistent menu to enable</p>
+<p><em>action (str, optional)</em>: the action for benefit[“PUT”,”DELETE”]. Defaults to ‘PUT’.</p>
+<p><em>locale [optionnel]</em></p>
+<p><em>composer_input_disabled [optionnel]</em></p>
+</div></blockquote>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampalibe.ui</span> <span class="kn">import</span> <span class="n">Button</span>
+<span class="o">...</span>
+
+<span class="n">persistent_menu</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Button</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;postback&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Menu&#39;</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="s1">&#39;/payload&#39;</span><span class="p">)</span>
+    <span class="n">Button</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;postback&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Logout&#39;</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="s1">&#39;/logout&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">chat</span><span class="o">.</span><span class="n">persistent_menu</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">persistent_menu</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="send-custom">
+<h2>send_custom<a class="headerlink" href="#send-custom" title="Permalink to this headline"></a></h2>
+<p>it uses to implemend an api that not yet implemend in Ampalibe.</p>
+<p>refer to other api in this link <a class="reference external" href="https://developers.facebook.com/docs/messenger-platform">https://developers.facebook.com/docs/messenger-platform</a></p>
+<p><strong>Args</strong>:</p>
+<blockquote>
+<div><p><em>custom_json (dict)</em>: the json who want send</p>
+<p><em>endpoint (str)</em>: the endpoint if is not ‘/messages’</p>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="more.html" class="btn btn-neutral float-right" title="Supported Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, iTeam-$.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

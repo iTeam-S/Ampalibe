@@ -119,8 +119,6 @@ class Configuration:
     APP_HOST = env.get('AMP_HOST', '0.0.0.0')
     APP_PORT = int(env.get('AMP_PORT', 4555))
     APP_URL = env.get('AMP_URL')
-
-    WORKERS = env.get('WORKERS', 1)
 """
 
 langs = """{

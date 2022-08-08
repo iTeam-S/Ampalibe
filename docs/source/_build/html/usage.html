@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Started &mdash; Ampalibe 1.1.0.beta.dev documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/ampalibe_logo.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="quickstart.html" />
+    <link rel="prev" title="Why use Ampalibe" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #106262" >
+            <a href="index.html" class="icon icon-home"> Ampalibe
+            <img src="_static/ampalibe_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Why use Ampalibe</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creation-of-a-new-project">Creation of a new project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-of-files">Understanding of files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#before-starting">Before starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-the-app">Run the app</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messenger.html">Messenger API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html">Supported Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html#logging-and-structure">Logging and structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html#custom-endpoint">Custom endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="command.html">Command-line</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #106262" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ampalibe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Get Started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="get-started">
+<h1>Get Started<a class="headerlink" href="#get-started" title="Permalink to this headline"></a></h1>
+<section id="installation">
+<span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<p>To use Ampalibe, first install it using pip:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install ampalibe
+</pre></div>
+</div>
+<p>if you use mysql as database, you have to install <cite>mysql-connector</cite> or <cite>mysql-connector-python</cite> with ampalibe</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install ampalibe<span class="o">[</span>mysql-connector<span class="o">]</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install ampalibe<span class="o">[</span>mysql-connector-python<span class="o">]</span>
+</pre></div>
+</div>
+<p>if you use postgresql as database, you have to install <cite>psycopg2</cite>  with ampalibe</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install ampalibe<span class="o">[</span>psycopg2<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="creation-of-a-new-project">
+<h2>Creation of a new project<a class="headerlink" href="#creation-of-a-new-project" title="Permalink to this headline"></a></h2>
+<p>After installation, an <code class="docutils literal notranslate"><span class="pre">ampalibe</span></code> executable is available in your system path,
+and we will create our project with this command.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>command-line <code class="docutils literal notranslate"><span class="pre">ampalibe</span></code> is <code class="docutils literal notranslate"><span class="pre">ampalibe.bat</span></code> for <strong>Windows</strong></p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ampalibe create myfirstbot
+</pre></div>
+</div>
+<p>There will be a created directory named <strong>myfirstbot/</strong> and all the files contained in it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can directly create project without a new directory with <strong>init</strong> command</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> myExistingDirectory
+<span class="gp">$ </span>ampalibe init
+</pre></div>
+</div>
+</section>
+<section id="understanding-of-files">
+<h2>Understanding of files<a class="headerlink" href="#understanding-of-files" title="Permalink to this headline"></a></h2>
+<img alt="https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/structure.png" src="https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/structure.png" />
+<table class="hlist"><tr><td><ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">assets/</span></code> statics file folder</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">public/</span></code> reachable via url</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">private/</span></code> not accessible via url</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.env</span></code> environment variable file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">conf.py</span></code> configuration file that retrieves environment variables</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">core.py</span></code> file containing the starting point of the code</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">langs.json</span></code> file containing translated strings</p></li>
+</ul>
+</td></tr></table>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>.env file is env.bat in Windows</p>
+</div>
+</section>
+<section id="before-starting">
+<h2>Before starting<a class="headerlink" href="#before-starting" title="Permalink to this headline"></a></h2>
+<p>How to complete the environment variable file</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p><strong>AMP_ACCESS_TOKEN</strong> Facebook Page access token</p></li>
+<li><p><strong>AMP_VERIF_TOKEN</strong> Token that Facebook use as part of the recall URL check.</p></li>
+<li><dl class="simple">
+<dt><strong>ADAPTER</strong> type of database used by ampalibe (SQLITE OR MYSQL OR POSTGRESQL)</dt><dd><ul>
+<li><dl class="simple">
+<dt><strong>FOR MYSQL ADAPTER OR POSTGRESQL</strong></dt><dd><ul>
+<li><p><em>DB_HOST*</em></p></li>
+<li><p><em>DB_USER</em></p></li>
+<li><p><em>DB_PASSWORD</em></p></li>
+<li><p><em>DB_NAME</em></p></li>
+<li><p><em>DB_PORT</em></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>FOR SQLITE ADAPTER</strong></dt><dd><ul>
+<li><p><em>DB_FILE</em></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>AMP_HOST</strong> server listening address</p></li>
+<li><p><strong>AMP_PORT</strong> server listening port</p></li>
+<li><p><strong>AMP_URL</strong> URL of the server given to Facebook</p></li>
+</ul>
+</td></tr></table>
+</section>
+<section id="run-the-app">
+<h2>Run the app<a class="headerlink" href="#run-the-app" title="Permalink to this headline"></a></h2>
+<p>In the project folder, type</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ampalibe run
+</pre></div>
+</div>
+<p>for dev mode with <strong>Hot Reload</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ampalibe run --dev
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INFO</span><span class="p">:</span>     <span class="n">Started</span> <span class="n">server</span> <span class="n">process</span> <span class="p">[</span><span class="mi">26753</span><span class="p">]</span>
+<span class="n">INFO</span><span class="p">:</span>     <span class="n">Waiting</span> <span class="k">for</span> <span class="n">application</span> <span class="n">startup</span><span class="o">.</span>
+<span class="n">INFO</span><span class="p">:</span>     <span class="n">Application</span> <span class="n">startup</span> <span class="n">complete</span><span class="o">.</span>
+<span class="n">INFO</span><span class="p">:</span>     <span class="n">Uvicorn</span> <span class="n">running</span> <span class="n">on</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">4555</span> <span class="p">(</span><span class="n">Press</span> <span class="n">CTRL</span><span class="o">+</span><span class="n">C</span> <span class="n">to</span> <span class="n">quit</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ampalibe use uvicorn to run server, so it is an output of uvicorn</p>
+</div>
+<p>You will need to configure a Facebook application, a Facebook page, get the access to the page, link the application to the page, configure a webhook for your app before you can really start using Ampalibe.</p>
+<p><a class="reference external" href="https://developers.facebook.com/docs/messenger-platform/getting-started/app-setup/">This app setup guide</a> should help</p>
+<p>OR</p>
+<p>See <a class="reference external" href="https://www.youtube.com/watch?v=Sg2P9uFJEF4&amp;list=PL0zWFyU4-Sk5FcKJpBTp0-_nDm0kIQ5sY&amp;index=1/">this video</a> on Youtube</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Why use Ampalibe" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, iTeam-$.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

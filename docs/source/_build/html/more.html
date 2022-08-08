@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supported Database &mdash; Ampalibe 1.1.0.beta.dev documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/ampalibe_logo.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Api" href="api.html" />
+    <link rel="prev" title="Messenger API" href="messenger.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #106262" >
+            <a href="index.html" class="icon icon-home"> Ampalibe
+            <img src="_static/ampalibe_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Why use Ampalibe</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Get Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messenger.html">Messenger API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Supported Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#logging-and-structure">Logging and structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure">Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#custom-endpoint">Custom endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="command.html">Command-line</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #106262" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ampalibe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Supported Database</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/more.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="supported-database">
+<h1>Supported Database<a class="headerlink" href="#supported-database" title="Permalink to this headline"></a></h1>
+<p>The advantage of using Ampalibe’s supported databases is that we can inherit the Model object of ampalibe to make a database request.</p>
+<p>We no longer need to make the connection to the database.</p>
+<p>we use the instances received from the <em>Model</em> object as the variable <strong>db</strong>, <strong>cursor</strong>,</p>
+<p><strong>Example</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">model.py</span></code> file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">Model</span>
+
+<span class="k">class</span> <span class="nc">CustomModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@Model</span><span class="o">.</span><span class="n">verif_db</span>
+    <span class="k">def</span> <span class="nf">get_list_users</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            CREATE CUSTOM method to communicate with database</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="s2">&quot;SELECT * from amp_user&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">core.py</span></code> file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">Messenger</span>
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">CustomModel</span>
+
+<span class="n">chat</span> <span class="o">=</span> <span class="n">Messenger</span><span class="p">()</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">CustomModel</span><span class="p">(</span><span class="n">Configuration</span><span class="p">())</span>
+
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">ext</span><span class="p">):</span>
+    <span class="c1"># query.set_lang(sender_id, &#39;en&#39;)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">get_list_users</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><em>Model.verif_db</em> is a decorator who checks that the application is well connected to the database before launching the request.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>However we can still use other databases than those currently supported</p>
+</div>
+</section>
+<section id="logging-and-structure">
+<h1>Logging and structure<a class="headerlink" href="#logging-and-structure" title="Permalink to this headline"></a></h1>
+<section id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline"></a></h2>
+<p>By default, all error in Messenger API methods is showing in output</p>
+<p>Messenger API methods response is a request &lt;Response&gt; so we can use it to view the response</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;Hello Ampalibe&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OK! NO problem&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;KO&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="structure">
+<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline"></a></h2>
+<p>Each developer is <strong>free to choose the structure he wants</strong>, by just importing the files into the core.py.</p>
+<p>We can make our functions everywhere, even as methods</p>
+<p><code class="docutils literal notranslate"><span class="pre">core.py</span></code> file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># importing another file contains ampalibe decorator</span>
+<span class="kn">import</span> <span class="nn">user</span>
+<span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">Messenger</span><span class="p">,</span> <span class="n">Payload</span>
+
+<span class="n">chat</span> <span class="o">=</span> <span class="n">Messenger</span><span class="p">()</span>
+
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">ext</span><span class="p">):</span>
+    <span class="n">buttons</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;postback&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Dashboard&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="s1">&#39;/login/admin&#39;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_button</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">buttons</span><span class="p">,</span> <span class="s1">&#39;What do you want to do?&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Admin</span><span class="p">:</span>
+
+    <span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/login/admin&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="o">**</span><span class="n">ext</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            function is always calling when payload or message start by /login/admin</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;/get_username&#39;</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;Enter your username&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">user.py</span></code> file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">Messenger</span>
+
+<span class="n">chat</span> <span class="o">=</span> <span class="n">Messenger</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+
+    <span class="nd">@ampalibe</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s1">&#39;/get_username&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">username</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">ext</span><span class="p">):</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;OK &#39;</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if you want use a MVC Pattern</p>
+<p>here is an example of an MVC template that can be used: <a class="reference external" href="https://github.com/gaetan1903/Ampalibe_MVC_Template">Ampalibe MVC Template</a></p>
+</div>
+</section>
+</section>
+<section id="custom-endpoint">
+<h1>Custom endpoint<a class="headerlink" href="#custom-endpoint" title="Permalink to this headline"></a></h1>
+<p>The web server part and the endpoints are managed directly by Ampalibe</p>
+<p>However, a custom end point can be created using the <a class="reference external" href="https://fastapi.tiangolo.com/tutorial/first-steps/">FastAPI</a> object instance</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">webserver</span>
+
+<span class="n">chat</span> <span class="o">=</span> <span class="n">ampalibe</span><span class="o">.</span><span class="n">Messenger</span><span class="p">()</span>
+
+
+<span class="nd">@webserver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/test&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello, test&#39;</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">ext</span><span class="p">):</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;Hello, Ampalibe&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="messenger.html" class="btn btn-neutral float-left" title="Messenger API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="Api" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, iTeam-$.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,9 +1,10 @@
 import os
 import sys
 import inspect
+import tempfile
 import colorama
-
-from .source import *
+from .source import env, env_cmd
+from .source import conf, core, langs
 
 
 __version__ = '1.1.0.beta.dev'
@@ -109,10 +110,19 @@ if sys.argv[0] == '-m' and len(sys.argv) > 1:
 
     sys.exit(0)
 
+try:
+    from conf import Configuration
+except ImportError:
+    dir_tmp = os.path.join(tempfile.gettempdir(),'ampalibe_temp')
+    os.makedirs(dir_tmp, exist_ok=True)
+    with open(os.path.join(dir_tmp,'conf.py') , 'w') as f:
+        f.write(conf)
+    sys.path.append(dir_tmp)
+finally:
+    from .model import Model # noqa: E402
+    from aiocron import crontab
+    from .messenger import Messenger  # noqa: E402
+    from .core import webserver, Extra as init  # noqa: E402
+    from .utils import event, action, command, Payload  # noqa: E402
+    from .utils import translate, download_file, simulate  # noqa: E402
 
-from .model import Model  # noqa: E402
-from aiocron import crontab  # noqa: E402
-from .messenger import Messenger  # noqa: E402
-from .core import webserver, Extra as init  # noqa: E402
-from .utils import event, action, command, Payload  # noqa: E402
-from .utils import translate, download_file, simulate  # noqa: E402

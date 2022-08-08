@@ -16,6 +16,7 @@ It provides a new concept, it manages webhooks, processes data sent by Facebook 
 
 <center>  
 
+<a href='https://ampalibe.readthedocs.io/en/latest/'><img src='https://readthedocs.org/projects/ampalibe/badge/?version=latest&style=flat'/></a>
 <a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml/badge.svg'/></a>
 
 </center>

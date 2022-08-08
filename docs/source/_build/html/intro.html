@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why use Ampalibe &mdash; Ampalibe 1.1.0.beta.dev documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/ampalibe_logo.png"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get Started" href="usage.html" />
+    <link rel="prev" title="Ampalibe framework" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #106262" >
+            <a href="index.html" class="icon icon-home"> Ampalibe
+            <img src="_static/ampalibe_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why use Ampalibe</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#webhooks-process-management">Webhooks &amp; process Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#action-management">Action Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#temporary-data-management">Temporary data Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#payload-management">Payload Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-messenger-api">Advanced Messenger API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#langage-management">Langage Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Get Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messenger.html">Messenger API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html">Supported Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html#logging-and-structure">Logging and structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more.html#custom-endpoint">Custom endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="command.html">Command-line</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #106262" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ampalibe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Why use Ampalibe</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="why-use-ampalibe">
+<h1>Why use Ampalibe<a class="headerlink" href="#why-use-ampalibe" title="Permalink to this headline"></a></h1>
+<section id="webhooks-process-management">
+<h2>Webhooks &amp; process Management<a class="headerlink" href="#webhooks-process-management" title="Permalink to this headline"></a></h2>
+<p><strong>No need to manage webhooks and data</strong></p>
+<blockquote>
+<div><p>messages are received directly in a main function</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">conf</span> <span class="kn">import</span> <span class="n">Configuration</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">ampalibe</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Configuration</span><span class="p">())</span>
+<span class="n">chat</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">chat</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+   <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;Hello world&#39;</span><span class="p">)</span>
+   <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;This is your message: </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+   <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;and this is your facebook id: </span><span class="si">{</span><span class="n">sender_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/1.gif" src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/1.gif" />
+</section>
+<section id="action-management">
+<h2>Action Management<a class="headerlink" href="#action-management" title="Permalink to this headline"></a></h2>
+<p><strong>Manages the actions expected by the users</strong></p>
+<blockquote>
+<div><p>define the function of the next treatment</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">conf</span> <span class="kn">import</span> <span class="n">Configuration</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">ampalibe</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Configuration</span><span class="p">())</span>
+<span class="n">chat</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">chat</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">query</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;Enter your name&#39;</span><span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;/get_name&#39;</span><span class="p">)</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s1">&#39;/get_name&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1">#  clear current action</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Hello </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/2.gif" src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/2.gif" />
+</section>
+<section id="temporary-data-management">
+<h2>Temporary data Management<a class="headerlink" href="#temporary-data-management" title="Permalink to this headline"></a></h2>
+<p>Manage temporary data easily with set, get, and delete methods</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">conf</span> <span class="kn">import</span> <span class="n">Configuration</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">ampalibe</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Configuration</span><span class="p">())</span>
+<span class="n">chat</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">chat</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">query</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;Enter your mail&#39;</span><span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;/get_mail&#39;</span><span class="p">)</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s1">&#39;/get_mail&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_mail</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="c1"># save the mail in temporary data</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;mail&#39;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Enter your password&#39;</span><span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;/get_password&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s1">&#39;/get_password&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_password</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># clear current action</span>
+    <span class="n">mail</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">get_temp</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;mail&#39;</span><span class="p">)</span>  <span class="c1"># get mail in temporary data</span>
+
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;your mail and your password are </span><span class="si">{</span><span class="n">mail</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">del_temp</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;mail&#39;</span><span class="p">)</span>  <span class="c1"># delete temporary data</span>
+</pre></div>
+</div>
+<img alt="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/3.gif" src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/3.gif" />
+</section>
+<section id="payload-management">
+<h2>Payload Management<a class="headerlink" href="#payload-management" title="Permalink to this headline"></a></h2>
+<p><strong>Manage Payload easily</strong></p>
+<blockquote>
+<div><p>send data with Payload object and get it in destination function’s parameter</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">Payload</span>
+<span class="kn">from</span> <span class="nn">conf</span> <span class="kn">import</span> <span class="n">Configuration</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">ampalibe</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Configuration</span><span class="p">())</span>
+<span class="n">chat</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">chat</span>
+
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">quick_rep</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s1">&#39;Angela&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="n">Payload</span><span class="p">(</span><span class="s1">&#39;/membre&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Angela&#39;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s1">&#39;2016-sac&#39;</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s1">&#39;Rivo&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="n">Payload</span><span class="p">(</span><span class="s1">&#39;/membre&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Rivo&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_quick_reply</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">quick_rep</span><span class="p">,</span> <span class="s1">&#39;Who?&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/membre&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_membre</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s2">&quot;Hello &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># if the arg is not defined in the list of parameters,</span>
+    <span class="c1"># it is put in the extends variable</span>
+    <span class="k">if</span> <span class="n">extends</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ref&#39;</span><span class="p">):</span>
+        <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;your ref is &#39;</span> <span class="o">+</span> <span class="n">extends</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ref&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<img alt="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/4.gif" src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/4.gif" />
+</section>
+<section id="advanced-messenger-api">
+<h2>Advanced Messenger API<a class="headerlink" href="#advanced-messenger-api" title="Permalink to this headline"></a></h2>
+<p>No need to manage the length of the items to send: A next page button will be displayed directly</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">Payload</span>
+<span class="kn">from</span> <span class="nn">conf</span> <span class="kn">import</span> <span class="n">Configuration</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">ampalibe</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Configuration</span><span class="p">())</span>
+<span class="n">chat</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">chat</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">list_items</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;item n°</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://i.imgflip.com/6b45bi.jpg&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;buttons&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;postback&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Get item&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="n">Payload</span><span class="p">(</span><span class="s2">&quot;/item&quot;</span><span class="p">,</span> <span class="n">id_item</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="c1"># next=True for displaying directly next page button.</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_template</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">list_items</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/item&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_item</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">id_item</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;item n°</span><span class="si">{</span><span class="n">id_item</span><span class="si">}</span><span class="s2"> selected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/5.gif" src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/5.gif" />
+</section>
+<section id="langage-management">
+<h2>Langage Management<a class="headerlink" href="#langage-management" title="Permalink to this headline"></a></h2>
+<p>Language management is directly managed by Ampalibe</p>
+<p><strong>langs.json</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;hello_world&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;en&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello World&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;fr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bonjour le monde&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">&quot;ampalibe&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;en&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jackfruit&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;fr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jacquier&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;mg&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ampalibe&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>core.py</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampalibe</span>
+<span class="kn">from</span> <span class="nn">ampalibe</span> <span class="kn">import</span> <span class="n">translate</span>
+<span class="kn">from</span> <span class="nn">conf</span> <span class="kn">import</span> <span class="n">Configuration</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">ampalibe</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">Configuration</span><span class="p">())</span>
+<span class="n">chat</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">chat</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">query</span>
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
+        <span class="n">sender_id</span><span class="p">,</span>
+        <span class="n">translate</span><span class="p">(</span><span class="s1">&#39;hello_world&#39;</span><span class="p">,</span> <span class="n">lang</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_lang</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;/what_my_lang&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@ampalibe</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s1">&#39;/what_my_lang&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">other_func</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">extends</span><span class="p">):</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">sender_id</span><span class="p">,</span> <span class="s1">&#39;Your lang is &#39;</span> <span class="o">+</span> <span class="n">lang</span> <span class="o">+</span> <span class="s1">&#39; now&#39;</span><span class="p">)</span>
+    <span class="n">chat</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
+        <span class="n">sender_id</span><span class="p">,</span>
+        <span class="n">translate</span><span class="p">(</span><span class="s1">&#39;hello_world&#39;</span><span class="p">,</span> <span class="n">lang</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Ampalibe framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Get Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, iTeam-$.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

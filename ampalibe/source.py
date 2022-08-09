@@ -68,12 +68,12 @@ set AMP_URL=
 
 """
 core = """import ampalibe
-from conf import Configuration
+from ampalibe import Messenger
 
-bot = ampalibe.init(Configuration())
+chat = Messenger()
 
 # create a get started option to get permission of user.
-# bot.chat.get_started()
+# chat.get_started()
 
 @ampalibe.command('/')
 def main(sender_id, cmd, **extends):
@@ -91,7 +91,7 @@ def main(sender_id, cmd, **extends):
             data sent by your payload if not set in parameter
     '''
     
-    bot.chat.send_message(sender_id, "Hello, Ampalibe")
+    chat.send_message(sender_id, "Hello, Ampalibe")
     """
 
 

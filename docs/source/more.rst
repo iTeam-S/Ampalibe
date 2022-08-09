@@ -172,5 +172,127 @@ However, a custom end point can be created using the `FastAPI <https://fastapi.t
     def main(sender_id, cmd, **ext):
         chat.send_message(sender_id, "Hello, Ampalibe")
 
+
+Crontab
+=================
+
+Since Ampalibe v1.1.0, we can use the `Crontab <https://man7.org/linux/man-pages/man5/crontab.5.html>`_ to schedule the execution of a task in the bot.
+
+
+*"run this task at this time on this date".*
+
+example of using the crontab
+
+.. code-block:: python
+
+    '''
+        Send a weather report to everyone in the morning every day at 08:00
+    '''
+
+    import ampalibe
+    from ampalibe import webserver
+    from model import CustomModel
+    
+    chat = ampalibe.Messenger()
+    query = CustomModel()
+
+    @ampalibe.crontab('0 8 * * *')
+    async def say_hello():
+        for user in query.get_list_users():
+            chat.send_message(user[0], 'Good Morning')
     
 
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **ext):
+        ...
+
+
+You can too activate your crontab for later
+
+.. code-block:: python
+
+    '''
+        Say hello to everyone in the morning every day at 08:00
+    '''
+
+    import ampalibe
+    ...
+
+    chat = ampalibe.Messenger()
+
+    def get_weather():
+        # Use a webservice to get the weather report
+        ...
+        return weather
+    
+
+    @ampalibe.crontab('0 8 * * *', start=False)
+    async def weather_report():
+        weather = get_weather()
+        for user in query.get_list_users():
+            chat.send_message(user[0], weather)
+    
+
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **ext):
+        print("activate the crontab now")
+        weather_report.start()
+
+you can also create directly in the code
+
+.. code-block:: python
+
+    '''
+        Send everyone notification every 3 hours
+    '''
+    
+    import ampalibe
+    from ampalibe import crontab
+
+    chat = ampalibe.Messenger()
+
+    def async send_notif():
+        for user in query.get_list_users():
+            chat.send_message(user[0], 'Notification for you')
+    
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **ext):
+        print('Create a crontab schedule')
+        ''' 
+        Don't forget to add argument loop=ampalibe.core.loop 
+        if the crontab is writing inside a function
+        ''''
+        crontab('0 */3 * * *', func=send_notif, loop=ampalibe.core.loop)
+
+
+.. code-block:: python
+
+    '''
+        Send a notification to a user every 3 hours
+    '''
+    
+    import ampalibe
+    from ampalibe import crontab
+
+    chat = ampalibe.Messenger()
+
+    def async send_notif(sender_id):
+        chat.send_message(sender_id, 'Notification for you')
+    
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **ext):
+        print('Create a crontabe schedule')
+        ''' 
+        Don't forget to add argument loop=ampalibe.core.loop 
+        if the crontab is running inside decorated function
+        like command, action, event
+        ''''
+        crontab('0 */3 * * *', func=send_notif, args=(sender_id,), loop=ampalibe.core.loop)
+
+.. note::
+    
+    if you don't know how to create cron syntax you can check `here <https://man7.org/linux/man-pages/man5/crontab.5.html>`_
+
+.. important::
+
+    ampalibe **crontab** use `croniter <https://github.com/kiorky/croniter>`_  for the spec, so you can check all the possibilities of time.

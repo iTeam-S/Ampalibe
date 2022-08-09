@@ -235,8 +235,8 @@ You can send data with ``Payload`` object and get it in destination function's p
 
         # if the arg is not defined in the list of parameters,
         # it is put in the extends variable
-        if extends.get('ref'):
-            chat.send_message(sender_id, 'your ref is ' + extends.get('ref'))
+        if ext.get('ref'):
+            chat.send_message(sender_id, 'your ref is ' + ext.get('ref'))
 
 
 File management
@@ -331,7 +331,7 @@ So you can use it in translate function
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
-        print(extends.get('lang'))  # current lang of sender_id
+        print(ext.get('lang'))  # current lang of sender_id
 
 Use the ``set_lang`` method to set the lang of an user. 
 

@@ -7,6 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  TAGS: iteam-s/ampalibe:latest
 
 jobs:
   build-and-push-image:
@@ -37,5 +38,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.TAGS }}
           labels: ${{ steps.meta.outputs.labels }}

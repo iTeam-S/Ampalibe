@@ -18,6 +18,8 @@ It provides a new concept, it manages webhooks, processes data sent by Facebook 
 
 <a href='https://ampalibe.readthedocs.io/en/latest/'><img src='https://readthedocs.org/projects/ampalibe/badge/?version=latest&style=flat'/></a>
 <a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml/badge.svg'/></a>
+<a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pg.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pg.yml/badge.svg'/></a>
+<a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pypi.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pypi.yml/badge.svg'/></a>
 
 </center>
 
@@ -143,10 +145,6 @@ We have made a promise to
 - keep it **light**
 - make it **easy to use**
 - do it **quickly to develop**
-
-## Ampalibe Preview 
-
-<img src="https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/1.gif"/>
 
 
 ## Contributors

@@ -8,7 +8,7 @@ from .source import env, env_cmd
 from .source import conf, core, langs
 
 
-__version__ = "1.1.0beta"
+__version__ = "1.1.0"
 __author__ = "iTeam-$"
 
 

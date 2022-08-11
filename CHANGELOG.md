@@ -84,7 +84,7 @@
 
 
 
-## Ampalibe 1.1.0beta
+## Ampalibe 1.1.0
 
 - Support for Postgres DATABASE
 - New Structure: All conf importation is optionnal now

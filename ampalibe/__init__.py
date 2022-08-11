@@ -20,7 +20,7 @@ def typing_print(text):
         sys.stdout.write(character)
         sys.stdout.flush()
         time.sleep(0.015)
-    sys.stdout.write("\n")
+    print()
 
 
 def create_env(path):
@@ -51,7 +51,7 @@ def init_proj(path):
 
 if sys.argv[0] == "-m" and len(sys.argv) > 1:
     if sys.argv[1] == "version":
-        typing_print("\033[32m" + __version__, "⭐ \033[0m")
+        typing_print("\033[32m" + __version__ + " ⭐ \033[0m")
 
     elif sys.argv[1] == "init":
         typing_print("~\033[32m 👌 \033[0m | Initiating  ...")

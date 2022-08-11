@@ -1,4 +1,4 @@
-name: Create and publish a Docker image
+name: CD Package
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN_PACKAGE }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta

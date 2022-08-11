@@ -11,6 +11,10 @@ IF /I "%1" == "lang" (
 )
 
 IF /I "%1" == "create" (
+    IF exist "%2" (
+        echo ERROR !! %2 already exists  1>&2
+        exit
+    )
     python -m ampalibe create %2
     exit
 )

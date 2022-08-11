@@ -19,7 +19,7 @@ def typing_print(text):
     for character in text:
         sys.stdout.write(character)
         sys.stdout.flush()
-        time.sleep(0.05)
+        time.sleep(0.015)
     sys.stdout.write("\n")
 
 

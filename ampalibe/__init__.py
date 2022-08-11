@@ -37,7 +37,7 @@ def init_proj(path):
     print("~\033[32m 👌 \033[0m | Config file created")
 
     for folder in {"public", "private"}:
-        os.makedirs(os.path.join(path, folder), exist_ok=True)
+        os.makedirs(os.path.join(path, "assets", folder), exist_ok=True)
 
 
 if sys.argv[0] == "-m" and len(sys.argv) > 1:

@@ -81,3 +81,22 @@
     - add `set_lang` method to set lang of an user 
 
 - ADD simulate function to simulate a message.
+
+
+
+## Ampalibe 1.1.0
+
+- Support for Postgres DATABASE
+- New Structure: All conf importation is optionnal now
+- New method for messenger api: `send_custom`
+- Make `NULL` Default for lang insted `fr`
+- FIX error in `get_temp` methode when data not exist
+- `simulate` function is ready for ampalibe 
+- Introduction of ampalibe `crontab` 
+- Add listenner for events: `messages_reads`, `messages_reactions`, `messages_delivery`
+- Continious integration for new Pull Request 
+- Continious Delivery for Github package and Pypi 
+- Rewrite `scripts` for Linux & Windows to same base code 
+- Typewriting introduction for output command
+- Documentation updated
+- Remove workers

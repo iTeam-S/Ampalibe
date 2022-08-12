@@ -1,8 +1,22 @@
 #!/bin/bash
 # fonction affichant un output d'aide au cas de mauvaise utilisation de la commande
 usage() { 
-    python -m ampalibe usage
+    python3 -m ampalibe usage
+    exit 1
 }
+
+which python3 > /dev/null
+if [ ! $? -eq 0 ]; then
+    which python > /dev/null
+    if [ ! $? -eq 0 ]; then
+        echo -e "~\033[31m Oh, Give up !! \033[0m\nNo python/python3 in path"
+        exit 1
+    fi
+    shopt -s expand_aliases
+    alias python3='python'  
+fi
+
+
 
 # Analyse des parametres entrée avec la commande
 while getopts "p:" option; do
@@ -24,14 +38,14 @@ done
 shift $((OPTIND-1))
 
 if [ "$1" == "version" ]; then
-    echo `python -m ampalibe version`
+    python3 -m ampalibe version
 
 elif [ "$1" == "env" ]; then
     if ! [ -f "core.py" ]; then
         >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
         exit 1
     fi
-        python -m ampalibe env
+        python3 -m ampalibe env
 
 
 elif [ "$1" == "lang" ]; then
@@ -39,7 +53,7 @@ elif [ "$1" == "lang" ]; then
         >&2 echo -e "~ \033[31mERROR !! \033[0m | core.py not found\n~\033[36m TIPS 👌\033[0m ~\033[0m Please, go to your dir project.";
         exit 1
     fi
-        python -m ampalibe lang
+        python3 -m ampalibe lang
 
 elif [ "$1" == "create" ]; then
     if [ $# -eq 2 ]; then
@@ -47,7 +61,7 @@ elif [ "$1" == "create" ]; then
             >&2 echo -e "~\033[31m ERROR !!\033[0m ~ A folder $2 already exists"
             exit 1
         fi
-            python -m ampalibe create $2
+            python3 -m ampalibe create $2
     else
         echo -e "~\033[31m ERROR !!\033[0m | Incorrect number of args for create"
         usage
@@ -55,7 +69,7 @@ elif [ "$1" == "create" ]; then
     fi
 elif [ "$1" == "init" ]; then
     if [ $# -eq 1 ]; then
-        python -m ampalibe init
+        python3 -m ampalibe init
     else
         >&2 echo -e "~\033[31m ERROR :(\033[0m | Incorrect number of args for init"
         exit 1
@@ -70,19 +84,21 @@ elif [ "$1" == "run" ]; then
         >&2 echo -e "~ \033[31mERROR !! \033[0m | conf.py not found";
         exit 1
     fi
-    if [ ! -z "${port}" ] ; then
-        export AMP_PORT=$port;
-    fi
-        python -m ampalibe run
 
     source .env 
 
+    if [ ! -z "${port}" ] ; then
+        export AMP_PORT=$port;
+    fi
+    
+    python3 -m ampalibe run
+
     if [ "$2" = "--dev" ]; then
-        watchmedo auto-restart --patterns="*.py" --recursive -- python -c 'import core;core.ampalibe.init.run()'
+        watchmedo auto-restart --patterns="*.py" --recursive -- python3 -c 'import core;core.ampalibe.init.run()'
         exit
     fi
 
-    python -c 'import core;core.ampalibe.init.run()'
+    python3 -c 'import core;core.ampalibe.init.run()'
 
 else
     >&2 echo -e "~\033[31m ERROR !! \033[0m | Missing knowing argument"

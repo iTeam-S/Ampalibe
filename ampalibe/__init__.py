@@ -8,7 +8,7 @@ from .source import env, env_cmd
 from .source import conf, core, langs
 
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __author__ = "iTeam-$"
 
 
@@ -101,10 +101,12 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
           / _ \ | |\/| | |_) / _ \ | |    | ||  _ \|  _|       loooooooooool
          / ___ \| |  | |  __/ ___ \| |___ | || |_) | |___        looooooool
         /_/   \_\_|  |_|_| /_/   \_\_____|___|____/|_____|         oooooo \033[0m
-        """)
+        """
+            )
         )
         typing_print(
-            "~\033[32m 👌\033[0m | Env Loaded\n~\033[32m 👌\033[0m | Ampalibe running...")
+            "~\033[32m 👌\033[0m | Env Loaded\n~\033[32m 👌\033[0m | Ampalibe running..."
+        )
 
     elif sys.argv[1] == "usage":
         typing_print(

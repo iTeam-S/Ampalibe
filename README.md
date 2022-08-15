@@ -143,9 +143,7 @@ CMD ampalibe -p $PORT run
  - Go to heroku docs for [Getting Started on Heroku with Python](https://devcenter.heroku.com/articles/getting-started-with-python?singlepage=true)
 
 
- - Define your Procfile like this 
-
-  **web: ampalibe -p $PORT run**
+ - Define your Procfile like this `web: ampalibe -p $PORT run` 
 
 ## About 
 

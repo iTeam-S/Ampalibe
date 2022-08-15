@@ -104,5 +104,14 @@
 
 ## Ampalibe 1.1.1 patch
 
-- fix port arument doesn't work on 
+- fix port argument doesn't work on 
 - fix error when python is python3 and not python
+
+## Ampalibe 1.1.2 patch
+
+- [IMP] Add indication in dockerfile
+- [FIX] Payload object instead of dict in quick_replies when build Element
+- [FIX] Fix Typo in Ampalibe definition
+- [FIX] Missing gitignore file on create & init
+- [IMP] Adapt ASGI server to be supported by Heroku/python image
+- [IMP] Command decorators priority before action decorators in ampalibe core

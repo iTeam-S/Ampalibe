@@ -1,7 +1,7 @@
 name: CD PYPI
 on:
   release:
-    types: # This configuration does not affect the page_build event above
+    types:
       - created
 jobs:
   publish:

@@ -1,8 +1,9 @@
 name: CD Package
 
 on:
-  push:
-    branches: ['main']
+  release:
+    types:
+      - created
 
 env:
   REGISTRY: ghcr.io

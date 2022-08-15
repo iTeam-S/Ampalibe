@@ -36,7 +36,7 @@ class Extra:
         loop = asyncio.get_event_loop()
         Thread(target=loop.run_forever).start()
 
-        uvicorn.run(webserver, port=Configuration.APP_PORT, host=Configuration.APP_HOST)
+        uvicorn.run("ampalibe:webserver", port=Configuration.APP_PORT, host=Configuration.APP_HOST)
 
 
 class Server:

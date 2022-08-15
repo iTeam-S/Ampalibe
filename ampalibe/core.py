@@ -106,19 +106,19 @@ class Server:
         if os.path.isfile(f"assets/private/.__{sender_id}"):
             os.remove(f"assets/private/.__{sender_id}")
 
-        commande = funcs["commande"].get(payload.split()[0])
+        command = funcs["command"].get(payload.split()[0])
         payload, kw = Payload.trt_payload_in(payload)
         kw["sender_id"] = sender_id
         kw["cmd"] = Cmd(payload)  # Remake payload to CMD object
         kw["message"] = message
         kw["lang"] = lang
-        if commande:
+        if command:
             _req.set_action(sender_id, None)
             if testmode:
-                commande(**kw)
+                command(**kw)
             else:
                 Thread(
-                    target=commande,
+                    target=command,
                     kwargs=kw,
                 ).start()
         elif action and funcs["action"].get(action):
@@ -130,17 +130,23 @@ class Server:
             else:
                 Thread(target=funcs["action"].get(action), kwargs=kw).start()
         else:
-            commande = funcs["commande"].get("/")
+            command = funcs["command"].get("/")
             if action:
-                print(f'Warning! action: "{action}" Not found', file=sys.stderr)
-            if commande:
+                print(
+                    f'\033[48:5:166m⚠ Warning!\033[0m action "{action}" undeclared',
+                    file=sys.stderr,
+                )
+            if command:
                 if testmode:
-                    commande(**kw)
+                    command(**kw)
                 else:
                     Thread(
-                        target=commande,
+                        target=command,
                         kwargs=kw,
                     ).start()
             else:
-                print("Error! Default route '/' function undeclared.", file=sys.stderr)
+                print(
+                    "\033[31mError! \033[0mDefault route '/' function undeclared.",
+                    file=sys.stderr,
+                )
         return {"status": "ok"}

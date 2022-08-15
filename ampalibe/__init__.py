@@ -48,8 +48,10 @@ def init_proj(path):
     for folder in {"public", "private"}:
         os.makedirs(os.path.join(path, "assets", folder), exist_ok=True)
 
-    print(".env\n.env.bat\n__pycache__/\nngrok\nngrok.exe",
-          file=open(f"{path}/.gitignore", "a"))
+    print(
+        ".env\n.env.bat\n__pycache__/\nngrok\nngrok.exe",
+        file=open(f"{path}/.gitignore", "a"),
+    )
 
 
 if sys.argv[0] == "-m" and len(sys.argv) > 1:

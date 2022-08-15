@@ -6,7 +6,7 @@ import urllib.parse
 from conf import Configuration  # type: ignore
 
 
-funcs = {"commande": {}, "action": {}, "event": {}}
+funcs = {"command": {}, "action": {}, "event": {}}
 
 
 class Cmd(str):
@@ -146,7 +146,7 @@ def command(*args, **kwargs):
     """
 
     def call_fn(function):
-        funcs["commande"][args[0]] = function
+        funcs["command"][args[0]] = function
 
     return call_fn
 

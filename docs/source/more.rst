@@ -296,3 +296,43 @@ you can also create directly in the code
 .. important::
 
     ampalibe **crontab** use `croniter <https://github.com/kiorky/croniter>`_  for the spec, so you can check all the possibilities of time.
+    
+    
+
+Event 
+=================
+
+Since v1.1+
+You can now listening event like `message_reads`, `message_reactions` and `message_delivery`
+with ampalibe **event** decorator.
+
+
+.. code-block:: python
+    
+    import ampalibe
+    
+    chat = ampalibe.Messenger()
+
+    @ampalibe.event('read')
+    def event_read(**ext):
+        print('message is reading')
+        print(ext)
+        
+    @ampalibe.event('delivery')
+    def event_read(**ext):
+        print('last message is delivery')
+        print(ext)
+        
+    @ampalibe.event('reaction')
+    def event_read(**ext):
+        print('A message received a reaction')
+        print(ext)
+        
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **ext):
+        chat.send_message(sender_id, "Hello, Ampalibe") 
+       
+ 
+ .. note:: 
+ 
+ The are 3 arguments for `event` decorator: *read*, *delivery*, *reaction*

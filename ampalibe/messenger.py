@@ -338,10 +338,11 @@ class Messenger:
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
-        persistent_menu = [
-            persistent.value if isinstance(persistent, Button) else persistent
-            for persistent in persistent_menu
-        ]
+        for persistent in persistent_menu:
+            if isinstance(persistent, Button):
+                persistent = persistent.value
+            if persistent.get("payload"):
+                persistent["payload"] = Payload.trt_payload_out(persistent["payload"])
 
         if action == "PUT":
             dataJSON = {

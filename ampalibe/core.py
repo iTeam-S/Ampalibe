@@ -109,7 +109,7 @@ class Server:
         command = funcs["command"].get(payload.split()[0])
         payload, kw = Payload.trt_payload_in(payload)
         kw["sender_id"] = sender_id
-        kw["cmd"] = Cmd(payload)  # Remake payload to CMD object
+        kw["cmd"] = payload
         kw["message"] = message
         kw["lang"] = lang
         if command:

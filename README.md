@@ -14,7 +14,7 @@
 It provides a new concept, it manages webhooks, processes data sent by Facebook and provides <a href="https://developers.facebook.com/docs/messenger-platform/">API Messenger</a> with advanced functions such as payload management, item length, and more.
 </p>
 
-<a href='https://github.com/iTeam-S/Ampalibe/#'><img src='https://img.shields.io/badge/version-1.1.2-%23008080'/></a>
+<a href='https://github.com/iTeam-S/Ampalibe/#'><img src='https://img.shields.io/badge/version-1.1.3dev-%23008080'/></a>
 <a href='https://ampalibe.readthedocs.io/en/latest/'><img src='https://readthedocs.org/projects/ampalibe/badge/?version=latest&style=flat'/></a>
 <a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml/badge.svg'/></a>
 <a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pg.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pg.yml/badge.svg'/></a>
@@ -120,7 +120,7 @@ See [this video](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5F
 $ docker run -d -v "${PWD}:/usr/src/app" -p 4555:4555 ghcr.io/iteam-s/ampalibe
 ```
 
-**Using heroku**
+**Using heroku container**
 
 - Go to heroku docs for [docker deploys](https://devcenter.heroku.com/articles/container-registry-and-runtime) 
 
@@ -136,6 +136,16 @@ ADD . /usr/src/app/
 CMD ampalibe -p $PORT run
 ```
 - Customize your Dockerfile if necessary
+
+
+**Using heroku python**
+
+ - Go to heroku docs for [Getting Started on Heroku with Python](https://devcenter.heroku.com/articles/getting-started-with-python?singlepage=true)
+
+
+ - Define your Procfile like this 
+
+  **web: ampalibe -p $PORT run**
 
 ## About 
 

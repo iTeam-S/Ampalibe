@@ -333,6 +333,7 @@ with ampalibe **event** decorator.
         chat.send_message(sender_id, "Hello, Ampalibe") 
        
  
- .. note:: 
  
- The are 3 arguments for `event` decorator: *read*, *delivery*, *reaction*
+.. note:: 
+ 
+    The are 3 arguments for `event` decorator: *read*, *delivery*, *reaction*

@@ -28,6 +28,12 @@ class Cmd(str):
     def attachments(self):
         return self.__atts
 
+    def copy(self, text):
+        new_cmd = Cmd(text)
+        new_cmd.__atts = self.attachments
+        new_cmd.webhook = self.webhook
+        return new_cmd
+
 
 class Payload:
     """
@@ -45,7 +51,7 @@ class Payload:
         return self.payload
 
     @staticmethod
-    def trt_payload_in(payload):
+    def trt_payload_in(payload0):
         """
         processing of payloads received in a sequence of structured parameters
 
@@ -53,7 +59,7 @@ class Payload:
         @return: payload [String] , structured parameters Dict
         """
 
-        payload = urllib.parse.unquote(str(payload))
+        payload = urllib.parse.unquote(payload0)
 
         res = {}
         while "{{" in payload:
@@ -62,7 +68,7 @@ class Payload:
             items = payload[start + 2 : end].split("===")
             res[items[0]] = items[1]
             payload = payload.replace(payload[start : end + 2], "")
-        return payload.strip(), res
+        return payload0.copy(payload.strip()), res
 
     @staticmethod
     def trt_payload_out(payload):

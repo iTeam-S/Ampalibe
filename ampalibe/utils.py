@@ -67,8 +67,8 @@ class Payload:
             end = payload.index("}}")
             items = payload[start + 2 : end].split("===")
             res[items[0]] = items[1]
-            payload = payload.replace(payload[start : end + 2], "")
-        return payload0.copy(payload.strip()), res
+            payload = payload.replace(payload[start : end + 2], "").strip()
+        return payload0.copy(payload) if isinstance(payload0, Cmd) else payload, res
 
     @staticmethod
     def trt_payload_out(payload):

@@ -106,8 +106,8 @@ class Server:
         if os.path.isfile(f"assets/private/.__{sender_id}"):
             os.remove(f"assets/private/.__{sender_id}")
 
-        command = funcs["command"].get(payload.split()[0])
         payload, kw = Payload.trt_payload_in(payload)
+        command = funcs["command"].get(payload.split()[0])
         kw["sender_id"] = sender_id
         kw["cmd"] = payload
         kw["message"] = message
@@ -126,7 +126,7 @@ class Server:
             CASE an action is set.
             """
             if testmode:
-                funcs["action"].get(action)(**kw)
+                return funcs["action"].get(action)(**kw)
             else:
                 Thread(target=funcs["action"].get(action), kwargs=kw).start()
         else:
@@ -138,7 +138,7 @@ class Server:
                 )
             if command:
                 if testmode:
-                    command(**kw)
+                    return command(**kw)
                 else:
                     Thread(
                         target=command,

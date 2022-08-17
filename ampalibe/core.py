@@ -127,8 +127,7 @@ class Server:
             """
             if testmode:
                 return funcs["action"].get(action)(**kw)
-            else:
-                Thread(target=funcs["action"].get(action), kwargs=kw).start()
+            Thread(target=funcs["action"].get(action), kwargs=kw).start()
         else:
             command = funcs["command"].get("/")
             if action:
@@ -139,11 +138,7 @@ class Server:
             if command:
                 if testmode:
                     return command(**kw)
-                else:
-                    Thread(
-                        target=command,
-                        kwargs=kw,
-                    ).start()
+                Thread(target=command, kwargs=kw).start()
             else:
                 print(
                     "\033[31mError! \033[0mDefault route '/' function undeclared.",

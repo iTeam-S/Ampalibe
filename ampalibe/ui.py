@@ -1,6 +1,7 @@
 """
     List of All UI Widget Messenger 
 """
+from .utils import Payload
 
 
 class QuickReply:
@@ -31,7 +32,9 @@ class QuickReply:
 
         if self.content_type == "text":
             res["title"] = self.title
-            res["payload"] = self.payload
+
+            if self.payload:
+                res["payload"] = Payload.trt_payload_out(self.payload)
 
             if self.image_url:
                 res["image_url"] = self.image_url
@@ -81,6 +84,8 @@ class Button:
 
     @property
     def value(self):
+        if self.payload:
+            self.payload = Payload.trt_payload_out(self.payload)
 
         if self.type in ("postback", "phone_number"):
             return {"type": self.type, "title": self.title, "payload": self.payload}

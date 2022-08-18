@@ -145,13 +145,10 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
         """
 
-        for i in range(len(quick_rep[:12])):
-            if isinstance(quick_rep[i], QuickReply):
-                quick_rep[i] = quick_rep[i].value
-            if quick_rep[i].get("payload"):
-                quick_rep[i]["payload"] = Payload.trt_payload_out(
-                    quick_rep[i]["payload"]
-                )
+        quick_rep = [
+            quick_rep[i].value if isinstance(quick_rep[i], QuickReply) else quick_rep[i]
+            for i in range(len(quick_rep))
+        ]
 
         dataJSON = {
             "messaging_type": "RESPONSE",
@@ -223,14 +220,10 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic
         """
 
-        for i in range(len(elements[:10])):
-            if isinstance(elements[i], Element):
-                elements[i] = elements[i].value
-            for j in range(len(elements[i]["buttons"])):
-                if elements[i]["buttons"][j].get("payload"):
-                    elements[i]["buttons"][j]["payload"] = Payload.trt_payload_out(
-                        elements[i]["buttons"][j]["payload"]
-                    )
+        elements = [
+            element.value if isinstance(element, Element) else element
+            for element in elements
+        ]
 
         dataJSON = {
             "messaging_type": "RESPONSE",
@@ -338,11 +331,10 @@ class Messenger:
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
-        for i in range(len(menu)):
-            if isinstance(menu[i], Button):
-                menu[i] = menu[i].value
-            if menu[i].get("payload"):
-                menu[i]["payload"] = Payload.trt_payload_out(menu[i]["payload"])
+        menu = [
+            button.value if isinstance(button, Button) else button
+            for button in menu
+        ]
 
         if action == "PUT":
             dataJSON = {

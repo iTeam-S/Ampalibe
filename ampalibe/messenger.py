@@ -27,7 +27,8 @@ class Messenger:
         self.url = "https://graph.facebook.com/v13.0/me"
 
         if log_level not in ("error", "info", "quiet"):
-            raise Exception(ValueError, "log_level must be error or info or quiet")
+            raise Exception(
+                ValueError, "log_level must be error or info or quiet")
 
     def __analyse(self, res, log_level="error"):
         if log_level == "info":
@@ -78,7 +79,8 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text
         """
         self.send_action(dest_id, "typing_on")
-        data_json = {"recipient": {"id": dest_id}, "message": {"text": message}}
+        data_json = {"recipient": {"id": dest_id},
+                     "message": {"text": message}}
 
         if prio:
             data_json["messaging_type"] = "MESSAGE_TAG"
@@ -172,7 +174,8 @@ class Messenger:
                 }
             )
             pickle.dump(
-                (quick_rep[13:], text, next), open(f"assets/private/.__{dest_id}", "wb")
+                (quick_rep[13:], text, next), open(
+                    f"assets/private/.__{dest_id}", "wb")
             )
         else:
             if len(quick_rep) > 12:
@@ -259,7 +262,8 @@ class Messenger:
                 }
             ]
             pickle.dump(
-                (elements[10:], next), open(f"assets/private/.__{dest_id}", "wb")
+                (elements[10:], next), open(
+                    f"assets/private/.__{dest_id}", "wb")
             )
 
         if quick_rep:
@@ -338,11 +342,12 @@ class Messenger:
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
-        for persistent in persistent_menu:
-            if isinstance(persistent, Button):
-                persistent = persistent.value
-            if persistent.get("payload"):
-                persistent["payload"] = Payload.trt_payload_out(persistent["payload"])
+        for i in range(len(persistent_menu)):
+            if isinstance(persistent_menu[i], Button):
+                persistent_menu[i] = persistent_menu[i].value
+            if persistent_menu[i].get("payload"):
+                persistent_menu[i]["payload"] = Payload.trt_payload_out(
+                    persistent_menu[i]["payload"])
 
         if action == "PUT":
             dataJSON = {
@@ -520,7 +525,8 @@ class Messenger:
             if isinstance(buttons[i], Button):
                 buttons[i] = buttons[i].value
             if buttons[i].get("payload"):
-                buttons[i]["payload"] = Payload.trt_payload_out(buttons[i]["payload"])
+                buttons[i]["payload"] = Payload.trt_payload_out(
+                    buttons[i]["payload"])
 
         self.send_action(dest_id, "typing_on")
         data_json = {

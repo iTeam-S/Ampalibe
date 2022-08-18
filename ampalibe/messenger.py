@@ -125,7 +125,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_quick_reply(self, dest_id, quick_rep, text, next=False):
+    def send_quick_reply(self, dest_id, quick_reps, text, next=False):
         """
         Quick replies provide a way to present a set of up to 13 buttons
         in-conversation that contain a title and optional image, and appear
@@ -145,41 +145,31 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
         """
 
-        for i in range(len(quick_rep[:12])):
-            if isinstance(quick_rep[i], QuickReply):
-                quick_rep[i] = quick_rep[i].value
-            if quick_rep[i].get("payload"):
-                quick_rep[i]["payload"] = Payload.trt_payload_out(
-                    quick_rep[i]["payload"]
-                )
+        quick_reps = [
+            quick_rep.value if isinstance(quick_rep, QuickReply) else quick_rep
+            for quick_rep in quick_reps
+        ]
 
         dataJSON = {
             "messaging_type": "RESPONSE",
             "recipient": {"id": dest_id},
-            "message": {"text": text, "quick_replies": quick_rep[:12]},
+            "message": {"text": text, "quick_replies": quick_reps[:13]},
         }
 
-        if len(quick_rep) > 13 and next:
-            dataJSON["message"]["quick_replies"].append(
-                {
-                    "content_type": "text",
-                    "title": "More" if next == True else str(next),
-                    "payload": "/__more",
-                    "image_url": "https://icon-icons.com/downloadimage.php"
-                    + "?id=81300&root=1149/PNG/512/&file="
-                    + "1486504364-chapter-controls-forward-play"
-                    + "-music-player-video-player-next_81300.png",
-                }
-            )
+        if len(quick_reps) > 13 and next:
+            dataJSON["message"]["quick_replies"][12] = {
+                "content_type": "text",
+                "title": "More" if next == True else str(next),
+                "payload": "/__more",
+                "image_url": "https://icon-icons.com/downloadimage.php"
+                + "?id=81300&root=1149/PNG/512/&file="
+                + "1486504364-chapter-controls-forward-play"
+                + "-music-player-video-player-next_81300.png",
+            }
+
             pickle.dump(
-                (quick_rep[13:], text, next), open(f"assets/private/.__{dest_id}", "wb")
+                (quick_reps[13:], text, next), open(f"assets/private/.__{dest_id}", "wb")
             )
-        else:
-            if len(quick_rep) > 12:
-                quick_rep[12]["payload"] = Payload.trt_payload_out(
-                    quick_rep[12]["payload"]
-                )
-                dataJSON["message"]["quick_replies"].append(quick_rep[12])
 
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
@@ -223,14 +213,10 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic
         """
 
-        for i in range(len(elements[:10])):
-            if isinstance(elements[i], Element):
-                elements[i] = elements[i].value
-            for j in range(len(elements[i]["buttons"])):
-                if elements[i]["buttons"][j].get("payload"):
-                    elements[i]["buttons"][j]["payload"] = Payload.trt_payload_out(
-                        elements[i]["buttons"][j]["payload"]
-                    )
+        elements = [
+            element.value if isinstance(element, Element) else element
+            for element in elements
+        ]
 
         dataJSON = {
             "messaging_type": "RESPONSE",
@@ -318,7 +304,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def persistent_menu(self, dest_id, persistent_menu, action="PUT", **kwargs):
+    def persistent_menu(self, dest_id, menu, action="PUT", **kwargs):
         """
         The Persistent Menu disabling the composer best practices allows you to have an always-on
         user interface element inside Messenger conversations. This is an easy way to help people
@@ -338,11 +324,10 @@ class Messenger:
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
-        for persistent in persistent_menu:
-            if isinstance(persistent, Button):
-                persistent = persistent.value
-            if persistent.get("payload"):
-                persistent["payload"] = Payload.trt_payload_out(persistent["payload"])
+        menu = [
+            button.value if isinstance(button, Button) else button
+            for button in menu
+        ]
 
         if action == "PUT":
             dataJSON = {
@@ -353,7 +338,7 @@ class Messenger:
                         "composer_input_disabled": kwargs.get(
                             "composer_input_disabled", "false"
                         ),
-                        "call_to_actions": persistent_menu,
+                        "call_to_actions": menu,
                     }
                 ],
             }

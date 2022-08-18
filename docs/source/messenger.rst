@@ -354,7 +354,7 @@ discover and access the core functionality of your Messenger bot at any point in
     ...
 
     persistent_menu = [
-        Button(type='postback', title='Menu', payload='/payload')
+        Button(type='postback', title='Menu', payload='/payload'),
         Button(type='postback', title='Logout', payload='/logout')
     ]
 

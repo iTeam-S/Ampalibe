@@ -318,7 +318,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def persistent_menu(self, dest_id, persistent_menu, action="PUT", **kwargs):
+    def persistent_menu(self, dest_id, menu, action="PUT", **kwargs):
         """
         The Persistent Menu disabling the composer best practices allows you to have an always-on
         user interface element inside Messenger conversations. This is an easy way to help people
@@ -338,11 +338,11 @@ class Messenger:
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
-        for persistent in persistent_menu:
-            if isinstance(persistent, Button):
-                persistent = persistent.value
-            if persistent.get("payload"):
-                persistent["payload"] = Payload.trt_payload_out(persistent["payload"])
+        for i in range(len(menu)):
+            if isinstance(menu[i], Button):
+                menu[i] = menu[i].value
+            if menu[i].get("payload"):
+                menu[i]["payload"] = Payload.trt_payload_out(menu[i]["payload"])
 
         if action == "PUT":
             dataJSON = {
@@ -353,7 +353,7 @@ class Messenger:
                         "composer_input_disabled": kwargs.get(
                             "composer_input_disabled", "false"
                         ),
-                        "call_to_actions": persistent_menu,
+                        "call_to_actions": menu,
                     }
                 ],
             }

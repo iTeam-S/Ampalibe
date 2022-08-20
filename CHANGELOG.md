@@ -115,3 +115,11 @@
 - [FIX] Missing gitignore file on create & init
 - [IMP] Adapt ASGI server to be supported by Heroku/python image
 - [IMP] Command decorators priority before action decorators in ampalibe core
+
+
+## Ampalibe 1.1.3 Stable
+
+- [FIX] Cmd object & Payload in persistant menu 
+- [FIX] route not recognized in Payload Object (#42) 
+- [FIX][REF] Fix persistent menu Button not Jsonserialized (#45) 
+- [ADD] Functionnal test in CI (#46) 

@@ -51,7 +51,7 @@ jobs:
     - name: "Test du reception de l'evenement text"
       run: |
         response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "message": {"text":"TEST_MESSAGE"} }]}]}')
-        if [ $response = '{"status":"ok"}' ]; then
+        if [ $response = 'Hello Ampalibe' ]; then
           echo "Message: OK"
         else
           echo KO!
@@ -97,4 +97,7 @@ jobs:
           echo KO!
           exit 1
         fi
+    
+    - name: "Run functionnal test"
+      run: bash automate/test.sh
 

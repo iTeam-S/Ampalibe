@@ -44,17 +44,17 @@ jobs:
         if [ $response = "CHALLENGE_ACCEPTED" ]; then
           echo "OK! : $response"
         else
-          echo KO!
+          echo KO
           exit 1
         fi
 
     - name: "Test du reception de l'evenement text"
       run: |
         response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "message": {"text":"TEST_MESSAGE"} }]}]}')
-        if [ $response = 'Hello Ampalibe' ]; then
+        if [ $response = '"Hello Ampalibe"' ]; then
           echo "Message: OK"
         else
-          echo KO!
+          echo KO
           exit 1
         fi
 

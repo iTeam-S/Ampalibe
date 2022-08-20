@@ -35,6 +35,6 @@ def action_work(sender_id, cmd, **extends):
     query.set_action(sender_id, None)
     myname = query.get_temp(sender_id, "myname")
     query.del_temp(sender_id, "myname")
-    if query.get_temp(sender_id, "myname") == myname:
+    if query.get_temp(sender_id, "myname") != myname:
         return cmd + " " + myname
     return "Del temp error"

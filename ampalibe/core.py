@@ -115,7 +115,7 @@ class Server:
         if command:
             _req.set_action(sender_id, None)
             if testmode:
-                command(**kw)
+                return command(**kw)
             else:
                 Thread(
                     target=command,

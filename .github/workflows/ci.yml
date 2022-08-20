@@ -44,24 +44,24 @@ jobs:
         if [ $response = "CHALLENGE_ACCEPTED" ]; then
           echo "OK! : $response"
         else
-          echo KO!
+          echo KO
           exit 1
         fi
 
     - name: "Test du reception de l'evenement text"
       run: |
         response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "message": {"text":"TEST_MESSAGE"} }]}]}')
-        if [ $response = '{"status":"ok"}' ]; then
+        if [ "$response" = '"Hello Ampalibe"' ]; then
           echo "Message: OK"
         else
-          echo KO!
+          echo KO
           exit 1
         fi
 
     - name: "Test du reception de l'evenement postback"
       run: |
         response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "postback": {"title": "TITLE-FOR-THE-CTA", "payload": "USER-DEFINED-PAYLOAD"} }]}]}')
-        if [ $response = '{"status":"ok"}' ]; then
+        if [ "$response" = '"Hello Ampalibe"' ]; then
           echo "Postback: OK"
         else
           echo KO!
@@ -71,7 +71,7 @@ jobs:
     - name: "Test du reception de l'evenement read"
       run: |
         response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "read":{"watermark":1458668856253} }]}]}')
-        if [ $response = '{"status":"ok"}' ]; then
+        if [ "$response" = '{"status":"ok"}' ]; then
           echo "Read: OK"
         else
           echo KO!
@@ -81,7 +81,7 @@ jobs:
     - name: "Test du reception de l'evenement delivery"
       run: |
         response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "delivery":{"watermark":1458668856253} }]}]}')
-        if [ $response = '{"status":"ok"}' ]; then
+        if [ "$response" = '{"status":"ok"}' ]; then
           echo "Delivré: OK"
         else
           echo KO!
@@ -91,10 +91,13 @@ jobs:
     - name: "Test du reception de l'evenement reaction"
       run: |
         response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "reaction":{"reaction": "love", "action": "react"} }]}]}')
-        if [ $response = '{"status":"ok"}' ]; then
+        if [ "$response" = '{"status":"ok"}' ]; then
           echo "REACTION: OK"
         else
           echo KO!
           exit 1
         fi
+    
+    - name: "Run functionnal test"
+      run: bash automate/test.sh
 

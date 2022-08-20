@@ -7,7 +7,7 @@ function simulate {
 ####### PAYLOAD TEST #######
 payload0=`simulate '"/set_my_name"'`
 myname=$(simulate $payload0)
-if [ $myname = '"Ampalibe"' ]
+if [ "$myname" = '"Ampalibe"' ]
 then
     echo "Message: OK Payload"
 else
@@ -18,7 +18,7 @@ fi
 ####### ACTION TEST && Temporary data TEST #######
 simulate '"/try_action"' > /dev/null
 res=$(simulate '"Hello"')
-if [ $res = '"Hello Ampalibe"' ]; then
+if [ "$res" = '"Hello Ampalibe"' ]; then
     echo "Message: OK Action"
     echo "Message: OK Temporary data"
 else

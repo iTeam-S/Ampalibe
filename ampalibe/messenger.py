@@ -168,7 +168,7 @@ class Messenger:
             }
 
             pickle.dump(
-                (quick_reps[13:], text, next), open(f"assets/private/.__{dest_id}", "wb")
+                (quick_reps[12:], text, next), open(f"assets/private/.__{dest_id}", "wb")
             )
 
         header = {"content-type": "application/json; charset=utf-8"}

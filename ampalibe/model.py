@@ -112,8 +112,7 @@ class Model:
                     arg[0].cursor.execute("SELECT 1")
                 except Exception:
                     arg[0].__connect()
-            else:
-                arg[0].__connect()
+
             return fonction(*arg, **kwarg)
 
         return trt_verif

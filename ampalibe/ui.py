@@ -32,9 +32,7 @@ class QuickReply:
 
         if self.content_type == "text":
             res["title"] = self.title
-
-            if self.payload:
-                res["payload"] = Payload.trt_payload_out(self.payload)
+            res["payload"] = Payload.trt_payload_out(self.payload)
 
             if self.image_url:
                 res["image_url"] = self.image_url

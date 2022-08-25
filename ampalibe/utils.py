@@ -1,6 +1,8 @@
 import os
 import sys
 import json
+import codecs
+import pickle
 import requests
 import urllib.parse
 from conf import Configuration  # type: ignore

@@ -1,6 +1,8 @@
 import os
 import sys
 import json
+import codecs
+import pickle
 import requests
 import urllib.parse
 from conf import Configuration  # type: ignore
@@ -66,7 +68,8 @@ class Payload:
             start = payload.index("{{")
             end = payload.index("}}")
             items = payload[start + 2 : end].split("===")
-            res[items[0]] = items[1]
+            # result string to object
+            res[items[0]] = pickle.loads(codecs.decode(items[1].encode(), "base64"))
             payload = payload.replace(payload[start : end + 2], "").strip()
         return payload0.copy(payload) if isinstance(payload0, Cmd) else payload, res
 
@@ -81,8 +84,13 @@ class Payload:
         if isinstance(payload, Payload):
             tmp = ""
             for key_data, val_data in payload.data.items():
+                # object to string
+                val_data = codecs.encode(pickle.dumps(val_data), "base64").decode()
                 tmp += f"{{{{{key_data}==={val_data}}}}} "
-            return urllib.parse.quote(payload.payload + " " + tmp)
+            final_pl = payload.payload + " " + tmp
+            if len(final_pl)>=2000:
+                raise Exception("Payload data is too large")
+            return urllib.parse.quote(final_pl)
         return urllib.parse.quote(payload)
 
 

@@ -168,7 +168,8 @@ class Messenger:
             }
 
             pickle.dump(
-                (quick_reps[12:], text, next), open(f"assets/private/.__{dest_id}", "wb")
+                (quick_reps[12:], text, next),
+                open(f"assets/private/.__{dest_id}", "wb"),
             )
 
         header = {"content-type": "application/json; charset=utf-8"}
@@ -325,8 +326,7 @@ class Messenger:
         params = {"access_token": self.token}
 
         menu = [
-            button.value if isinstance(button, Button) else button
-            for button in menu
+            button.value if isinstance(button, Button) else button for button in menu
         ]
 
         if action == "PUT":
@@ -501,11 +501,9 @@ class Messenger:
              https://developers.facebook.com/docs/messenger-platform/send-messages/template/button
         """
 
-        for i in range(len(buttons)):
-            if isinstance(buttons[i], Button):
-                buttons[i] = buttons[i].value
-            if buttons[i].get("payload"):
-                buttons[i]["payload"] = Payload.trt_payload_out(buttons[i]["payload"])
+        buttons = [
+            button.value if isinstance(button, Button) else button for button in buttons
+        ]
 
         self.send_action(dest_id, "typing_on")
         data_json = {

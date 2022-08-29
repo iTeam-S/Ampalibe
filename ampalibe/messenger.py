@@ -38,8 +38,10 @@ class Messenger:
 
     @property
     def token(self):
-        if self.access_token.strip() == "":
-            print("Warning! EMPTY PAGE ACCESS TOKEN", file=stderr)
+        if not self.access_token:
+            print(
+                "\033[48:5:166m⚠ Warning!\033[0m EMPTY PAGE ACCESS TOKEN", file=stderr
+            )
         return self.access_token
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)

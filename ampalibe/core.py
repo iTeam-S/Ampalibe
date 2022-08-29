@@ -107,6 +107,9 @@ class Server:
             os.remove(f"assets/private/.__{sender_id}")
 
         payload, kw = Payload.trt_payload_in(payload)
+        if action:
+            action, kw_tmp = Payload.trt_payload_in(action)
+            kw.update(kw_tmp)
         command = funcs["command"].get(payload.split()[0])
         kw["sender_id"] = sender_id
         kw["cmd"] = payload

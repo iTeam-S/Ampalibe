@@ -1,4 +1,5 @@
 import json
+from .utils import Payload
 from conf import Configuration  # type: ignore
 
 
@@ -59,7 +60,7 @@ class Model:
                 CREATE TABLE IF NOT EXISTS `amp_user` (
                     `id` INT NOT NULL AUTO_INCREMENT,
                     `user_id` varchar(50) NOT NULL UNIQUE,
-                    `action` varchar(50) DEFAULT NULL,
+                    `action` TEXT DEFAULT NULL,
                     `last_use` datetime NOT NULL DEFAULT current_timestamp(),
                     `lang` varchar(5) DEFAULT NULL,
                     `tmp` varchar(255) DEFAULT NULL,
@@ -71,7 +72,7 @@ class Model:
                 CREATE TABLE IF NOT EXISTS  "amp_user" (
                     id SERIAL,
                     user_id VARCHAR NULL DEFAULT NULL,
-                    action VARCHAR NULL DEFAULT NULL,
+                    action TEXT NULL DEFAULT NULL,
                     tmp VARCHAR NULL DEFAULT NULL,
                     last_use TIMESTAMP NULL DEFAULT NOW(),
                     lang VARCHAR NULL DEFAULT NULL,
@@ -167,9 +168,12 @@ class Model:
         """
         define a current action if an user
 
-        @params :  user_id
+        @params :  user_id, action
         @return:  None
         """
+        if isinstance(action, Payload):
+            action = Payload.trt_payload_out(action)
+
         if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
             req = "UPDATE amp_user set action = %s WHERE user_id = %s"
         else:

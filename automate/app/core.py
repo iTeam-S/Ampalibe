@@ -38,3 +38,16 @@ def action_work(sender_id, cmd, **extends):
     if query.get_temp(sender_id, "myname") != myname:
         return cmd + " " + myname
     return "Del temp error"
+
+
+@ampalibe.command("/try_second_action")
+def try_second_action(sender_id, **extends):
+    query.set_action(
+        sender_id, Payload("/second_action_work", myname="Ampalibe", version=2)
+    )
+
+
+@ampalibe.action("/second_action_work")
+def second_action_work(sender_id, cmd, myname, version, **extends):
+    query.set_action(sender_id, None)
+    return cmd + " " + myname + str(version)

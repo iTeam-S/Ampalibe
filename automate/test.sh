@@ -26,5 +26,16 @@ else
     exit 1
 fi
 
+####### ACTION TEST && Payload data TEST #######
+simulate '"/try_second_action"' > /dev/null
+res=$(simulate '"Hello"')
+if [ "$res" = '"Hello Ampalibe2"' ]; then
+    echo "Message: OK Second Action"
+    echo "Message: OK Payload data in action"
+else
+    echo KO
+    exit 1
+fi
+
 
 

@@ -53,6 +53,11 @@ def init_proj(path):
         file=open(f"{path}/.gitignore", "a"),
     )
 
+    print(
+        "ampalibe=={version}".format(version=__version__),
+        file=open(f"{path}/requirements.txt", "a"),
+    )
+
 
 if sys.argv[0] == "-m" and len(sys.argv) > 1:
     if sys.argv[1] == "version":

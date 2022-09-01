@@ -26,7 +26,7 @@ jobs:
         flake8 ampalibe --count --select=E9,F63,F7,F82 --show-source --statistics
 
     - name: Build the Docker image
-      run: bash automate/deploy.sh
+      run: bash tests/deploy.sh
 
     - name: Test du serveur web
       run: |
@@ -99,5 +99,5 @@ jobs:
         fi
     
     - name: "Run functionnal test"
-      run: bash automate/test.sh
+      run: bash tests/test.sh
 

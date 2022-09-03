@@ -239,6 +239,54 @@ You can send data with ``Payload`` object and get it in destination function's p
             chat.send_message(sender_id, 'your ref is ' + ext.get('ref'))
 
 
+You can also use Payload in action, an alternative to using temporary data
+
+**Using Temporary Data** 
+
+.. code-block:: python
+
+    import ampalibe
+    from ampalibe import Payload, Model
+    from ampalibe.ui import QuickReply
+
+    query = Model()
+
+    @ampalibe.command("/try_action")
+    def try_action(sender_id, **extends):
+        query.set_action(sender_id, "/action_work")
+        query.set_temp(sender_id, "myname", "Ampalibe")
+        query.set_temp(sender_id, "version", "2")
+
+
+    @ampalibe.action("/action_work")
+    def action_work(sender_id, cmd, **extends):
+        query.set_action(sender_id, None)
+        myname = query.get_temp(sender_id, "myname")
+        version = query.get_temp(sender_id, "version")
+        print(cmd + " " + myname + version)
+
+
+**Using payload** (an alternative to using temporary data)
+
+.. code-block:: python
+
+    import ampalibe
+    from ampalibe import Payload, Model
+    from ampalibe.ui import QuickReply
+
+    query = Model()
+
+    @ampalibe.command("/try_action")
+    def try_action(sender_id, **extends):
+        query.set_action(sender_id, Payload("/action_work", myname="Ampalibe", version="2"))
+
+
+    @ampalibe.action("/action_work")
+    def action_work(sender_id, cmd, myname,  version, **extends):
+        query.set_action(sender_id, None)
+        print(cmd + " " + myname + version)
+
+
 File management
 -------------------
 

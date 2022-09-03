@@ -54,7 +54,7 @@ def init_proj(path):
     )
 
     print(
-        "ampalibe>={version}".format(version=__version__),
+        "ampalibe",
         file=open(f"{path}/requirements.txt", "a"),
     )
 

@@ -101,6 +101,7 @@ class Model:
         """
 
         def trt_verif(*arg, **kwarg):
+            """
             if arg[0].ADAPTER == "MYSQL":
                 if not arg[0].db.is_connected():
                     # reconnexion de la base
@@ -113,7 +114,8 @@ class Model:
                     arg[0].cursor.execute("SELECT 1")
                 except Exception:
                     arg[0].__connect()
-
+            """
+            arg[0].__connect()
             return fonction(*arg, **kwarg)
 
         return trt_verif

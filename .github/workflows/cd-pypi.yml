@@ -2,7 +2,7 @@ name: CD PYPI
 on:
   release:
     types:
-      - created
+      - edited
 jobs:
   publish:
     runs-on: ubuntu-latest

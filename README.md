@@ -30,6 +30,10 @@ It provides a new concept, it manages webhooks, processes data sent by Facebook 
  <a href='https://pypi.org/project/ampalibe/'> <img src='https://img.shields.io/pypi/pyversions/ampalibe?style=for-the-badge'/></a>
  <a href='https://discord.gg/yE4YEfkp/'> <img src='https://img.shields.io/discord/995937004405661807?style=for-the-badge'/></a>
 </p>
+
+<p>
+   <strong> Show your support</strong>  <em> by giving a star 🌟 if this project helped you! </em>
+ </p>
 </div>
 
 

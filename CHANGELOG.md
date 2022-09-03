@@ -123,3 +123,15 @@
 - [FIX] route not recognized in Payload Object (#42) 
 - [FIX][REF] Fix persistent menu Button not Jsonserialized (#45) 
 - [ADD] Functionnal test in CI (#46) 
+
+
+## Ampalibe 1.1.4 
+
+* [FIX] Fix send quick reply missing 13th with next argument by @rootkit7628 in https://github.com/iTeam-S/Ampalibe/pull/47
+* [IMP] Remove unecessary instructions by @gaetan1903 in https://github.com/iTeam-S/Ampalibe/pull/48
+* [IMP] Preserve the built-in type of data sent on Payload Management by @gaetan1903 in https://github.com/iTeam-S/Ampalibe/pull/50
+* [ADD] Create requirements on init and create by @rootkit7628 in https://github.com/iTeam-S/Ampalibe/pull/51
+* [FEAT] Object Payload sent in action by @gaetan1903 in https://github.com/iTeam-S/Ampalibe/pull/54
+* [FIX][IMP] Many fix & improvement by @gaetan1903 in https://github.com/iTeam-S/Ampalibe/pull/55
+* [FIX] send_buttons error by @gaetan1903 in ec865f7046af472575185635d9e4a9b8087f4dd4
+* [IMP][FIX] Verification db connection in b6b18ecfdadb3c324942d5b478873002d34696e2

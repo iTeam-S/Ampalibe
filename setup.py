@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampalibe",  # This is the name of the package
-    version="1.1.4dev",  # The release version
+    version="1.1.4",  # The release version
     author="iTeam-$",  # Full name of the author
     description="Ampalibe is a lightweight Python framework for building Facebook Messenger bots faster.",
     long_description=long_description,  # Long description read from the readme
@@ -13,7 +13,11 @@ setuptools.setup(
     packages=["ampalibe"],  # List of all modules to be installed
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7+",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],  # Information to filter the project on PyPi website

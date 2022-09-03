@@ -1,3 +1,4 @@
+from socket import send_fds
 import ampalibe
 from ampalibe import Payload
 from conf import Configuration
@@ -6,7 +7,8 @@ query = ampalibe.Model()
 
 
 @ampalibe.command("/")
-def main(**extends):
+def main(sender_id, **extends):
+    print(query.get_temp(sender_id, "token"))
     return "Hello Ampalibe"
 
 

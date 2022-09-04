@@ -164,4 +164,13 @@ We have made a promise to
 
 ![Image des contributeurs GitHub](https://contrib.rocks/image?repo=iTeam-S/Ampalibe)
 
+## Community 
+
+### 📌 Extension
+
+[Ampalibe extension](https://marketplace.visualstudio.com/items?itemName=iTeam-S.ampalibe) 
+
+> A VScode extension that allows the user to write a snippet of code using easy to remember prefixes
+
+
 

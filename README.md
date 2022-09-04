@@ -168,7 +168,7 @@ We have made a promise to
 
 ### 📌 Extension
 
-[Ampalibe extension](https://marketplace.visualstudio.com/items?itemName=iTeam-S.ampalibe) 
+[Ampalibe extension](https://marketplace.visualstudio.com/items?itemName=iTeam-S.ampalibe) by @RajaRakoto
 
 > A VScode extension that allows the user to write a snippet of code using easy to remember prefixes
 

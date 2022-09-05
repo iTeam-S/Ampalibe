@@ -1,4 +1,3 @@
-from socket import send_fds
 import ampalibe
 from ampalibe import Payload
 from conf import Configuration

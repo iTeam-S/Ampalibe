@@ -251,7 +251,7 @@ you can also create directly in the code
 
     chat = ampalibe.Messenger()
 
-    def async send_notif():
+    async def send_notif():
         for user in query.get_list_users():
             chat.send_message(user[0], 'Notification for you')
     
@@ -276,7 +276,7 @@ you can also create directly in the code
 
     chat = ampalibe.Messenger()
 
-    def async send_notif(sender_id):
+    async def send_notif(sender_id):
         chat.send_message(sender_id, 'Notification for you')
     
     @ampalibe.command('/')

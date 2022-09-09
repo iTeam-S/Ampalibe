@@ -16,6 +16,13 @@ class Action:
     typing_off = "typing_off"
 
 
+class Filetype:
+    file = "file"
+    video = "video"
+    image = "image"
+    audio = "audio"
+
+
 class Messenger:
     def __init__(self, log_level="error"):
         """

@@ -10,6 +10,19 @@ from conf import Configuration  # type: ignore
 from .ui import QuickReply, Button, Element
 
 
+class Action:
+    mark_seen = "mark_seen"
+    typing_on = "typing_on"
+    typing_off = "typing_off"
+
+
+class Filetype:
+    file = "file"
+    video = "video"
+    image = "image"
+    audio = "audio"
+
+
 class Messenger:
     def __init__(self, log_level="error"):
         """

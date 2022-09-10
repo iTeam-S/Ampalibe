@@ -4,6 +4,20 @@
 from .utils import Payload
 
 
+class Content_type:
+    text = "text"
+    user_phone_number = "user_phone_number"
+    user_email = "user_email"
+
+
+class Type:
+    postback = "postback"
+    web_url = "web_url"
+    phone_number = "phone_number"
+    account_link = "account_link"
+    account_unlink = "account_unlink"
+
+
 class QuickReply:
     def __init__(self, **kwargs):
         """

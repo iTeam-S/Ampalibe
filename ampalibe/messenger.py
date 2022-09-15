@@ -265,13 +265,10 @@ class Messenger:
             )
 
         if quick_rep:
-            for i in range(len(quick_rep)):
-                if isinstance(quick_rep[i], QuickReply):
-                    quick_rep[i] = quick_rep[i].value
-                    if quick_rep[i].get("payload"):
-                        quick_rep[i]["payload"] = Payload.trt_payload_out(
-                            quick_rep[i]["payload"]
-                        )
+            quick_rep = [
+                qr.value if isinstance(qr, QuickReply) else qr
+                for qr in quick_rep
+            ]
             dataJSON["message"]["quick_replies"] = quick_rep
 
         header = {"content-type": "application/json; charset=utf-8"}

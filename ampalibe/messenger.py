@@ -199,7 +199,7 @@ class Messenger:
         raise Exception("Deprecated: Use send_template instead!")
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_template(self, dest_id, elements, quick_rep=None, next=None):
+    def send_template(self, dest_id, elements, quick_reps=None, next=None):
         """
         The method represent a Message templates who offer a way for you
         to offer a richer in-conversation experience than standard text messages by integrating
@@ -264,15 +264,12 @@ class Messenger:
                 (elements[10:], next), open(f"assets/private/.__{dest_id}", "wb")
             )
 
-        if quick_rep:
-            for i in range(len(quick_rep)):
-                if isinstance(quick_rep[i], QuickReply):
-                    quick_rep[i] = quick_rep[i].value
-                    if quick_rep[i].get("payload"):
-                        quick_rep[i]["payload"] = Payload.trt_payload_out(
-                            quick_rep[i]["payload"]
-                        )
-            dataJSON["message"]["quick_replies"] = quick_rep
+        if quick_reps:
+            quick_reps = [
+                quick_rep.value if isinstance(quick_rep, QuickReply) else quick_rep
+                for quick_rep in quick_reps
+            ]
+            dataJSON["message"]["quick_replies"] = quick_reps
 
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}

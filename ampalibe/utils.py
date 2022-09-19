@@ -88,7 +88,7 @@ class Payload:
                 val_data = codecs.encode(pickle.dumps(val_data), "base64").decode()
                 tmp += f"{{{{{key_data}==={val_data}}}}} "
             final_pl = payload.payload + " " + tmp
-            if len(final_pl)>=2000:
+            if len(final_pl) >= 2000:
                 raise Exception("Payload data is too large")
             return urllib.parse.quote(final_pl)
         return urllib.parse.quote(payload)
@@ -119,6 +119,7 @@ def analyse(data):
                     atts = list(map(struct_atts, data))
                     cmd = Cmd(atts[0])
                     cmd.set_atts(atts)
+                    cmd.webhook = "attachments"
                     return sender_id, cmd, message
                 elif message["message"].get("quick_reply"):
                     # if the response is a quick reply

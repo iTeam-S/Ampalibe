@@ -7,9 +7,9 @@ from .model import Model
 from threading import Thread
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
+from .utils import funcs, analyse, Payload
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
-from .utils import funcs, analyse, Cmd, Payload
 
 _req = None
 loop = None

@@ -50,7 +50,7 @@ class Payload:
         self.data = kwargs
 
     def __str__(self):
-        return self.payload
+        return Payload.trt_payload_out(self)
 
     @staticmethod
     def trt_payload_in(payload0):
@@ -87,7 +87,8 @@ class Payload:
                 # object to string
                 val_data = codecs.encode(pickle.dumps(val_data), "base64").decode()
                 tmp += f"{{{{{key_data}==={val_data}}}}} "
-            final_pl = payload.payload + " " + tmp
+
+            final_pl = payload.payload + (" " + tmp if tmp else "")
             if len(final_pl) >= 2000:
                 raise Exception("Payload data is too large")
             return urllib.parse.quote(final_pl)

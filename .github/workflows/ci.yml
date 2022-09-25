@@ -28,7 +28,7 @@ jobs:
     - name: Install ampalibe locally without container
       run: |
         pip install -r requirements.txt
-        python setup.py install --force
+        python setup.py install --force --user
     
     - name: Unit test for messenger api
       run: USER_ID=${{secrets.USER_ID}} AMP_ACCESS_TOKEN=${{secrets.ACCESS_TOKEN}} pytest

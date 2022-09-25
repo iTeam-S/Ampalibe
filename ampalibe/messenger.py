@@ -98,9 +98,6 @@ class Messenger:
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_message(self, dest_id, message, prio=False):
-        """
-        DEPRECATED: Use `send_text` instead
-        """
         self.send_action(dest_id, "typing_on")
         dataJSON = {"recipient": {"id": dest_id}, "message": {"text": message}}
 
@@ -133,7 +130,6 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text
         """
-        self.send_action(dest_id, "typing_on")
         dataJSON = {"recipient": {"id": dest_id}, "message": {"text": text}}
         dataJSON.update(kwargs)
 
@@ -143,7 +139,6 @@ class Messenger:
         res = requests.post(
             self.url + "/messages", json=dataJSON, headers=header, params=params
         )
-        self.send_action(dest_id, "typing_off")
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -179,7 +174,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_quick_reply(self, dest_id, quick_reps, text, next=False, **kwargs):
+    def send_quick_reply(self, dest_id, quick_reps, text, next=None, **kwargs):
         """
         Quick replies provide a way to present a set of up to 13 buttons
         in-conversation that contain a title and optional image, and appear

@@ -23,6 +23,26 @@ class Filetype:
     audio = "audio"
 
 
+class Messaging_type:
+    MESSAGE_TAG = "MESSAGE_TAG"
+    RESPONSE = "RESPONSE"
+    UPDATE = "UPDATE"
+
+
+class Tag:
+    ACCOUNT_UPDATE = "ACCOUNT_UPDATE"
+    CONFIRMED_EVENT_UPDATE = "CONFIRMED_EVENT_UPDATE"
+    CUSTOMER_FEEDBACK = "CUSTOMER_FEEDBACK"
+    HUMAN_AGENT = "HUMAN_AGENT"
+    POST_PURCHASE_UPDATE = "POST_PURCHASE_UPDATE"
+
+
+class Notification_type:
+    NO_PUSH = "NO_PUSH"
+    REGULAR = "REGULAR"
+    SILENT_PUSH = "SILENT_PUSH"
+
+
 class Messenger:
     def __init__(self, log_level="error"):
         """
@@ -78,13 +98,31 @@ class Messenger:
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_message(self, dest_id, message, prio=False):
+        self.send_action(dest_id, "typing_on")
+        dataJSON = {"recipient": {"id": dest_id}, "message": {"text": message}}
+
+        if prio:
+            dataJSON["messaging_type"] = "MESSAGE_TAG"
+            dataJSON["tag"] = "ACCOUNT_UPDATE"
+
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages", json=dataJSON, headers=header, params=params
+        )
+        self.send_action(dest_id, "typing_off")
+        return self.__analyse(res)
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_text(self, dest_id, text, **kwargs):
         """
         This method allows you to send a text message to the given recipient,
         Note that the number of characters to send is limited to 2000 characters
 
         Args:
             dest_id (str): user id facebook for the destination
-            message (str): message want to send
+            text (str): message want to send
 
         Returns:
             Response: POST request to the facebook API to send a message to the user
@@ -92,24 +130,19 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text
         """
-        self.send_action(dest_id, "typing_on")
-        data_json = {"recipient": {"id": dest_id}, "message": {"text": message}}
-
-        if prio:
-            data_json["messaging_type"] = "MESSAGE_TAG"
-            data_json["tag"] = "ACCOUNT_UPDATE"
+        dataJSON = {"recipient": {"id": dest_id}, "message": {"text": text}}
+        dataJSON.update(kwargs)
 
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=data_json, headers=header, params=params
+            self.url + "/messages", json=dataJSON, headers=header, params=params
         )
-        self.send_action(dest_id, "typing_off")
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_action(self, dest_id, action):
+    def send_action(self, dest_id, action, **kwargs):
         """
         This method is used to simulate an action on messages.
         example: view, writing.
@@ -125,22 +158,23 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
         """
-        data_json = {
+        dataJSON = {
             "messaging_type": "RESPONSE",
             "recipient": {"id": dest_id},
             "sender_action": action,
         }
+        dataJSON.update(kwargs)
 
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=data_json, headers=header, params=params
+            self.url + "/messages", json=dataJSON, headers=header, params=params
         )
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_quick_reply(self, dest_id, quick_reps, text, next=False):
+    def send_quick_reply(self, dest_id, quick_reps, text, next=None, **kwargs):
         """
         Quick replies provide a way to present a set of up to 13 buttons
         in-conversation that contain a title and optional image, and appear
@@ -170,6 +204,7 @@ class Messenger:
             "recipient": {"id": dest_id},
             "message": {"text": text, "quick_replies": quick_reps[:13]},
         }
+        dataJSON.update(kwargs)
 
         if len(quick_reps) > 13 and next:
             dataJSON["message"]["quick_replies"][12] = {
@@ -195,11 +230,8 @@ class Messenger:
         )
         return self.__analyse(res)
 
-    def send_result(self, **ext):
-        raise Exception("Deprecated: Use send_template instead!")
-
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_template(self, dest_id, elements, quick_rep=None, next=None):
+    def send_template(self, dest_id, elements, quick_rep=None, next=None, **kwargs):
         """
         The method represent a Message templates who offer a way for you
         to offer a richer in-conversation experience than standard text messages by integrating
@@ -247,6 +279,7 @@ class Messenger:
                 },
             },
         }
+        dataJSON.update(kwargs)
 
         if len(elements) > 10 and next:
             dataJSON["message"]["quick_replies"] = [
@@ -266,8 +299,7 @@ class Messenger:
 
         if quick_rep:
             quick_rep = [
-                qr.value if isinstance(qr, QuickReply) else qr
-                for qr in quick_rep
+                qr.value if isinstance(qr, QuickReply) else qr for qr in quick_rep
             ]
             dataJSON["message"]["quick_replies"] = quick_rep
 
@@ -280,7 +312,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file_url(self, dest_id, url, filetype="file"):
+    def send_file_url(self, dest_id, url, filetype="file", **kwargs):
         """
         The Messenger Platform allows you to attach assets to messages, including audio,
         video, images, and files.All this is the role of this Method. The maximum attachment
@@ -309,6 +341,7 @@ class Messenger:
                 }
             },
         }
+        dataJSON.update(kwargs)
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
         res = requests.post(
@@ -373,7 +406,7 @@ class Messenger:
             return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file(self, dest_id, file, filetype="file", filename=None):
+    def send_file(self, dest_id, file, filetype="file", filename=None, **kwargs):
         """
         this method send an attachment from file
 
@@ -393,7 +426,7 @@ class Messenger:
             filename = file
         params = {"access_token": self.token}
 
-        data = {
+        dataJSON = {
             "recipient": json.dumps({"id": dest_id}),
             "message": json.dumps(
                 {
@@ -411,9 +444,10 @@ class Messenger:
                 f"{filetype}/{file.split('.')[-1]}",
             ),
         }
+        dataJSON.update(kwargs)
 
         # multipart encode the entire payload
-        multipart_data = requests_toolbelt.MultipartEncoder(data)
+        multipart_data = requests_toolbelt.MultipartEncoder(dataJSON)
 
         # multipart header from multipart_data
         header = {"Content-Type": multipart_data.content_type}
@@ -424,7 +458,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_media(self, dest_id, fb_url, media_type):
+    def send_media(self, dest_id, fb_url, media_type, **kwargs):
         """
         Method that sends files media as image and video via facebook link.
         This model does not allow any external URLs, only those on Facebook.
@@ -455,6 +489,7 @@ class Messenger:
                 }
             },
         }
+        dataJSON.update(kwargs)
 
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
@@ -494,7 +529,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_button(self, dest_id, buttons, text):
+    def send_button(self, dest_id, buttons, text, **kwargs):
         """
         The button template sends a text message with
         up to three buttons attached. This template gives
@@ -518,7 +553,7 @@ class Messenger:
         ]
 
         self.send_action(dest_id, "typing_on")
-        data_json = {
+        dataJSON = {
             "recipient": {"id": dest_id},
             "message": {
                 "attachment": {
@@ -531,12 +566,13 @@ class Messenger:
                 }
             },
         }
+        dataJSON.update(kwargs)
 
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
         self.send_action(dest_id, "typing_off")
         res = requests.post(
-            self.url + "/messages", json=data_json, headers=header, params=params
+            self.url + "/messages", json=dataJSON, headers=header, params=params
         )
         return self.__analyse(res)

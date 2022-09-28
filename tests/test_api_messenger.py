@@ -104,3 +104,14 @@ def test_send_button():
         chat.send_button(sender_id, buttons, "What do you want to do?").status_code
         == 200
     )
+
+def test_persitent_menu():
+    persistent_menu = [
+        Button(type='postback', title='Menu', payload='/payload'),
+        Button(type='postback', title='Logout', payload='/logout')
+    ]
+
+    assert (
+        chat.persistent_menu(sender_id, persistent_menu).status_code
+        == 200
+    )

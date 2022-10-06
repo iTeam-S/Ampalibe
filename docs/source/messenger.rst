@@ -5,11 +5,12 @@ list of methods for sending messages to messenger
 
 .. note::
 
-   All returns of these functions are a POST Requests <Response>
+   - All returns of these functions are a POST Requests <Response>
+   - notification_type, messaging_type and tag parameters can be sent in kwargs `reference/send-api <https://developers.facebook.com/docs/messenger-platform/reference/send-api/>`
 
 
 
-send_message
+send_text
 ____________
 
 This method allows you to send a text message to the given recipient,
@@ -22,13 +23,13 @@ Note that the number of characters to send is limited to 2000 characters
 
     *dest_id (str)*: user id facebook for the destination
 
-    *message (str)*: message want to send
+    *text (str)*: text want to send
 
 **Example**:
 
 .. code-block:: python
 
-    chat.send_message(sender_id, "Hello world")
+    chat.send_text(sender_id, "Hello world")
 
 
 send_action
@@ -51,7 +52,10 @@ Action available: ['mark_seen', 'typing_on', 'typing_off']
 
 .. code-block:: python
 
-    chat.send_action(sender_id, "mark_seen")
+    from ampalibe.messenger import Action
+    ...
+
+    chat.send_action(sender_id, Action.mark_seen)
 
 
 send_quick_reply
@@ -102,11 +106,12 @@ to request a person's location, email address, and phone number.
 
 .. code-block:: python
     
-    from ampalibe.ui import QuickReply
+    from ampalibe.ui import QuickReply, Content_type
     ... 
 
     quick_rep = [
         QuickReply(
+            content_type=Content_type.text
             title=f"response {i+1}",
             payload= Payload("/response", item=i+1),
             image_url="https://i.imgflip.com/6b45bi.jpg"
@@ -155,7 +160,7 @@ displaying all requested templates
 .. code-block:: python
 
     from ampalibe import Payload
-    from ampalibe.ui import Element, Button
+    from ampalibe.ui import Element, Button, Type
 
     ...
 
@@ -164,7 +169,7 @@ displaying all requested templates
     for i in range(30):
         buttons = [
             Button(
-                type="postback",
+                type=Type.postback,
                 title="Get item",
                 payload=Payload("/item", id_item=i+1),
             )
@@ -208,7 +213,10 @@ size is 25 MB.
 
 .. code-block:: python
 
-    chat.send_file_url(sender_id, 'https://i.imgflip.com/6b45bi.jpg', filetype='image')
+    from ampalibe.messenger import Filetype
+    ...
+
+    chat.send_file_url(sender_id, 'https://i.imgflip.com/6b45bi.jpg', filetype=Filetype.image)
 
 
 
@@ -234,11 +242,15 @@ This method send an attachment from file
 
 .. code-block:: python
 
+    from ampalibe.messenger import Filetype
+    ...
+
+
     chat.send_file(sender_id, "mydocument.pdf")
 
-    chat.send_file(sender_id, "intro.mp4", filetype='video')
+    chat.send_file(sender_id, "intro.mp4", filetype=Filetype.video)
 
-    chat.send_file(sender_id, "myvoice.m4a", filetype='audio')
+    chat.send_file(sender_id, "myvoice.m4a", filetype=Filetype.audio)
 
 
 send_media
@@ -262,7 +274,10 @@ This model does not allow any external URLs, only those on Facebook.
 
 .. code-block:: python
 
-    chat.send_media(sender_id, "https://www.facebook.com/iTeam.Community/videos/476926027465187", 'video')
+    from ampalibe.messenger import Filetype
+    ...
+
+    chat.send_media(sender_id, "https://www.facebook.com/iTeam.Community/videos/476926027465187", Filetype.video)
 
 
 send_button
@@ -289,11 +304,11 @@ such as predefined answers to questions or actions to take.
 
 .. code-block:: python
 
-    from ampalibe.ui import Button
+    from ampalibe.ui import Button, Type
 
     buttons = [
         Button(
-            type='postback',
+            type=Type.postback,
             title='Informations',
             payload='/contact'
         )
@@ -350,12 +365,12 @@ discover and access the core functionality of your Messenger bot at any point in
 
 .. code-block:: python
 
-    from ampalibe.ui import Button
+    from ampalibe.ui import Button, Type
     ...
 
     persistent_menu = [
-        Button(type='postback', title='Menu', payload='/payload'),
-        Button(type='postback', title='Logout', payload='/logout')
+        Button(type=Type.postback, title='Menu', payload='/payload'),
+        Button(type=Type.postback, title='Logout', payload='/logout')
     ]
 
     chat.persistent_menu(sender_id, persistent_menu)

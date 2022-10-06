@@ -15,7 +15,7 @@ A minimal Ampalibe application looks something like this:
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
-        chat.send_message(sender_id, "Hello, Ampalibe")
+        chat.send_text(sender_id, "Hello, Ampalibe")
 
 
 So what did that code do?
@@ -57,7 +57,7 @@ If no corresponding command is found, it launches the main function
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
-        chat.send_message(sender_id, "Hello, Ampalibe")
+        chat.send_text(sender_id, "Hello, Ampalibe")
 
     '''
         if the message received start with '/eat'
@@ -105,13 +105,13 @@ in this example, we will use two things, the **action decorator** and the **quer
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
-        chat.send_message(sender_id, 'Enter your name')
+        chat.send_text(sender_id, 'Enter your name')
         query.set_action(sender_id, '/get_name')
         
     @ampalibe.action('/get_name')
     def get_name(sender_id,  cmd, **ext):
         query.set_action(sender_id, None)  #  clear current action
-        chat.send_message(sender_id, f'Hello {cmd}')
+        chat.send_text(sender_id, f'Hello {cmd}')
 
 **Example 2**: Ask a number and say if it a even number or odd number
 
@@ -125,7 +125,7 @@ in this example, we will use two things, the **action decorator** and the **quer
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
-        chat.send_message(sender_id, 'Enter a number')
+        chat.send_text(sender_id, 'Enter a number')
         query.set_action(sender_id, '/get_number')
         
     @ampalibe.action('/get_number')
@@ -133,11 +133,11 @@ in this example, we will use two things, the **action decorator** and the **quer
         query.set_action(sender_id, None)  #  clear current action
         if cmd.isdigit():
             if int(cmd) % 2 == 0:
-                chat.send_message(sender_id, 'even number')
+                chat.send_text(sender_id, 'even number')
             else:
-                chat.send_message(sender_id, 'odd number')
+                chat.send_text(sender_id, 'odd number')
         else:
-            chat.send_message(sender_id, f'{cmd} is not a number')
+            chat.send_text(sender_id, f'{cmd} is not a number')
 
 
 We define the next function in which the user message entered and can obtain all the texts of the message in "cmd"
@@ -171,7 +171,7 @@ the methods used are **set_temp**, **get_temp**, **del_temp**
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
-        chat.send_message(sender_id, 'Enter your mail')
+        chat.send_text(sender_id, 'Enter your mail')
         query.set_action(sender_id, '/get_mail')
         
     @ampalibe.action('/get_mail')
@@ -179,7 +179,7 @@ the methods used are **set_temp**, **get_temp**, **del_temp**
         # save the mail in temporary data
         query.set_temp(sender_id, 'mail', cmd)
 
-        chat.send_message(sender_id, f'Enter your password')
+        chat.send_text(sender_id, f'Enter your password')
         query.set_action(sender_id, '/get_password')
 
 
@@ -188,7 +188,7 @@ the methods used are **set_temp**, **get_temp**, **del_temp**
         query.set_action(sender_id, None)  # clear current action
         # get mail in temporary data
         mail = query.get_temp(sender_id, 'mail')  
-        chat.send_message(sender_id, f'your mail and your password are {mail} {cmd}')
+        chat.send_text(sender_id, f'your mail and your password are {mail} {cmd}')
         # delete mail in temporary data
         query.del_temp(sender_id, 'mail')  
 
@@ -231,12 +231,12 @@ You can send data with ``Payload`` object and get it in destination function's p
             You can receive the arguments payload in extends or 
             specifying the name of the argument in the parameters
         '''
-        chat.send_message(sender_id, "Hello " + name)
+        chat.send_text(sender_id, "Hello " + name)
 
         # if the arg is not defined in the list of parameters,
         # it is put in the extends variable
         if ext.get('ref'):
-            chat.send_message(sender_id, 'your ref is ' + ext.get('ref'))
+            chat.send_text(sender_id, 'your ref is ' + ext.get('ref'))
 
 
 You can also use Payload in action, an alternative to using temporary data
@@ -303,6 +303,7 @@ for files you use as a URL file, you must put assets/public, in assets/private o
     import ampalibe
     from ampalibe import Messenger
     from conf import Configuration as config
+    from ampalibe.messenger import Filetype
 
     chat = Messenger()
 
@@ -316,7 +317,7 @@ for files you use as a URL file, you must put assets/public, in assets/private o
         chat.send_file_url(
             sender_id,
             config.APP_URL + '/asset/iTeamS.png', 
-            filetype='image'
+            filetype=Filetype.image
         )
 
 Langage Management
@@ -360,7 +361,7 @@ So you can use it in translate function
 
     @ampalibe.command('/')
     def main(sender_id, lang, cmd, **ext):
-        chat.send_message(
+        chat.send_text(
             sender_id, 
             translate('hello_world', lang)
         )
@@ -395,7 +396,7 @@ Use the ``set_lang`` method to set the lang of an user.
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
-        chat.send_message(
+        chat.send_text(
             sender_id, 
             "Hello world"
         )
@@ -407,8 +408,8 @@ Use the ``set_lang`` method to set the lang of an user.
     def other_func(sender_id, lang, cmd, **ext):
         query.set_action(sender_id, None)
 
-        chat.send_message(sender_id, 'Your lang is ' + lang + ' now')
-        chat.send_message(
+        chat.send_text(sender_id, 'Your lang is ' + lang + ' now')
+        chat.send_text(
             sender_id, 
             translate('hello_world', lang)
         )

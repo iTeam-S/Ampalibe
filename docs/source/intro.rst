@@ -18,9 +18,9 @@ Webhooks & process Management
 
    @ampalibe.command('/')
    def main(sender_id, cmd, **extends):
-      chat.send_message(sender_id, 'Hello world')
-      chat.send_message(sender_id, f'This is your message: {cmd}')
-      chat.send_message(sender_id, f'and this is your facebook id: {sender_id}')
+      chat.send_text(sender_id, 'Hello world')
+      chat.send_text(sender_id, f'This is your message: {cmd}')
+      chat.send_text(sender_id, f'and this is your facebook id: {sender_id}')
 
 .. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/1.gif
 
@@ -44,13 +44,13 @@ Action Management
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
-        chat.send_message(sender_id, 'Enter your name')
+        chat.send_text(sender_id, 'Enter your name')
         query.set_action(sender_id, '/get_name')
         
     @ampalibe.action('/get_name')
     def get_name(sender_id, cmd, **extends):
         query.set_action(sender_id, None)  #  clear current action
-        chat.send_message(sender_id, f'Hello {cmd}')
+        chat.send_text(sender_id, f'Hello {cmd}')
 
 .. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/2.gif
 
@@ -71,7 +71,7 @@ Manage temporary data easily with set, get, and delete methods
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
-        chat.send_message(sender_id, 'Enter your mail')
+        chat.send_text(sender_id, 'Enter your mail')
         query.set_action(sender_id, '/get_mail')
         
     @ampalibe.action('/get_mail')
@@ -79,7 +79,7 @@ Manage temporary data easily with set, get, and delete methods
         # save the mail in temporary data
         query.set_temp(sender_id, 'mail', cmd)
 
-        chat.send_message(sender_id, f'Enter your password')
+        chat.send_text(sender_id, f'Enter your password')
         query.set_action(sender_id, '/get_password')
 
 
@@ -88,7 +88,7 @@ Manage temporary data easily with set, get, and delete methods
         query.set_action(sender_id, None)  # clear current action
         mail = query.get_temp(sender_id, 'mail')  # get mail in temporary data
 
-        chat.send_message(sender_id, f'your mail and your password are {mail} {cmd}')
+        chat.send_text(sender_id, f'your mail and your password are {mail} {cmd}')
         query.del_temp(sender_id, 'mail')  # delete temporary data
 
 .. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/3.gif
@@ -130,12 +130,12 @@ Payload Management
 
     @ampalibe.command('/membre')
     def get_membre(sender_id, cmd, name, **extends):
-        chat.send_message(sender_id, "Hello " + name)
+        chat.send_text(sender_id, "Hello " + name)
 
         # if the arg is not defined in the list of parameters,
         # it is put in the extends variable
         if extends.get('ref'):
-            chat.send_message(sender_id, 'your ref is ' + extends.get('ref'))
+            chat.send_text(sender_id, 'your ref is ' + extends.get('ref'))
 
 
 .. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/4.gif
@@ -178,7 +178,7 @@ No need to manage the length of the items to send: A next page button will be di
 
     @ampalibe.command('/item')
     def get_item(sender_id, id_item, **extends):
-        chat.send_message(sender_id, f"item n°{id_item} selected")
+        chat.send_text(sender_id, f"item n°{id_item} selected")
 
 
 
@@ -222,7 +222,7 @@ Language management is directly managed by Ampalibe
 
     @ampalibe.command('/')
     def main(sender_id, lang, cmd, **extends):
-        chat.send_message(
+        chat.send_text(
             sender_id, 
             translate('hello_world', lang)
         )
@@ -234,8 +234,8 @@ Language management is directly managed by Ampalibe
     def other_func(sender_id, lang, cmd, **extends):
         query.set_action(sender_id, None)
 
-        chat.send_message(sender_id, 'Your lang is ' + lang + ' now')
-        chat.send_message(
+        chat.send_text(sender_id, 'Your lang is ' + lang + ' now')
+        chat.send_text(
             sender_id, 
             translate('hello_world', lang)
         )

@@ -135,3 +135,15 @@
 * [FIX][IMP] Many fix & improvement by @gaetan1903 in https://github.com/iTeam-S/Ampalibe/pull/55
 * [FIX] send_buttons error by @gaetan1903 in ec865f7046af472575185635d9e4a9b8087f4dd4
 * [IMP][FIX] Verification db connection in b6b18ecfdadb3c324942d5b478873002d34696e2
+
+
+## Ampalibe 1.1.5
+
+* [IMP] Data integrity for UI & Messenger (#56) 
+* [FIX] quick_rep don't support in Element (f8054555e60a74d220e081bd163a2747778fb72e)
+* [IMP] Add specific type for attachments (#62) 
+* [IMP] stringify Payload object to output (#62) 
+* [ADD][IMP] Full functionnality `send_message` API (#63)
+* [ADD] Unit Test for messenger_api 
+* [ADD] Unit Test for ampalibe CLI
+* [IMP] Documentation improved

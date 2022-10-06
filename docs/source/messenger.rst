@@ -6,8 +6,10 @@ list of methods for sending messages to messenger
 .. note::
 
    - All returns of these functions are a POST Requests <Response>
-   - notification_type, messaging_type and tag parameters can be sent in kwargs `reference/send-api <https://developers.facebook.com/docs/messenger-platform/reference/send-api/>`
+   - notification_type, messaging_type and tag parameters can be sent in kwargs
 
+
+**Ref**: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
 
 
 send_text

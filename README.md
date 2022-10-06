@@ -14,7 +14,7 @@
 It provides a new concept, it manages webhooks, processes data sent by Facebook and provides <a href="https://developers.facebook.com/docs/messenger-platform/">API Messenger</a> with advanced functions such as payload management, item length, and more.
 </p>
 
-<a href='https://github.com/iTeam-S/Ampalibe/#'><img src='https://img.shields.io/badge/version-1.1.5.dev-%23008080'/></a>
+<a href='https://github.com/iTeam-S/Ampalibe/#'><img src='https://img.shields.io/badge/version-1.1.5-%23008080'/></a>
 <a href='https://ampalibe.readthedocs.io/en/latest/'><img src='https://readthedocs.org/projects/ampalibe/badge/?version=latest&style=flat'/></a>
 <a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/ci.yml/badge.svg'/></a>
 <a href='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pg.yml'><img src='https://github.com/iTeam-S/Ampalibe/actions/workflows/cd-pg.yml/badge.svg'/></a>

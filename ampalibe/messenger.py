@@ -142,6 +142,42 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_attachment(self, dest_id, attachment_id, filetype="file", **kwargs):
+        """
+        The Messenger Platform supports saving assets via the Send API and Attachment Upload API. This allows you reuse assets, rather than uploading them every time they are needed.
+        To attach a saved asset to a message, specify the attachment_id of the asset in the payload.attachment_id property of the message request:
+
+        Args:
+            dest_id (str): user id facebook for the destination
+            attachment_id (str): The reusable attachment ID
+            filetype (str, optional): type of the file["video","image",...]. Defaults to 'file'.
+
+        Returns:
+            Response: POST request to the facebook API to send a message to the user
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/reference/attachment-upload-api#attachment_reuse
+        """
+        dataJSON = {
+            "recipient": {"id": dest_id},
+            "message": {
+                "attachment": {
+                    "type": filetype,
+                    "payload": {"attachment_id": attachment_id},
+                }
+            },
+        }
+        dataJSON.update(kwargs)
+
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages", json=dataJSON, headers=header, params=params
+        )
+        return self.__analyse(res)
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_action(self, dest_id, action, **kwargs):
         """
         This method is used to simulate an action on messages.

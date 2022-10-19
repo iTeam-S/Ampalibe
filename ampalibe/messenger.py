@@ -77,6 +77,14 @@ class Messenger:
             )
         return self.access_token
 
+    @property
+    def page_id(self):
+        """
+        This method is used to get the page id of the facebook page
+        """
+        res = requests.get(f"{self.url}?access_token={self.token}&fields=id")
+        return self.__analyse(res).json()["id"]
+
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_custom(self, json, endpoint="/messages"):
         """
@@ -576,3 +584,107 @@ class Messenger:
             self.url + "/messages", json=dataJSON, headers=header, params=params
         )
         return self.__analyse(res)
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def create_personas(self, name, profile_picture_url, **kwargs):
+        """
+        Method that creates a persona for the bot.
+
+        Args:
+            name (str): The name of the persona
+            profile_picture_url (str): The url of the profile picture
+
+        Returns:
+            Response: POST request to the facebook API to create a persona
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+        """
+        dataJSON = {
+            "name": name,
+            "profile_picture_url": profile_picture_url,
+        }
+        dataJSON.update(kwargs)
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            f"https://graph.facebook.com/{self.page_id}/personas",
+            json=dataJSON,
+            headers=header,
+            params=params,
+        )
+        res = self.__analyse(res)
+        return res.json().get("id")
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def list_personas(self):
+        """
+        Method that lists all personas for the bot.
+
+        Returns:
+            Response: GET request to the facebook API to list all personas
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+        """
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.get(
+            f"https://graph.facebook.com/v13.0/{self.page_id}/personas",
+            headers=header,
+            params=params,
+        )
+        res = self.__analyse(res)
+        return res.json().get("data")
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def get_personas(self, persona_id):
+        """
+        Method that gets a persona for the bot.
+
+        Args:
+            persona_id (str): The id of the persona
+
+        Returns:
+            Response: GET request to the facebook API to get a persona
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+        """
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.get(
+            f"https://graph.facebook.com/v13.0/{persona_id}",
+            headers=header,
+            params=params,
+        )
+        res = self.__analyse(res)
+        return res.json()
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def delete_personas(self, persona_id):
+        """
+        Method that deletes a persona for the bot.
+
+        Args:
+            persona_id (str): The id of the persona
+
+        Returns:
+            Response: DELETE request to the facebook API to delete a persona
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+        """
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.delete(
+            f"https://graph.facebook.com/v13.0/{persona_id}",
+            headers=header,
+            params=params,
+        )
+        res = self.__analyse(res)
+        return res.json()

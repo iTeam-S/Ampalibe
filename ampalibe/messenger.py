@@ -348,7 +348,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file_url(self, dest_id, url, filetype="file", **kwargs):
+    def send_file_url(self, dest_id, url, filetype="file", reusable=False, **kwargs):
         """
         The Messenger Platform allows you to attach assets to messages, including audio,
         video, images, and files.All this is the role of this Method. The maximum attachment
@@ -359,6 +359,7 @@ class Messenger:
             dest_id (str): user id facebook for destination
             url (str): the origin url for the file
             filetype (str, optional): type of the file["video","image",...]. Defaults to 'file'.
+            reusable (bool, default False): Make an attachment reusable
 
         Returns:
             Response: POST request to the facebook API to send a template generic to the user
@@ -373,7 +374,7 @@ class Messenger:
             "message": {
                 "attachment": {
                     "type": filetype,
-                    "payload": {"url": url, "is_reusable": True},
+                    "payload": {"url": url, "is_reusable": reusable},
                 }
             },
         }
@@ -442,7 +443,9 @@ class Messenger:
             return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file(self, dest_id, file, filetype="file", filename=None, **kwargs):
+    def send_file(
+        self, dest_id, file, filetype="file", filename=None, reusable=False, **kwargs
+    ):
         """
         this method send an attachment from file
 
@@ -451,6 +454,7 @@ class Messenger:
             file (str): name of the file in local folder
             filetype (str, optional): type of the file["video","image",...]. Defaults to "file".
             filename (str, optional): A filename received for de destination . Defaults to None.
+            reusable (bool, default False): Make an attachment reusable
 
         Returns:
             Response: POST request to the facebook API to send a file to the user
@@ -469,7 +473,7 @@ class Messenger:
                     "attachment": {
                         "type": filetype,
                         "payload": {
-                            "is_reusable": True,
+                            "is_reusable": reusable,
                         },
                     }
                 }

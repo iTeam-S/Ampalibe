@@ -7,7 +7,9 @@ from retry import retry
 import requests_toolbelt
 from .utils import Payload
 from conf import Configuration  # type: ignore
-from .ui import QuickReply, Button, Element, ReceiptElement, Summary, Address, Adjustment  # type: ignore
+from .ui import Summary, Address, Adjustment
+from .ui import Button, QuickReply, Element, ReceiptElement
+
 
 
 class Action:

@@ -1,7 +1,7 @@
 from os import environ, makedirs, removedirs
 from ampalibe import Messenger, Payload
 from ampalibe.messenger import Action, Filetype
-from ampalibe.ui import Button, Element, QuickReply, Type
+from ampalibe.ui import Button, Element, QuickReply, Type, ReceiptElement, Summary, Adjustment, Address
 
 chat = Messenger()
 sender_id = environ.get("USER_ID")
@@ -105,6 +105,7 @@ def test_send_button():
         == 200
     )
 
+
 def test_persitent_menu():
     persistent_menu = [
         Button(type='postback', title='Menu', payload='/payload'),
@@ -115,3 +116,25 @@ def test_persitent_menu():
         chat.persistent_menu(sender_id, persistent_menu).status_code
         == 200
     )
+
+
+def test_send_receipt_template():
+    receipts = [
+        ReceiptElement(title='Tee-shirt', price=1000),
+        ReceiptElement(title='Pants', price=2000),
+    ]
+
+    # create a summary
+    summary = Summary(total_cost=300)
+
+    # create an address
+    address = Address(street_1='Street 1', city='City', state='State', postal_code='Postal Code', country='Country')
+
+    # create an adjustment
+    adjustment = Adjustment(name='Discount of 10%', amount=10)
+
+    assert (
+        chat.send_receipt_template(
+            sender_id, "Arleme", 123461346131, "MVOLA", summary=summary, receipt_elements=receipts, currency='MGA', address=address, adjustments=[adjustment]
+        ).status_code
+    ) == 200

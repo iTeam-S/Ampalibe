@@ -391,3 +391,54 @@ refer to other api in this link https://developers.facebook.com/docs/messenger-p
         
         *endpoint (str)*: the endpoint if is not '/messages'
 
+
+send_receipt_template
+________________
+
+it sends a receipt template to a customer to confirm his order.
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/template/receipt
+
+**Args**:
+    *recipient_name (str)*: The name of the recipient
+
+    *order_number (str)*: The order number
+
+    *payment_method (str)*: The payment method
+
+    *summary (Summary or dict)*: The summary of the order
+
+    *currency (str)*: The currency of the order
+
+    *address (Adresse or dict)*: The address of the recipient (optional)
+
+    *adjustments (list)*: The adjustments of the order (optional)
+
+    *order_url (str)*: The url of the order (optional)
+
+    *timestamp (str)*: The timestamp of the order (optional)
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe.ui import ReceiptElement, Address, Summary, Adjustment
+    ...
+
+    # create a receipt element
+    receipts = [
+        ReceiptElement(title='Tee-shirt', price=1000),
+        ReceiptElement(title='Pants', price=2000),
+    ]
+
+    # create a summary
+    summary = Summary(total_cost=300)
+
+    # create an address
+    address = Address(street_1='Street 1', city='City', state='State', postal_code='Postal Code', country='Country')
+
+    # create an adjustment
+    adjustment = Adjustment(name='Discount of 10%', amount=10)
+
+    chat.send_receipt_template(
+        sender_id, "Arleme", 123461346131, "MVOLA", summary=summary, receipt_elements=receipts, currency='MGA', address=address, adjustments=[adjustment])

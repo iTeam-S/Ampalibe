@@ -154,3 +154,140 @@ class Element:
 
     def __str__(self):
         return str(self.value)
+
+
+class ReceiptElement:
+    def __init__(self, **kwargs):
+        self.title = kwargs.get("title")
+        self.subtitle = kwargs.get("subtitle")
+        self.quantity = kwargs.get("quantity")
+        self.price = kwargs.get("price")
+        self.currency = kwargs.get("currency")
+        self.image = kwargs.get("image_url")
+
+        if not self.title:
+            raise ValueError("Receipt element must be have a title")
+
+        if not self.price:
+            raise ValueError("Receipt element must be have a price")
+
+    @property
+    def value(self):
+        res = {"title": self.title}
+
+        if self.subtitle:
+            res["subtitle"] = self.subtitle
+
+        if self.quantity:
+            res["quantity"] = self.quantity
+
+        res["price"] = self.price
+        res["currency"] = self.currency
+
+        if self.image:
+            res["image_url"] = self.image
+
+        return res
+
+    def __str__(self):
+        return str(self.value)
+
+
+class Summary:
+    def __init__(self, **kwargs):
+        self.subtotal = kwargs.get("subtotal")
+        self.shipping_cost = kwargs.get("shipping_cost")
+        self.total_tax = kwargs.get("total_tax")
+        self.total_cost = kwargs.get("total_cost")
+
+        if not self.total_cost:
+            raise ValueError("Summary must have a total_cost")
+
+    @property
+    def value(self):
+        res = {"total_cost": self.total_cost}
+
+        if self.shipping_cost:
+            res["shipping_cost"] = self.shipping_cost
+
+        if self.total_tax:
+            res["total_tax"] = self.total_tax
+
+        if self.subtotal:
+            res["subtotal"] = self.subtotal
+
+        return res
+
+    def __str__(self):
+        return str(self.value)
+
+
+class Address:
+    def __init__(self, **kwargs):
+        self.street_1 = kwargs.get("street_1")
+        self.street_2 = kwargs.get("street_2")
+        self.city = kwargs.get("city")
+        self.postal_code = kwargs.get("postal_code")
+        self.state = kwargs.get("state")
+        self.country = kwargs.get("country")
+
+        if not self.street_1:
+            raise ValueError("Address must have a street_1")
+
+        if not self.city:
+            raise ValueError("Address must have a city")
+
+        if not self.postal_code:
+            raise ValueError("Address must have a postal_code")
+
+        if not self.state:
+            raise ValueError("Address must have a state")
+
+        if not self.country:
+            raise ValueError("Address must have a country")
+
+    @property
+    def value(self):
+        res = {}
+
+        if self.street_1:
+            res["street_1"] = self.street_1
+
+        if self.street_2:
+            res["street_2"] = self.street_2
+
+        if self.city:
+            res["city"] = self.city
+
+        if self.postal_code:
+            res["postal_code"] = self.postal_code
+
+        if self.state:
+            res["state"] = self.state
+
+        if self.country:
+            res["country"] = self.country
+
+        return res
+
+    def __str__(self):
+        return str(self.value)
+
+
+class Adjustment:
+    def __init__(self, **kwargs):
+        self.name = kwargs.get("name")
+        self.amount = kwargs.get("amount")
+
+        if not self.name:
+            raise ValueError("Adjustment must be have a name")
+
+        if not self.amount:
+            raise ValueError("Adjustment must be have a amount")
+
+    @property
+    def value(self):
+        return {"name": self.name, "amount": self.amount}
+
+    def __str__(self):
+        return str(self.value)

@@ -7,7 +7,9 @@ from retry import retry
 import requests_toolbelt
 from .utils import Payload
 from conf import Configuration  # type: ignore
-from .ui import QuickReply, Button, Element
+from .ui import Summary, Address, Adjustment
+from .ui import Button, QuickReply, Element, ReceiptElement
+
 
 
 class Action:
@@ -728,3 +730,71 @@ class Messenger:
         )
         res = self.__analyse(res)
         return res.json()
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_receipt_template(
+            self, dest_id, recipient_name, order_number, payment_method, receipt_elements, summary, currency="MGA", address=None, adjustments=None, order_url=None, timestamp=None):
+        """
+        Method that sends a receipt template to a customer  .
+
+        Args:
+            recipient_name (str | required ): The name of the recipient
+            order_number (str | required ): The order number
+            payment_method (str | required ): The payment method
+            summary (Summary obj or dict | required ): The summary of the order
+            currency (str): The currency of the order
+            address (Adresse obj or dict | optional ): The address of the recipient
+            adjustments (list of Adjustment obj or dict | optional ): The adjustments of the order
+            order_url (str | optionnal ): The url of the order
+            timestamp (str | optionnal ): The timestamp of the order
+
+        Returns:
+            Response: POST request to the facebook API to send a receipt template
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/reference/templates/receipt
+        """
+
+        if receipt_elements:
+            receipt_elements = [
+                receipt.value if isinstance(receipt, ReceiptElement) else receipt
+                for receipt in receipt_elements
+            ]
+
+        summary = summary.value if isinstance(summary, Summary) else summary
+        address = address.value if isinstance(address, Address) else address
+
+        if adjustments:
+            adjustments = [
+                adjustment.value if isinstance(adjustment, Adjustment) else adjustment
+                for adjustment in adjustments
+            ]
+
+        dataJSON = {
+            "recipient": {"id": dest_id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "receipt",
+                        "recipient_name": recipient_name,
+                        "order_number": order_number,
+                        "currency": currency,
+                        "payment_method": payment_method,
+                        "address": address,
+                        "summary": summary,
+                        "elements": receipt_elements,
+                        "order_url": order_url,
+                        "adjustments": adjustments,
+                        "timestamp": timestamp
+                    },
+                }
+            },
+        }
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages", json=dataJSON, headers=header, params=params
+        )
+        return self.__analyse(res)

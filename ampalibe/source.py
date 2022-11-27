@@ -76,7 +76,7 @@ chat = Messenger()
 # chat.get_started()
 
 @ampalibe.command('/')
-def main(sender_id, cmd, **extends):
+def main(sender_id, cmd, **ext):
     '''
     main function where messages received on
     the facebook page come in.
@@ -85,13 +85,13 @@ def main(sender_id, cmd, **extends):
         sender facebook id
     @param cmd String: 
         message content
-    @param extends Dict: 
+    @param ext Dict: 
         contain list of others
             data sent by facebook (sending time, ...)
             data sent by your payload if not set in parameter
     '''
     
-    chat.send_message(sender_id, "Hello, Ampalibe")
+    chat.send_text(sender_id, "Hello, Ampalibe")
     """
 
 

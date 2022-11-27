@@ -77,7 +77,7 @@ class Server:
         # data analysis and decomposition
         sender_id, payload, message = analyse(data)
 
-        if payload.webhook not in ("message", "postback"):
+        if payload.webhook not in ("message", "postback", "attachments"):
             if funcs["event"].get(payload.webhook):
                 kw = {"sender_id": sender_id, "watermark": payload, "message": message}
                 if testmode:

@@ -442,3 +442,108 @@ it sends a receipt template to a customer to confirm his order.
 
     chat.send_receipt_template(
         sender_id, "Arleme", 123461346131, "MVOLA", summary=summary, receipt_elements=receipts, currency='MGA', address=address, adjustments=[adjustment])
+
+create_personas
+____________
+
+Method to create personas for the bot
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+    *name (str)*: The name of the personas to create
+    
+    *profile_picture_url(str)*: The url of the profile picture of the personas
+
+**Response**:
+
+    *srtr*: id of the personas created
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    bot = Messenger('PAGE_ACCESS_TOKEN')
+
+    personas_id = bot.create_personas('Rivo Lalaina', 'https://avatars.githubusercontent.com/u/59861055?v=4')
+
+    bot.send-messages(sender_id, "Hello", personas_id=personas_id)
+
+get_personas
+____________
+
+Method to get personas of the bot
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+    *personas_id (str)*: The id of the personas to delete
+
+**Response**:
+    
+        *dict*: the personas
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    bot = Messenger('PAGE_ACCESS_TOKEN')
+
+    personas = bot.get_personas('123456789')
+
+    print(personas) # {'name': 'Rivo Lalaina', 'profile_picture_url': 'https://avatars.githubusercontent.com/u/59861055?v=4', 'id': '123456789'}
+
+
+list_personas
+____________
+
+Method to get the list of personas*
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+**Response**:
+
+    *list of dict*: the list of personas
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    bot = Messenger('PAGE_ACCESS_TOKEN')
+
+    list_personas = bot.list_personas() # return list of dict
+
+    print(list_personas) # [{'name': 'Rivo Lalaina', 'profile_picture_url': 'https://avatars.githubusercontent.com/u/59861055?v=4', 'id': '100000000000000'}]
+
+delete_personas
+____________
+
+Method to delete personas
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+    *personas_id (str)*: The id of the personas to delete
+
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    bot = Messenger('PAGE_ACCESS_TOKEN')
+
+    bot.delete_personas('100000000000000')
+

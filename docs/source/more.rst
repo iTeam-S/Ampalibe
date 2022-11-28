@@ -337,3 +337,69 @@ with ampalibe **event** decorator.
 .. note:: 
  
     The are 3 arguments for `event` decorator: *read*, *delivery*, *reaction*
+
+
+
+Native event 
+=================
+
+Since v1.1.6+
+You can now add event like `before_receive`  and `after_receive`
+in ampalibe as decorator to execute a function before or afer a received message
+
+
+.. code-block:: python
+    
+    import ampalibe
+    from ampalibe.messenger import Action
+    
+    chat = ampalibe.Messenger()
+
+    @ampalibe.before_receive()
+    def before_process(sender_id, **ext):
+        chat.send_action(sender_id, Action.mark_seen)
+        return True
+
+
+    @ampalibe.command("/")
+    def main(sender_id, **ext):
+        chat.send_text(sender_id, "Hello ampalibe")
+
+
+.. important:: 
+
+    The function decorated with before receive must return the value ``True`` to continue the process.
+
+    So you can stop the process directly by returning the value ``False``.
+
+
+.. code-block:: python
+    
+    import ampalibe
+    from ampalibe.messenger import Action
+    
+    chat = ampalibe.Messenger()
+    swearing_words = ['f**k you']
+
+    @ampalibe.before_receive()
+    def before_process(sender_id, cmd, **ext):
+        chat.send_action(sender_id, Action.typing_on)
+
+        if cmd in swearing_words:
+            return False
+        return True
+
+    @ampalibe.after_receive()
+    def before_process(sender_id, **ext):
+        chat.send_action(sender_id, Action.typing_off)
+        return True
+
+    @ampalibe.command("/")
+    def main(sender_id, **ext):
+        chat.send_text(sender_id, "Hello ampalibe")
+
+
+.. note:: 
+ 
+    the function decorated by **after_receive** always executes regardless 
+    of the value returned by the function decorated by **before_receive** .

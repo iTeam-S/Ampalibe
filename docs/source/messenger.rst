@@ -393,7 +393,7 @@ refer to other api in this link https://developers.facebook.com/docs/messenger-p
 
 
 send_receipt_template
-________________
+_____________________
 
 it sends a receipt template to a customer to confirm his order.
 

@@ -110,6 +110,16 @@ jobs:
           exit 1
         fi
     
+    - name: "Test du reception d'un attachment"
+      run: |
+        response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "message": {"attachments":[{"payload":{"url": "https://i.imgflip.com/6b45bi.jpg"}}]} }]}]}')
+        if [ "$response" = '"Hello Ampalibe"' ]; then
+          echo "Message: OK"
+        else
+          echo KO
+          exit 1
+        fi
+    
     - name: "Run functionnal test"
       run: bash tests/test.sh
 

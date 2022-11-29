@@ -8,7 +8,7 @@ import urllib.parse
 from conf import Configuration  # type: ignore
 
 
-funcs = {"command": {}, "action": {}, "event": {}}
+funcs = {"command": {}, "action": {}, "event": {}, "before": None, "after": None}
 
 
 class Cmd(str):
@@ -191,6 +191,30 @@ def event(*args, **kwargs):
     return call_fn
 
 
+def before_receive(*args, **kwargs):
+    """
+    A decorator that registers the function as the route
+        of a defined event handler.
+    """
+
+    def call_fn(function):
+        funcs["before"] = function
+
+    return call_fn
+
+
+def after_receive(*args, **kwargs):
+    """
+    A decorator that registers the function as the route
+        of a defined event handler.
+    """
+
+    def call_fn(function):
+        funcs["after"] = function
+
+    return call_fn
+
+
 def download_file(url, file):
     """
     Downloading a file from an url.
@@ -269,3 +293,17 @@ def simulate(sender_id, text, **params):
         headers=header,
         params=params,
     )
+
+
+def before_run(func, **kwargs):
+    res = None
+    if funcs["before"] and hasattr(funcs["before"], "__call__"):
+        if funcs["before"](**kwargs):
+            res = func(**kwargs)
+    else:
+        res = func(**kwargs)
+
+    if funcs["after"] and hasattr(funcs["after"], "__call__"):
+        funcs["after"](**kwargs)
+
+    return res

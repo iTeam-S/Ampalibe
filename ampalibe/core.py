@@ -7,9 +7,9 @@ from .model import Model
 from threading import Thread
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
-from .utils import funcs, analyse, Payload
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
+from .utils import funcs, analyse, before_run, Payload
 
 _req = None
 loop = None
@@ -60,9 +60,8 @@ class Server:
         """
         Main verification for bot server is received here
         """
-        fb_token = request.query_params.get("hub.verify_token")
 
-        if fb_token == Configuration.VERIF_TOKEN:
+        if request.query_params.get("hub.verify_token") == Configuration.VERIF_TOKEN:
             return Response(content=request.query_params["hub.challenge"])
         return "Failed to verify token"
 
@@ -107,6 +106,7 @@ class Server:
             os.remove(f"assets/private/.__{sender_id}")
 
         payload, kw = Payload.trt_payload_in(payload)
+
         if action:
             action, kw_tmp = Payload.trt_payload_in(action)
             kw.update(kw_tmp)
@@ -118,10 +118,11 @@ class Server:
         if command:
             _req.set_action(sender_id, None)
             if testmode:
-                return command(**kw)
+                return before_run(command, **kw)
             else:
                 Thread(
-                    target=command,
+                    target=before_run,
+                    args=(command,),
                     kwargs=kw,
                 ).start()
         elif action and funcs["action"].get(action):
@@ -129,8 +130,12 @@ class Server:
             CASE an action is set.
             """
             if testmode:
-                return funcs["action"].get(action)(**kw)
-            Thread(target=funcs["action"].get(action), kwargs=kw).start()
+                return before_run(funcs["action"].get(action), **kw)
+            Thread(
+                target=before_run,
+                args=(funcs["action"].get(action),),
+                kwargs=kw,
+            ).start()
         else:
             command = funcs["command"].get("/")
             if action:
@@ -140,8 +145,8 @@ class Server:
                 )
             if command:
                 if testmode:
-                    return command(**kw)
-                Thread(target=command, kwargs=kw).start()
+                    return before_run(command, **kw)
+                Thread(target=before_run, args=(command,), kwargs=kw).start()
             else:
                 print(
                     "\033[31mError! \033[0mDefault route '/' function undeclared.",

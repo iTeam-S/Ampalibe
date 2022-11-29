@@ -345,7 +345,7 @@ Native event
 
 Since v1.1.6+
 You can now add event like `before_receive`  and `after_receive`
-in ampalibe as decorator to execute a function before or afer a received message
+in ampalibe as decorator to execute a function before or after a received message
 
 
 .. code-block:: python
@@ -390,9 +390,8 @@ in ampalibe as decorator to execute a function before or afer a received message
         return True
 
     @ampalibe.after_receive()
-    def before_process(sender_id, **ext):
+    def after_process(sender_id, **ext):
         chat.send_action(sender_id, Action.typing_off)
-        return True
 
     @ampalibe.command("/")
     def main(sender_id, **ext):

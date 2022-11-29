@@ -442,3 +442,114 @@ it sends a receipt template to a customer to confirm his order.
 
     chat.send_receipt_template(
         sender_id, "Arleme", 123461346131, "MVOLA", summary=summary, receipt_elements=receipts, currency='MGA', address=address, adjustments=[adjustment])
+
+create_personas
+_________________
+
+The Messenger Platform allows you to create and manage personas for your business messaging experience. The persona may be backed by a human agent or a bot. A persona allows conversations to be passed from bots to human agents seemlessly. 
+When a persona is introduced into a conversation, the persona's profile picture will be shown and all messages sent by the persona will be accompanied by an annotation above the message that states the persona name and business it represents.
+
+
+Method to create personas
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+    *name (str)*: The name of the personas to create
+    
+    *profile_picture_url(str)*: The url of the profile picture of the personas
+
+**Response**:
+
+    *srtr*: id of the personas created
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    chat = Messenger()
+
+    personas_id = chat.create_personas('Rivo Lalaina', 'https://avatars.githubusercontent.com/u/59861055?v=4')
+
+    chat.send_text(sender_id, "Hello", personas_id=personas_id)
+
+
+get_personas
+_____________
+
+Method to get specific personas 
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+    *personas_id (str)*: The id of the personas
+
+**Response**:
+    
+        *dict*: the personas
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    chat = Messenger()
+
+    personas = chat.get_personas('123456789')
+
+    print(personas) # {'name': 'Rivo Lalaina', 'profile_picture_url': 'https://avatars.githubusercontent.com/u/59861055?v=4', 'id': '123456789'}
+
+
+list_personas
+_______________
+
+Method to get the list of personas
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+**Response**:
+
+    *list of dict*: list of personas
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    chat = Messenger()
+
+    list_personas = chat.list_personas() # return list of dict
+
+    print(list_personas) # [{'name': 'Rivo Lalaina', 'profile_picture_url': 'https://avatars.githubusercontent.com/u/59861055?v=4', 'id': '123456789'}]
+
+
+delete_personas
+________________
+
+Method to delete personas
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
+
+**Args**:
+
+    *personas_id (str)*: The id of the personas to delete
+
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    chat = Messenger()
+
+    chat.delete_personas('123456789')
+

@@ -158,5 +158,6 @@
 * [FIX] attachments not received in function reported by @SergioDev22
 * [IMP] unit test for receiving attachment
 * [ADD] decorator before_receive & after_receive message
+* [ADD] get_user_profile SEND API
 
 

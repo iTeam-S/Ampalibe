@@ -798,3 +798,15 @@ class Messenger:
             self.url + "/messages", json=dataJSON, headers=header, params=params
         )
         return self.__analyse(res)
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def get_user_profile(self, dest_id, fields='first_name,last_name,profile_pic'):
+        """
+            The User Profile methiod allows you to use a Page-scoped ID (PSID) 
+            to retrieve user profile information that can be used to personalize 
+            the experience of people interacting with your Messenger.
+        """
+        params = {"fields": fields, "access_token": self.token}
+        res = requests.get(f'https://graph.facebook.com/{dest_id}', params=params)
+
+        return res.json() if res.status_code == 200 else {}

@@ -449,7 +449,9 @@ _________________
 The Messenger Platform allows you to create and manage personas for your business messaging experience. The persona may be backed by a human agent or a bot. A persona allows conversations to be passed from bots to human agents seemlessly. 
 When a persona is introduced into a conversation, the persona's profile picture will be shown and all messages sent by the persona will be accompanied by an annotation above the message that states the persona name and business it represents.
 
+.. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/personas.png
 
+    
 Method to create personas
 
 **Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
@@ -553,3 +555,30 @@ Method to delete personas
 
     chat.delete_personas('123456789')
 
+
+get_user_profile
+_________________
+
+Method to get specific personas 
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/identity/user-profile
+
+**Args**:
+
+    *dest_id (str)*: user id for destination
+
+    *fields (str)*: list of field name that you need. Defaults to "first_name,last_name,profile_pic" 
+
+**Response**:
+    
+        *dict*: user info
+
+**Example**:
+
+.. code-block:: python
+
+    from ampalibe import Messenger
+
+    chat = Messenger()
+
+    user_info = chat.get_user_profile(sender_id)

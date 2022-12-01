@@ -147,3 +147,17 @@
 * [ADD] Unit Test for messenger_api 
 * [ADD] Unit Test for ampalibe CLI
 * [IMP] Documentation improved
+
+
+## Ampalibe 1.1.6
+
+* [IMP] Add argument reusable in send_file & send_file_url
+* [ADD] send_attachment SEND API (sending reusable file)
+* [FEAT] Personas management send API (create, list, get, delete) by @rivo2302
+* [ADD] new messenger api : send receipt template by @rootkit7628
+* [FIX] attachments not received in function reported by @SergioDev22
+* [IMP] unit test for receiving attachment
+* [ADD] decorator before_receive & after_receive message
+* [ADD] get_user_profile SEND API
+
+

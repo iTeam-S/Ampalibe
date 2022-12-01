@@ -451,7 +451,6 @@ When a persona is introduced into a conversation, the persona's profile picture 
 
 .. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/personas.png
 
-    
 Method to create personas
 
 **Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/personas
@@ -582,3 +581,4 @@ Method to get specific personas
     chat = Messenger()
 
     user_info = chat.get_user_profile(sender_id)
+

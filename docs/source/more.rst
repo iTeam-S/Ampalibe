@@ -65,20 +65,21 @@ Logging and structure
 
 Logging
 --------
+.. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/logger.png
 
-By default, all error in Messenger API methods is showing in output
+By default, Ampalibe uses the logging module to log the application but with custom formatting.
 
 Messenger API methods response is a request <Response> so we can use it to view the response
 
 .. code-block:: python
 
-    res = chat.send_message(sender_id, "Hello Ampalibe")
+    from ampalibe import Logger,
 
-    if res.status_code == 200:
-        print("OK! NO problem") 
-    else:
-        print('KO') 
-        print(res.text, res.status_code)
+    Logger.info("Info message")
+    Logger.debug("Debug message")
+    Logger.warning("Warning message")
+    Logger.error("Error message")
+    Logger.critical("Critical message")
 
 
 Structure

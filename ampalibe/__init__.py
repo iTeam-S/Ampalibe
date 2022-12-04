@@ -150,5 +150,7 @@ finally:
     from aiocron import crontab
     from .messenger import Messenger
     from .core import webserver, Extra as init
+    from .core import Logger
     from .utils import translate, download_file, simulate, Payload
     from .utils import event, action, command, before_receive, after_receive
+    

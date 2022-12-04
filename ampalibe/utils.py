@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import logging
 import codecs
 import pickle
 import requests
@@ -8,7 +9,13 @@ import urllib.parse
 from conf import Configuration  # type: ignore
 
 
-funcs = {"command": {}, "action": {}, "event": {}, "before": None, "after": None}
+funcs = {
+    "command": {},
+    "action": {},
+    "event": {},
+    "before": None,
+    "after": None,
+}
 
 
 class Cmd(str):
@@ -69,9 +76,14 @@ class Payload:
             end = payload.index("}}")
             items = payload[start + 2 : end].split("===")
             # result string to object
-            res[items[0]] = pickle.loads(codecs.decode(items[1].encode(), "base64"))
+            res[items[0]] = pickle.loads(
+                codecs.decode(items[1].encode(), "base64")
+            )
             payload = payload.replace(payload[start : end + 2], "").strip()
-        return payload0.copy(payload) if isinstance(payload0, Cmd) else payload, res
+        return (
+            payload0.copy(payload) if isinstance(payload0, Cmd) else payload,
+            res,
+        )
 
     @staticmethod
     def trt_payload_out(payload):
@@ -85,7 +97,9 @@ class Payload:
             tmp = ""
             for key_data, val_data in payload.data.items():
                 # object to string
-                val_data = codecs.encode(pickle.dumps(val_data), "base64").decode()
+                val_data = codecs.encode(
+                    pickle.dumps(val_data), "base64"
+                ).decode()
                 tmp += f"{{{{{key_data}==={val_data}}}}} "
 
             final_pl = payload.payload + (" " + tmp if tmp else "")
@@ -131,7 +145,11 @@ def analyse(data):
                     )
                 elif message["message"].get("text"):
                     # if the response is a simple text
-                    return sender_id, Cmd(message["message"].get("text")), message
+                    return (
+                        sender_id,
+                        Cmd(message["message"].get("text")),
+                        message,
+                    )
 
             if message.get("postback"):
                 recipient_id = sender_id
@@ -307,3 +325,49 @@ def before_run(func, **kwargs):
         funcs["after"](**kwargs)
 
     return res
+
+
+# Custom logger Ampalibe
+
+
+class CustomFormatter(logging.Formatter):
+    """
+    Custom formatter for logging, add colors to the output and custom format
+    """
+
+    grey = "\x1b[38;20m"
+    yellow = "\x1b[33;20m"
+    red = "\x1b[31;20m"
+    green = "\x1b[32;20m"
+    bold_red = "\x1b[31;1m"
+    reset = "\x1b[0m"
+    format = "%(name)s | %(levelname)s:   %(message)s "
+
+    # Define format of each status  (DEBUG|INFO|WARNINGS|ERROR|CRITICAL)
+    FORMATS = {
+        logging.DEBUG: grey + format + reset,
+        logging.INFO: green + format + reset,
+        logging.WARNING: yellow + format + reset,
+        logging.ERROR: red + format + reset,
+        logging.CRITICAL: bold_red + format + reset,
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+
+class Logger:
+    """
+    Logger class for Ampalibe, by default the logger name is Ampalibe
+    """
+
+    def __init__(self, name="Ampalibe"):
+        logger = logging.getLogger(name)
+        logger.setLevel(logging.DEBUG)
+        conf = logging.StreamHandler()
+        conf.setLevel(logging.DEBUG)
+        conf.setFormatter(CustomFormatter())
+        logger.addHandler(conf)
+        self.logger = logger

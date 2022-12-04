@@ -87,18 +87,19 @@ to request a person's location, email address, and phone number.
 
 .. code-block:: python
     
+    from ampalibe import Payload
     from ampalibe.ui import QuickReply
     ... 
 
     quick_rep = [
         QuickReply(
             title="Angela",
-            payload="/membre",
+            payload=Payload("/membre"),
             image_url="https://i.imgflip.com/6b45bi.jpg"
         ),
         QuickReply(
             title="Rivo",
-            payload="/membre",
+            payload=Payload("/membre"),
             image_url="https://i.imgflip.com/6b45bi.jpg"
         ),
     ]
@@ -306,13 +307,14 @@ such as predefined answers to questions or actions to take.
 
 .. code-block:: python
 
+    from ampalibe import Payload
     from ampalibe.ui import Button, Type
 
     buttons = [
         Button(
             type=Type.postback,
             title='Informations',
-            payload='/contact'
+            payload=Payload('/contact')
         )
     ]
 
@@ -367,12 +369,13 @@ discover and access the core functionality of your Messenger bot at any point in
 
 .. code-block:: python
 
+    from ampalibe import Payload
     from ampalibe.ui import Button, Type
     ...
 
     persistent_menu = [
-        Button(type=Type.postback, title='Menu', payload='/payload'),
-        Button(type=Type.postback, title='Logout', payload='/logout')
+        Button(type=Type.postback, title='Menu', payload=Payload('/payload')),
+        Button(type=Type.postback, title='Logout', payload=Payload('/logout'))
     ]
 
     chat.persistent_menu(sender_id, persistent_menu)

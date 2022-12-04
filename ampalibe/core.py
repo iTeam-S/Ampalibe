@@ -16,7 +16,9 @@ loop = None
 
 webserver = FastAPI(title="Ampalibe server")
 if os.path.isdir("assets/public"):
-    webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
+    webserver.mount(
+        "/asset", StaticFiles(directory="assets/public"), name="asset"
+    )
 
 
 class Extra:
@@ -61,7 +63,10 @@ class Server:
         Main verification for bot server is received here
         """
 
-        if request.query_params.get("hub.verify_token") == Configuration.VERIF_TOKEN:
+        if (
+            request.query_params.get("hub.verify_token")
+            == Configuration.VERIF_TOKEN
+        ):
             return Response(content=request.query_params["hub.challenge"])
         return "Failed to verify token"
 
@@ -78,11 +83,17 @@ class Server:
 
         if payload.webhook not in ("message", "postback", "attachments"):
             if funcs["event"].get(payload.webhook):
-                kw = {"sender_id": sender_id, "watermark": payload, "message": message}
+                kw = {
+                    "sender_id": sender_id,
+                    "watermark": payload,
+                    "message": message,
+                }
                 if testmode:
                     funcs["event"][payload.webhook](**kw)
                 else:
-                    Thread(target=funcs["event"][payload.webhook], kwargs=kw).start()
+                    Thread(
+                        target=funcs["event"][payload.webhook], kwargs=kw
+                    ).start()
             return {"status": "ok"}
 
         _req._verif_user(sender_id)
@@ -93,7 +104,9 @@ class Server:
         if payload in ("/__next", "/__more"):
             bot = Messenger()
             if os.path.isfile(f"assets/private/.__{sender_id}"):
-                elements = pickle.load(open(f"assets/private/.__{sender_id}", "rb"))
+                elements = pickle.load(
+                    open(f"assets/private/.__{sender_id}", "rb")
+                )
                 if payload == "/__next":
                     bot.send_template(sender_id, elements[0], next=elements[1])
                 else:
@@ -140,7 +153,8 @@ class Server:
             command = funcs["command"].get("/")
             if action:
                 print(
-                    f'\033[48:5:166m⚠ Warning!\033[0m action "{action}" undeclared',
+                    f'\033[48:5:166m⚠ Warning!\033[0m action "{action}"'
+                    " undeclared",
                     file=sys.stderr,
                 )
             if command:
@@ -149,7 +163,8 @@ class Server:
                 Thread(target=before_run, args=(command,), kwargs=kw).start()
             else:
                 print(
-                    "\033[31mError! \033[0mDefault route '/' function undeclared.",
+                    "\033[31mError! \033[0mDefault route '/' function"
+                    " undeclared.",
                     file=sys.stderr,
                 )
         return {"status": "ok"}

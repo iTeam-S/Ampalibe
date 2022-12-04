@@ -8,7 +8,7 @@ from .source import env, env_cmd
 from .source import conf, core, langs
 
 
-__version__ = "1.1.6"
+__version__ = "1.1.7.dev"
 __author__ = "iTeam-$"
 
 
@@ -115,7 +115,8 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
             )
         )
         typing_print(
-            "~\033[32m 👌\033[0m | Env Loaded\n~\033[32m 👌\033[0m | Ampalibe running..."
+            "~\033[32m 👌\033[0m | Env Loaded\n~\033[32m 👌\033[0m | Ampalibe"
+            " running..."
         )
 
     elif sys.argv[1] == "usage":
@@ -150,7 +151,9 @@ finally:
     from aiocron import crontab
     from .messenger import Messenger
     from .core import webserver, Extra as init
-    from .core import Logger
     from .utils import translate, download_file, simulate, Payload
     from .utils import event, action, command, before_receive, after_receive
-    
+    from .utils import Logger as __log
+
+    # Instance Logger for ampalibe
+    Logger = __log().logger

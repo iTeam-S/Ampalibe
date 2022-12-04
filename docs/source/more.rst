@@ -67,13 +67,14 @@ Logging
 --------
 .. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/logger.png
 
-By default, Ampalibe uses the logging module to log the application but with custom formatting.
+By default, Ampalibe uses the logging module to log the application but with custom formatting,to 
+make it easier to read and avoid using print.
 
 Messenger API methods response is a request <Response> so we can use it to view the response
 
 .. code-block:: python
 
-    from ampalibe import Logger,
+    from ampalibe import Logger
 
     Logger.info("Info message")
     Logger.debug("Debug message")
@@ -81,6 +82,15 @@ Messenger API methods response is a request <Response> so we can use it to view 
     Logger.error("Error message")
     Logger.critical("Critical message")
 
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **ext):
+        Logger.info("Message received from user")
+        res = chat.send_text(sender_id, "Hello world")
+        if res.status_code == 200:
+            Logger.info("Message sent to user")
+        else:
+            Logger.error("Error sending message to user")
+    
 
 Structure
 -----------

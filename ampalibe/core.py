@@ -10,7 +10,6 @@ from .messenger import Messenger
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from .utils import funcs, analyse, before_run, Payload
-from .utils import Logger as Log
 
 _req = None
 loop = None
@@ -20,9 +19,6 @@ if os.path.isdir("assets/public"):
     webserver.mount(
         "/asset", StaticFiles(directory="assets/public"), name="asset"
     )
-
-# Instance Logger for ampalibe
-Logger = Log().logger
 
 
 class Extra:

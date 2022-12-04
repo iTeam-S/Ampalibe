@@ -884,5 +884,5 @@ class Messenger:
         res = requests.get(
             f"https://graph.facebook.com/{dest_id}", params=params
         )
-
+        res = self.__analyse(res)
         return res.json() if res.status_code == 200 else {}

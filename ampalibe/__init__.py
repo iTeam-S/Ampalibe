@@ -150,10 +150,11 @@ finally:
     from .model import Model
     from aiocron import crontab
     from .messenger import Messenger
+    from .utils import Logger as __log
     from .core import webserver, Extra as init
     from .utils import translate, download_file, simulate, Payload
     from .utils import event, action, command, before_receive, after_receive
-    from .utils import Logger as __log
+    
 
     # Instance Logger for ampalibe
     Logger = __log().logger

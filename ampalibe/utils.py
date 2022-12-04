@@ -1,9 +1,9 @@
 import os
 import sys
 import json
-import logging
 import codecs
 import pickle
+import logging
 import requests
 import urllib.parse
 from conf import Configuration  # type: ignore
@@ -325,9 +325,6 @@ def before_run(func, **kwargs):
         funcs["after"](**kwargs)
 
     return res
-
-
-# Custom logger Ampalibe
 
 
 class CustomFormatter(logging.Formatter):

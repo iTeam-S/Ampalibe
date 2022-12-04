@@ -6,10 +6,12 @@ from sys import stderr
 from retry import retry
 import requests_toolbelt
 from .utils import Payload
+from .utils import Logger as __log
 from conf import Configuration  # type: ignore
 from .ui import Summary, Address, Adjustment
 from .ui import Button, QuickReply, Element, ReceiptElement
 
+logger = __log().logger
 
 
 class Action:
@@ -62,21 +64,25 @@ class Messenger:
         self.url = "https://graph.facebook.com/v13.0/me"
 
         if log_level not in ("error", "info", "quiet"):
-            raise Exception(ValueError, "log_level must be error or info or quiet")
+            raise Exception(
+                ValueError, "log_level must be error or info or quiet"
+            )
 
     def __analyse(self, res, log_level="error"):
         if log_level == "info":
-            print(res.status_code, res.text)
+            logger.info(
+                f"\n  status_code : {res.status_code}, data :{res.text}"
+            )
         elif res.status_code != 200 and log_level == "error":
-            print(res.status_code, res.text, file=stderr)
+            logger.error(
+                f"\n  status_code : {res.status_code}, data :{res.text}"
+            )
         return res
 
     @property
     def token(self):
         if not self.access_token:
-            print(
-                "\033[48:5:166m⚠ Warning!\033[0m EMPTY PAGE ACCESS TOKEN", file=stderr
-            )
+            logger.warning("No access token provided")
         return self.access_token
 
     @property
@@ -119,7 +125,10 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         self.send_action(dest_id, "typing_off")
         return self.__analyse(res)
@@ -147,12 +156,17 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_attachment(self, dest_id, attachment_id, filetype="file", **kwargs):
+    def send_attachment(
+        self, dest_id, attachment_id, filetype="file", **kwargs
+    ):
         """
         The Messenger Platform supports saving assets via the Send API and Attachment Upload API. This allows you reuse assets, rather than uploading them every time they are needed.
         To attach a saved asset to a message, specify the attachment_id of the asset in the payload.attachment_id property of the message request:
@@ -183,7 +197,10 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
@@ -215,7 +232,10 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
@@ -272,12 +292,17 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_template(self, dest_id, elements, quick_rep=None, next=None, **kwargs):
+    def send_template(
+        self, dest_id, elements, quick_rep=None, next=None, **kwargs
+    ):
         """
         The method represent a Message templates who offer a way for you
         to offer a richer in-conversation experience than standard text messages by integrating
@@ -340,12 +365,14 @@ class Messenger:
                 }
             ]
             pickle.dump(
-                (elements[10:], next), open(f"assets/private/.__{dest_id}", "wb")
+                (elements[10:], next),
+                open(f"assets/private/.__{dest_id}", "wb"),
             )
 
         if quick_rep:
             quick_rep = [
-                qr.value if isinstance(qr, QuickReply) else qr for qr in quick_rep
+                qr.value if isinstance(qr, QuickReply) else qr
+                for qr in quick_rep
             ]
             dataJSON["message"]["quick_replies"] = quick_rep
 
@@ -353,12 +380,17 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file_url(self, dest_id, url, filetype="file", reusable=False, **kwargs):
+    def send_file_url(
+        self, dest_id, url, filetype="file", reusable=False, **kwargs
+    ):
         """
         The Messenger Platform allows you to attach assets to messages, including audio,
         video, images, and files.All this is the role of this Method. The maximum attachment
@@ -392,7 +424,10 @@ class Messenger:
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
@@ -418,7 +453,8 @@ class Messenger:
         params = {"access_token": self.token}
 
         menu = [
-            button.value if isinstance(button, Button) else button for button in menu
+            button.value if isinstance(button, Button) else button
+            for button in menu
         ]
 
         if action == "PUT":
@@ -448,13 +484,21 @@ class Messenger:
             params["psid"] = dest_id
 
             res = requests.delete(
-                self.url + "/custom_user_settings", headers=header, params=params
+                self.url + "/custom_user_settings",
+                headers=header,
+                params=params,
             )
             return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_file(
-        self, dest_id, file, filetype="file", filename=None, reusable=False, **kwargs
+        self,
+        dest_id,
+        file,
+        filetype="file",
+        filename=None,
+        reusable=False,
+        **kwargs,
     ):
         """
         this method send an attachment from file
@@ -503,7 +547,10 @@ class Messenger:
         header = {"Content-Type": multipart_data.content_type}
 
         res = requests.post(
-            self.url + "/messages", params=params, headers=header, data=multipart_data
+            self.url + "/messages",
+            params=params,
+            headers=header,
+            data=multipart_data,
         )
         return self.__analyse(res)
 
@@ -534,7 +581,9 @@ class Messenger:
                     "type": "template",
                     "payload": {
                         "template_type": "media",
-                        "elements": [{"media_type": media_type, "url": fb_url}],
+                        "elements": [
+                            {"media_type": media_type, "url": fb_url}
+                        ],
                     },
                 }
             },
@@ -599,7 +648,8 @@ class Messenger:
         """
 
         buttons = [
-            button.value if isinstance(button, Button) else button for button in buttons
+            button.value if isinstance(button, Button) else button
+            for button in buttons
         ]
 
         self.send_action(dest_id, "typing_on")
@@ -623,7 +673,10 @@ class Messenger:
 
         self.send_action(dest_id, "typing_off")
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
@@ -733,7 +786,19 @@ class Messenger:
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_receipt_template(
-            self, dest_id, recipient_name, order_number, payment_method, receipt_elements, summary, currency="MGA", address=None, adjustments=None, order_url=None, timestamp=None):
+        self,
+        dest_id,
+        recipient_name,
+        order_number,
+        payment_method,
+        receipt_elements,
+        summary,
+        currency="MGA",
+        address=None,
+        adjustments=None,
+        order_url=None,
+        timestamp=None,
+    ):
         """
         Method that sends a receipt template to a customer  .
 
@@ -757,7 +822,9 @@ class Messenger:
 
         if receipt_elements:
             receipt_elements = [
-                receipt.value if isinstance(receipt, ReceiptElement) else receipt
+                receipt.value
+                if isinstance(receipt, ReceiptElement)
+                else receipt
                 for receipt in receipt_elements
             ]
 
@@ -766,7 +833,9 @@ class Messenger:
 
         if adjustments:
             adjustments = [
-                adjustment.value if isinstance(adjustment, Adjustment) else adjustment
+                adjustment.value
+                if isinstance(adjustment, Adjustment)
+                else adjustment
                 for adjustment in adjustments
             ]
 
@@ -786,7 +855,7 @@ class Messenger:
                         "elements": receipt_elements,
                         "order_url": order_url,
                         "adjustments": adjustments,
-                        "timestamp": timestamp
+                        "timestamp": timestamp,
                     },
                 }
             },
@@ -795,18 +864,25 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            self.url + "/messages", json=dataJSON, headers=header, params=params
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
         )
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def get_user_profile(self, dest_id, fields='first_name,last_name,profile_pic'):
+    def get_user_profile(
+        self, dest_id, fields="first_name,last_name,profile_pic"
+    ):
         """
-            The User Profile methiod allows you to use a Page-scoped ID (PSID) 
-            to retrieve user profile information that can be used to personalize 
-            the experience of people interacting with your Messenger.
+        The User Profile methiod allows you to use a Page-scoped ID (PSID)
+        to retrieve user profile information that can be used to personalize
+        the experience of people interacting with your Messenger.
         """
         params = {"fields": fields, "access_token": self.token}
-        res = requests.get(f'https://graph.facebook.com/{dest_id}', params=params)
+        res = requests.get(
+            f"https://graph.facebook.com/{dest_id}", params=params
+        )
 
         return res.json() if res.status_code == 200 else {}

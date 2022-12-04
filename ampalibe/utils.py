@@ -341,7 +341,7 @@ class CustomFormatter(logging.Formatter):
     green = "\x1b[32;20m"
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
-    format = "%(name)s | %(levelname)s:   %(message)s "
+    format = "%(levelname)s|%(name)s:   %(message)s "
 
     # Define format of each status  (DEBUG|INFO|WARNINGS|ERROR|CRITICAL)
     FORMATS = {
@@ -366,8 +366,12 @@ class Logger:
     def __init__(self, name="Ampalibe"):
         logger = logging.getLogger(name)
         logger.setLevel(logging.DEBUG)
-        conf = logging.StreamHandler()
-        conf.setLevel(logging.DEBUG)
-        conf.setFormatter(CustomFormatter())
-        logger.addHandler(conf)
+        format = CustomFormatter()
+
+        # by default the logger will print on the console , in stdout
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(logging.DEBUG)
+        handler.setFormatter(format)
+        logger.addHandler(handler)
+
         self.logger = logger

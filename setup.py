@@ -5,9 +5,12 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampalibe",  # This is the name of the package
-    version="1.1.6",  # The release version
+    version="1.1.7.dev",  # The release version
     author="iTeam-$",  # Full name of the author
-    description="Ampalibe is a lightweight Python framework for building Facebook Messenger bots faster.",
+    description=(
+        "Ampalibe is a lightweight Python framework for building Facebook"
+        " Messenger bots faster."
+    ),
     long_description=long_description,  # Long description read from the readme
     long_description_content_type="text/markdown",
     packages=["ampalibe"],  # List of all modules to be installed

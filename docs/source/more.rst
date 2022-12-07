@@ -403,10 +403,20 @@ in ampalibe as decorator to execute a function before or after a received messag
     @ampalibe.after_receive()
     def after_process(sender_id, **ext):
         chat.send_action(sender_id, Action.typing_off)
+        
+        ''' 
+            you can also receive here the return data from the processing function.
+            the data is in the "res" variable
+        '''
+        print(ext.get('res'))  # OK, There is no problem
+        
+        
 
     @ampalibe.command("/")
     def main(sender_id, **ext):
         chat.send_text(sender_id, "Hello ampalibe")
+        
+        return "OK, There is no problem"
 
 
 .. note:: 

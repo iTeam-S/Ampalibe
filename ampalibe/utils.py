@@ -211,8 +211,8 @@ def event(*args, **kwargs):
 
 def before_receive(*args, **kwargs):
     """
-    A decorator that registers the function as the route
-        of a defined event handler.
+    A decorator that run the function before 
+        running apropriate function
     """
 
     def call_fn(function):
@@ -223,8 +223,8 @@ def before_receive(*args, **kwargs):
 
 def after_receive(*args, **kwargs):
     """
-    A decorator that registers the function as the route
-        of a defined event handler.
+    A decorator that run the function after 
+        running apropriate function
     """
 
     def call_fn(function):
@@ -322,6 +322,7 @@ def before_run(func, **kwargs):
         res = func(**kwargs)
 
     if funcs["after"] and hasattr(funcs["after"], "__call__"):
+        kwargs["res"] = res
         funcs["after"](**kwargs)
 
     return res

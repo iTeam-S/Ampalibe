@@ -374,7 +374,11 @@ class Messenger:
                 qr.value if isinstance(qr, QuickReply) else qr
                 for qr in quick_rep
             ]
-            dataJSON["message"]["quick_replies"] = quick_rep
+
+            if isinstance(dataJSON["message"].get('quick_replies'), list):
+                dataJSON["message"]["quick_replies"] = quick_rep + dataJSON["message"]["quick_replies"]
+            else:
+                dataJSON["message"]["quick_replies"] = quick_rep
 
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}

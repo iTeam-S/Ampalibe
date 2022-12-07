@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import pickle
 import asyncio
 import uvicorn
@@ -76,7 +77,10 @@ class Server:
         Main Requests for bot messenger is received here.
         """
         testmode = request.query_params.get("testmode")
-        data = await request.json()
+        try:
+            data = await request.json()
+        except json.decoder.JSONDecodeError:
+            return "No data"
 
         # data analysis and decomposition
         sender_id, payload, message = analyse(data)

@@ -2,10 +2,10 @@ import os
 import sys
 import json
 import requests
-from cmd_class import Cmd
+from .cmd_class import Cmd
 from conf import Configuration  # type: ignore
-from logger_class import Logger
-from payload_class import Payload
+from .logger_class import Logger
+from .payload_class import Payload
 
 
 funcs = {

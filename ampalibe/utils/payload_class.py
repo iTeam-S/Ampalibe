@@ -1,7 +1,7 @@
 import codecs
 import pickle
 import urllib.parse
-from cmd_class import Cmd
+from .cmd_class import Cmd
 
 
 class Payload:

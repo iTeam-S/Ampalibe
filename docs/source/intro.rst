@@ -11,18 +11,15 @@ Webhooks & process Management
 .. code-block:: python
 
    import ampalibe
-   from conf import Configuration
+   from ampalibe import Messenger
 
-   bot = ampalibe.init(Configuration())
-   chat = bot.chat
+   chat = Messenger()
 
    @ampalibe.command('/')
    def main(sender_id, cmd, **extends):
       chat.send_text(sender_id, 'Hello world')
       chat.send_text(sender_id, f'This is your message: {cmd}')
       chat.send_text(sender_id, f'and this is your facebook id: {sender_id}')
-
-.. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/1.gif
 
 
 
@@ -36,11 +33,10 @@ Action Management
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Messenger, Model
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    query = Model()
+    chat = Messenger()
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
@@ -52,8 +48,6 @@ Action Management
         query.set_action(sender_id, None)  #  clear current action
         chat.send_text(sender_id, f'Hello {cmd}')
 
-.. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/2.gif
-
 
 Temporary data Management
 ---------------------------
@@ -63,11 +57,10 @@ Manage temporary data easily with set, get, and delete methods
 .. code-block:: python
 
     import ampalibe
-    from conf import Configuration
+    from ampalibe import Messenger
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    query = Model()
+    chat = Messenger()
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
@@ -91,8 +84,6 @@ Manage temporary data easily with set, get, and delete methods
         chat.send_text(sender_id, f'your mail and your password are {mail} {cmd}')
         query.del_temp(sender_id, 'mail')  # delete temporary data
 
-.. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/3.gif
-
 
 Payload Management
 ---------------------------
@@ -104,26 +95,23 @@ Payload Management
 .. code-block:: python
 
     import ampalibe
-    from ampalibe import Payload
-    from conf import Configuration
+    from ampalibe.ui import QuickReply
+    from ampalibe import Payload, Messenger
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
+    chat = Messenger()
 
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
         quick_rep = [
-            {
-                "content_type": "text",
-                "title": 'Angela',
-                "payload": Payload('/membre', name='Angela', ref='2016-sac')
-            },
-            {
-                "content_type": "text",
-                "title": 'Rivo',
-                "payload": Payload('/membre', name='Rivo')
-            }
+            QuickReply(
+                title='Angela', 
+                payload=Payload('/membre', name='Angela', ref='2016-sac')
+            ),
+            QuickReply(
+                title='Rivo', 
+                payload=Payload('/membre', name='Rivo')
+            )
         ]
         chat.send_quick_reply(sender_id, quick_rep, 'Who?')
         
@@ -138,9 +126,6 @@ Payload Management
             chat.send_text(sender_id, 'your ref is ' + extends.get('ref'))
 
 
-.. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/4.gif
-
-
 
 
 Advanced Messenger API
@@ -152,25 +137,25 @@ No need to manage the length of the items to send: A next page button will be di
 
     import ampalibe
     from ampalibe import Payload
-    from conf import Configuration
+    from ampalibe.ui import Element, Button
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
+    chat = Messenger()
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **extends):
         list_items = [
-            {
-                "title": f"item n°{i+1}",
-                "image_url": "https://i.imgflip.com/6b45bi.jpg",
-                "buttons": [
-                    {
-                        "type": "postback",
-                        "title": "Get item",
-                        "payload": Payload("/item", id_item=i+1)
-                    }
+            Element(
+                title=f"item n°{i+1}",
+                subtitle=f"subtitle for this item n°{i+1}",
+                image_url="https://i.imgflip.com/6b45bi.jpg",
+                buttons=[
+                    Button(
+                        type="postback",
+                        title="Get item",
+                        payload=Payload("/item", id_item=i+1)
+                    )
                 ]
-            }
+            )
             for i in range(30)
         ]
         # next=True for displaying directly next page button.
@@ -180,9 +165,6 @@ No need to manage the length of the items to send: A next page button will be di
     def get_item(sender_id, id_item, **extends):
         chat.send_text(sender_id, f"item n°{id_item} selected")
 
-
-
-.. image:: https://github.com/iTeam-S/Dev-center/raw/main/Storage/Ampalibe/5.gif
 
 
 Langage Management
@@ -213,12 +195,10 @@ Language management is directly managed by Ampalibe
 .. code-block:: python
 
     import ampalibe
-    from ampalibe import translate
-    from conf import Configuration
+    from ampalibe import Model, Messenger, translate
 
-    bot = ampalibe.init(Configuration())
-    chat = bot.chat
-    query = bot.query
+    query = Model()
+    chat = Messenger()
 
     @ampalibe.command('/')
     def main(sender_id, lang, cmd, **extends):
@@ -239,3 +219,8 @@ Language management is directly managed by Ampalibe
             sender_id, 
             translate('hello_world', lang)
         )
+
+
+.. important ::
+
+    **Framework in constant evolution and maintained, with many other features to discover in the doc.**

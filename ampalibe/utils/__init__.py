@@ -1,12 +1,11 @@
 import os
 import sys
 import json
-import codecs
-import pickle
-import logging
 import requests
-import urllib.parse
+from cmd_class import Cmd
 from conf import Configuration  # type: ignore
+from logger_class import Logger
+from payload_class import Payload
 
 
 funcs = {
@@ -16,97 +15,6 @@ funcs = {
     "before": None,
     "after": None,
 }
-
-
-class Cmd(str):
-    """
-    Object for text of message
-    """
-
-    webhook = "message"
-    __atts = []
-
-    def __init__(self, text):
-        str.__init__(text)
-
-    def set_atts(self, atts):
-        for att in atts:
-            self.__atts.append(att)
-
-    @property
-    def attachments(self):
-        return self.__atts
-
-    def copy(self, text):
-        new_cmd = Cmd(text)
-        new_cmd.__atts = self.attachments
-        new_cmd.webhook = self.webhook
-        return new_cmd
-
-
-class Payload:
-    """
-    Object for Payload Management
-    """
-
-    def __init__(self, payload, **kwargs) -> None:
-        """
-        Object for Payload Management
-        """
-        self.payload = payload
-        self.data = kwargs
-
-    def __str__(self):
-        return Payload.trt_payload_out(self)
-
-    @staticmethod
-    def trt_payload_in(payload0):
-        """
-        processing of payloads received in a sequence of structured parameters
-
-        @params: payload [String]
-        @return: payload [String] , structured parameters Dict
-        """
-
-        payload = urllib.parse.unquote(payload0)
-
-        res = {}
-        while "{{" in payload:
-            start = payload.index("{{")
-            end = payload.index("}}")
-            items = payload[start + 2 : end].split("===")
-            # result string to object
-            res[items[0]] = pickle.loads(
-                codecs.decode(items[1].encode(), "base64")
-            )
-            payload = payload.replace(payload[start : end + 2], "").strip()
-        return (
-            payload0.copy(payload) if isinstance(payload0, Cmd) else payload,
-            res,
-        )
-
-    @staticmethod
-    def trt_payload_out(payload):
-        """
-        Processing of a Payload type as a character string
-
-        @params: payload [ Payload | String ]
-        @return: String
-        """
-        if isinstance(payload, Payload):
-            tmp = ""
-            for key_data, val_data in payload.data.items():
-                # object to string
-                val_data = codecs.encode(
-                    pickle.dumps(val_data), "base64"
-                ).decode()
-                tmp += f"{{{{{key_data}==={val_data}}}}} "
-
-            final_pl = payload.payload + (" " + tmp if tmp else "")
-            if len(final_pl) >= 2000:
-                raise Exception("Payload data is too large")
-            return urllib.parse.quote(final_pl)
-        return urllib.parse.quote(payload)
 
 
 def analyse(data):
@@ -211,7 +119,7 @@ def event(*args, **kwargs):
 
 def before_receive(*args, **kwargs):
     """
-    A decorator that run the function before 
+    A decorator that run the function before
         running apropriate function
     """
 
@@ -223,7 +131,7 @@ def before_receive(*args, **kwargs):
 
 def after_receive(*args, **kwargs):
     """
-    A decorator that run the function after 
+    A decorator that run the function after
         running apropriate function
     """
 
@@ -267,7 +175,7 @@ def translate(key, lang):
 
     if not os.path.isfile("langs.json"):
         print("Warning! langs.json not found", file=sys.stderr)
-        from .source import langs
+        from ..source import langs
 
         with open("langs.json", "w") as fichier:
             fichier.write(langs)
@@ -326,50 +234,3 @@ def before_run(func, **kwargs):
         funcs["after"](**kwargs)
 
     return res
-
-
-class CustomFormatter(logging.Formatter):
-    """
-    Custom formatter for logging, add colors to the output and custom format
-    """
-
-    grey = "\x1b[38;20m"
-    yellow = "\x1b[33;20m"
-    red = "\x1b[31;20m"
-    green = "\x1b[32;20m"
-    bold_red = "\x1b[31;1m"
-    reset = "\x1b[0m"
-    format = "%(levelname)s|%(name)s:   %(message)s "
-
-    # Define format of each status  (DEBUG|INFO|WARNINGS|ERROR|CRITICAL)
-    FORMATS = {
-        logging.DEBUG: grey + format + reset,
-        logging.INFO: green + format + reset,
-        logging.WARNING: yellow + format + reset,
-        logging.ERROR: red + format + reset,
-        logging.CRITICAL: bold_red + format + reset,
-    }
-
-    def format(self, record):
-        log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt)
-        return formatter.format(record)
-
-
-class Logger:
-    """
-    Logger class for Ampalibe, by default the logger name is Ampalibe
-    """
-
-    def __init__(self, name="Ampalibe"):
-        logger = logging.getLogger(name)
-        logger.setLevel(logging.DEBUG)
-        format = CustomFormatter()
-
-        # by default the logger will print on the console , in stdout
-        handler = logging.StreamHandler(sys.stdout)
-        handler.setLevel(logging.DEBUG)
-        handler.setFormatter(format)
-        logger.addHandler(handler)
-
-        self.logger = logger

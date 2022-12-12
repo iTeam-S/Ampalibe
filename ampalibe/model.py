@@ -1,5 +1,5 @@
 import json
-from .utils.payload_class import Payload
+from .payload import Payload
 from conf import Configuration  # type: ignore
 
 

@@ -13,8 +13,7 @@ setuptools.setup(
     ),
     long_description=long_description,  # Long description read from the readme
     long_description_content_type="text/markdown",
-    packages=["ampalibe"],
-    package_data={"ampalibe": ["ampalibe/utils/*"]},
+    packages=["ampalibe"],  # List of all modules to be installed
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",

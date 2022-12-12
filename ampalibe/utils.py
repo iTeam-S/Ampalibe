@@ -2,10 +2,8 @@ import os
 import sys
 import json
 import requests
-from .cmd_class import Cmd
+from .custom_cmd import Cmd
 from conf import Configuration  # type: ignore
-from .logger_class import Logger
-from .payload_class import Payload
 
 
 funcs = {
@@ -175,7 +173,7 @@ def translate(key, lang):
 
     if not os.path.isfile("langs.json"):
         print("Warning! langs.json not found", file=sys.stderr)
-        from ..source import langs
+        from .source import langs
 
         with open("langs.json", "w") as fichier:
             fichier.write(langs)

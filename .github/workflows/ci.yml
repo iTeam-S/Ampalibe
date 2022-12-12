@@ -35,10 +35,7 @@ jobs:
         bash tests/test_cli.sh
     
     - name: Unit test for messenger api
-      run: |
-        cd tests 
-        USER_ID=${{secrets.USER_ID}} AMP_ACCESS_TOKEN=${{secrets.ACCESS_TOKEN}} pytest
-        cd ..
+      run: USER_ID=${{secrets.USER_ID}} AMP_ACCESS_TOKEN=${{secrets.ACCESS_TOKEN}} pytest
 
     - name: Build the Docker image
       run: bash tests/deploy.sh

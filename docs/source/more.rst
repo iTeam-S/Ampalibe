@@ -39,7 +39,7 @@ we use the instances received from the *Model* object as the variable **db**, **
     from model import CustomModel
 
     chat = Messenger()
-    query = CustomModel(Configuration())
+    query = CustomModel()
 
 
     @ampalibe.command('/')

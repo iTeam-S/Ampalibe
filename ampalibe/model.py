@@ -1,5 +1,5 @@
 import json
-from .utils import Payload
+from .payload import Payload
 from conf import Configuration  # type: ignore
 
 
@@ -46,8 +46,8 @@ class Model:
             import sqlite3
 
             self.db = sqlite3.connect(
-                self.DB_CONF, 
-                detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+                self.DB_CONF,
+                detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES,
             )
 
         self.cursor = self.db.cursor()

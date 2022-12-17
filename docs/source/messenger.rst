@@ -207,6 +207,8 @@ size is 25 MB.
 
     *filetype (str, optional)*: type of showing file["video","image","audio","file"]. Defaults to 'file'.
 
+    *reusable (bool, optional)*: if True, the file can be reused using send_attachments. Defaults to False.
+
 
 **Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages#url
 
@@ -240,6 +242,8 @@ This method send an attachment from file
     
     *filename (str, optional)*: A filename received for de destination . Defaults to name of file in local.
 
+    *reusable (bool, optional)*: if True, the file can be reused using send_attachments. Defaults to False.
+
 
 **Example**:
 
@@ -254,6 +258,44 @@ This method send an attachment from file
     chat.send_file(sender_id, "intro.mp4", filetype=Filetype.video)
 
     chat.send_file(sender_id, "myvoice.m4a", filetype=Filetype.audio)
+
+
+
+send_attachment
+_________________
+
+Method that send a attachment via attachment_id received from send_file or send_file_url when reusable=True
+
+**Ref**: https://developers.facebook.com/docs/messenger-platform/send-messages#attachment_reuse
+
+**Args**:
+
+    *dest_id (str)*: user id facebook for the destination
+    
+    *attachment_id (str)*: the id of the attachment to send
+
+    *filetype (str, optional)*: type of the file["video","image",...]. Defaults to "file".
+
+
+**Example**:
+
+.. code-block:: python
+
+    import ampalibe
+    from ampalibe.messenger import Filetype
+    ...
+
+
+    @ampalibe.command("/")
+    def main(sender_id, **ext):
+        res = chat.send_file(sender_id, "assets/private/mydocument.pdf", reusable=True)
+        if res.status_code == 200:
+            data = res.json()
+            attachment_id = data.get("attachment_id")
+
+            # send the attachment using attachment_id
+            chat.send_attachment(sender_id, attachment_id, filetype=Filetype.file)
+
 
 
 send_media

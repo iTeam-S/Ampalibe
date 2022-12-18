@@ -161,3 +161,12 @@
 * [ADD] get_user_profile SEND API
 
 
+## Ampalibe 1.1.7
+
+* [ADD] Logger fearure for ampalibe (#71)
+* [IMP] Make Sqlite support type datetime (#72)
+* [IMP] send return data in after_receive function (#73) 
+* [IMP] Avoid quick_rep params erase next quick_rep in (9d7a934c2a292ad3a67f3a514f3994df2b141984)
+* [IMP] Readability and maintainability (#74) 
+
+

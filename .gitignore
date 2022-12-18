@@ -138,3 +138,5 @@ __pycache__/
 ngrok
 ngrok.exe
 ampalibe.db
+
+generated/

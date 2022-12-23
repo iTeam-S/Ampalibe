@@ -17,7 +17,7 @@ class Model:
         @return: Request object
         """
         self.ADAPTER = conf.ADAPTER
-        if self.ADAPTER IN ("MYSQL", "POSTGRESQL"):
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             self.DB_CONF = {
                 "host": conf.DB_HOST,
                 "user": conf.DB_USER,
@@ -187,7 +187,7 @@ class Model:
          @params :  user_id
          @return : current action [ type of String/None ]
         """
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "SELECT action FROM amp_user WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
             return self.db.amp_user.find({"user_id": user_id})[0].get("action")
@@ -208,7 +208,7 @@ class Model:
         if isinstance(action, Payload):
             action = Payload.trt_payload_out(action)
 
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "UPDATE amp_user set action = %s WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(
@@ -229,7 +229,7 @@ class Model:
         @params :  user_id
         @return: JSON string
         """
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "SELECT tmp FROM amp_user WHERE user_id = %s"
         else:
             req = "SELECT tmp FROM amp_user WHERE user_id = ?"
@@ -258,7 +258,7 @@ class Model:
             data = json.loads(data)
         data[key] = value
         data = json.dumps(data)
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "UPDATE amp_user SET tmp = %s WHERE user_id = %s"
         else:
             req = "UPDATE amp_user SET tmp = ? WHERE user_id = ?"
@@ -308,7 +308,7 @@ class Model:
             pass
         else:
             data = json.dumps(data)
-            if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+            if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
                 req = "UPDATE amp_user SET tmp = %s WHERE user_id = %s"
             else:
                 req = "UPDATE amp_user SET tmp = ? WHERE user_id = ?"
@@ -324,7 +324,7 @@ class Model:
         @return lang or None
         """
 
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "SELECT lang FROM amp_user WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
             return self.db.amp_user.find({"user_id": user_id})[0].get("lang")
@@ -341,7 +341,7 @@ class Model:
         @params :  user_id
         @return:  None
         """
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "UPDATE amp_user set lang = %s WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(

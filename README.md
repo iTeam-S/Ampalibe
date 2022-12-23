@@ -62,6 +62,14 @@ if you use postgresql as database, you have to install `psycopg2` with ampalibe
 pip install ampalibe[psycopg2]
 ```
 
+----------------------
+
+if you use mongodb as database, you have to install `pymongo` with ampalibe
+
+```s
+pip install ampalibe[pymongo]
+```
+
 ## Usage
 
 > command-line __ampalibe__ is __ampalibe.bat__ for _Windows_

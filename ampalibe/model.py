@@ -17,7 +17,7 @@ class Model:
         @return: Request object
         """
         self.ADAPTER = conf.ADAPTER
-        if self.ADAPTER == ("MYSQL", "POSTGRESQL"):
+        if self.ADAPTER IN ("MYSQL", "POSTGRESQL"):
             self.DB_CONF = {
                 "host": conf.DB_HOST,
                 "user": conf.DB_USER,

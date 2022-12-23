@@ -23,15 +23,16 @@ class Model:
                 "user": conf.DB_USER,
                 "password": conf.DB_PASSWORD,
                 "database": conf.DB_NAME,
-                "port": conf.DB_PORT,
             }
+            if conf.DB_PORT:
+                self.DB_CONF["port"] = conf.DB_PORT
         elif self.ADAPTER == "MONGODB":
-            self.DB_CONF = "mongodb://"
+            self.DB_CONF = "mongodb" + ("://" if conf.DB_PORT else "+srv://")
             if conf.DB_USER and conf.DB_PASSWORD:
                 self.DB_CONF += conf.DB_USER + ":" + conf.DB_PASSWORD + "@"
             self.DB_CONF += conf.DB_HOST
             if conf.DB_PORT:
-                self.DB_CONF += ":" + str(conf.DB_PORT) + "/" + conf.DB_NAME
+                self.DB_CONF += ":" + str(conf.DB_PORT) + "/"
         else:  # SQLite is choosen by default
             self.DB_CONF = conf.DB_FILE
 
@@ -54,6 +55,8 @@ class Model:
             import pymongo
 
             self.db = pymongo.MongoClient(self.DB_CONF)
+            self.db = self.db[Configuration.DB_NAME]
+            return
         else:
             import sqlite3
 
@@ -96,7 +99,7 @@ class Model:
                 )
             """
         elif self.ADAPTER == "MONGODB":
-            if "amp_user" not in self.db.list_collection_names:
+            if "amp_user" not in self.db.list_collection_names():
                 self.db.create_collection("amp_user")
                 # self.db.amp_user.create_index("user_id", unique=True)
             return
@@ -167,6 +170,7 @@ class Model:
                 {"$set": {"last_use": datetime.now()}},
                 upsert=True,
             )
+            return
         else:
             req = """
                 INSERT INTO amp_user(user_id) VALUES (?)

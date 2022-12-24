@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from .payload import Payload
 from conf import Configuration  # type: ignore
@@ -16,14 +17,22 @@ class Model:
         @return: Request object
         """
         self.ADAPTER = conf.ADAPTER
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             self.DB_CONF = {
                 "host": conf.DB_HOST,
                 "user": conf.DB_USER,
                 "password": conf.DB_PASSWORD,
                 "database": conf.DB_NAME,
-                "port": conf.DB_PORT,
             }
+            if conf.DB_PORT:
+                self.DB_CONF["port"] = conf.DB_PORT
+        elif self.ADAPTER == "MONGODB":
+            self.DB_CONF = "mongodb" + ("://" if conf.DB_PORT else "+srv://")
+            if conf.DB_USER and conf.DB_PASSWORD:
+                self.DB_CONF += conf.DB_USER + ":" + conf.DB_PASSWORD + "@"
+            self.DB_CONF += conf.DB_HOST
+            if conf.DB_PORT:
+                self.DB_CONF += ":" + str(conf.DB_PORT) + "/"
         else:  # SQLite is choosen by default
             self.DB_CONF = conf.DB_FILE
 
@@ -42,6 +51,12 @@ class Model:
             import psycopg2
 
             self.db = psycopg2.connect(**self.DB_CONF)
+        elif self.ADAPTER == "MONGODB":
+            import pymongo
+
+            self.db = pymongo.MongoClient(self.DB_CONF)
+            self.db = self.db[Configuration.DB_NAME]
+            return
         else:
             import sqlite3
 
@@ -83,6 +98,11 @@ class Model:
                     UNIQUE (user_id)
                 )
             """
+        elif self.ADAPTER == "MONGODB":
+            if "amp_user" not in self.db.list_collection_names():
+                self.db.create_collection("amp_user")
+                # self.db.amp_user.create_index("user_id", unique=True)
+            return
         else:
             req = """
                CREATE TABLE IF NOT EXISTS amp_user (
@@ -144,6 +164,13 @@ class Model:
                 INSERT INTO amp_user(user_id) VALUES (%s)
                 ON CONFLICT (user_id) DO UPDATE SET last_use = NOW();
             """
+        elif self.ADAPTER == "MONGODB":
+            self.db.amp_user.update_one(
+                {"user_id": user_id},
+                {"$set": {"last_use": datetime.now()}},
+                upsert=True,
+            )
+            return
         else:
             req = """
                 INSERT INTO amp_user(user_id) VALUES (?)
@@ -160,8 +187,10 @@ class Model:
          @params :  user_id
          @return : current action [ type of String/None ]
         """
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "SELECT action FROM amp_user WHERE user_id = %s"
+        elif self.ADAPTER == "MONGODB":
+            return self.db.amp_user.find({"user_id": user_id})[0].get("action")
         else:
             req = "SELECT action FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (user_id,))
@@ -179,8 +208,14 @@ class Model:
         if isinstance(action, Payload):
             action = Payload.trt_payload_out(action)
 
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "UPDATE amp_user set action = %s WHERE user_id = %s"
+        elif self.ADAPTER == "MONGODB":
+            self.db.amp_user.update_one(
+                {"user_id": user_id},
+                {"$set": {"action": action}},
+            )
+            return
         else:
             req = "UPDATE amp_user set action = ? WHERE user_id = ?"
         self.cursor.execute(req, (action, user_id))
@@ -194,7 +229,7 @@ class Model:
         @params :  user_id
         @return: JSON string
         """
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "SELECT tmp FROM amp_user WHERE user_id = %s"
         else:
             req = "SELECT tmp FROM amp_user WHERE user_id = ?"
@@ -210,6 +245,12 @@ class Model:
          @params:  user_id
          @return:  None
         """
+        if self.ADAPTER == "MONGODB":
+            self.db.amp_user.update_one(
+                {"user_id": user_id},
+                {"$set": {key: value}},
+            )
+            return
         data = self.__get_temp(user_id)
         if not data:
             data = {}
@@ -217,7 +258,7 @@ class Model:
             data = json.loads(data)
         data[key] = value
         data = json.dumps(data)
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "UPDATE amp_user SET tmp = %s WHERE user_id = %s"
         else:
             req = "UPDATE amp_user SET tmp = ? WHERE user_id = ?"
@@ -233,6 +274,9 @@ class Model:
                    key
         @return: data
         """
+        if self.ADAPTER == "MONGODB":
+            return self.db.amp_user.find({"user_id": user_id})[0].get(key)
+
         data = self.__get_temp(user_id)
         if not data:
             return
@@ -248,6 +292,12 @@ class Model:
                       key
         @return: None
         """
+        if self.ADAPTER == "MONGODB":
+            self.db.amp_user.update_one(
+                {"user_id": user_id},
+                {"$unset": {key: ""}},
+            )
+            return
         data = self.__get_temp(user_id)
         if not data:
             return
@@ -258,7 +308,7 @@ class Model:
             pass
         else:
             data = json.dumps(data)
-            if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+            if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
                 req = "UPDATE amp_user SET tmp = %s WHERE user_id = %s"
             else:
                 req = "UPDATE amp_user SET tmp = ? WHERE user_id = ?"
@@ -273,8 +323,11 @@ class Model:
         @params: user_id
         @return lang or None
         """
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "SELECT lang FROM amp_user WHERE user_id = %s"
+        elif self.ADAPTER == "MONGODB":
+            return self.db.amp_user.find({"user_id": user_id})[0].get("lang")
         else:
             req = "SELECT lang FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (user_id,))
@@ -288,8 +341,14 @@ class Model:
         @params :  user_id
         @return:  None
         """
-        if self.ADAPTER == "MYSQL" or self.ADAPTER == "POSTGRESQL":
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             req = "UPDATE amp_user set lang = %s WHERE user_id = %s"
+        elif self.ADAPTER == "MONGODB":
+            self.db.amp_user.update_one(
+                {"user_id": user_id},
+                {"$set": {"lang": lang}},
+            )
+            return
         else:
             req = "UPDATE amp_user set lang = ? WHERE user_id = ?"
         self.cursor.execute(req, (lang, user_id))

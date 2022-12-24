@@ -21,9 +21,6 @@ def analyse(data):
     The data received are of type Json .
     """
 
-    def struct_atts(data):
-        return data["payload"]["url"]
-
     for event in data["entry"]:
         messaging = event["messaging"]
 
@@ -37,7 +34,7 @@ def analyse(data):
                     # Get file name
                     data = message["message"].get("attachments")
                     # creation de l'objet cmd personalisé
-                    atts = list(map(struct_atts, data))
+                    atts = list(map(lambda dt: dt["payload"]["url"], data))
                     cmd = Cmd(atts[0])
                     cmd.set_atts(atts)
                     cmd.webhook = "attachments"

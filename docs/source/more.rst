@@ -30,6 +30,15 @@ we use the instances received from the *Model* object as the variable **db**, **
             self.db.commit()
             return data
 
+         '''
+            Use this, in case using of mongodb database.
+        '''
+        @Model.verif_db
+        def get_list_users(self):
+            return list(self.db.amp_user.find({}))
+
+
+
 ``core.py`` file
 
 .. code-block:: python

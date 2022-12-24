@@ -180,6 +180,13 @@ We have made a promise to
 - [Ampalibe extension](https://marketplace.visualstudio.com/items?itemName=iTeam-S.ampalibe)  by [Raja Rakotonirina](https://github.com/RajaRakoto)
 
        A VScode extension that allows the user to write a snippet of code using easy to remember prefixes
+       
+       
+### 📌 Module
+
+- [Ampalibe Odoo Addons](https://apps.odoo.com/apps/modules/15.0/ampalibe/)  by [Rivo Lalaina](https://github.com/rivo2302)
+
+       An Odoo module to synchronize the Ampalibe Framework with Odoo ERP.
 
 
 

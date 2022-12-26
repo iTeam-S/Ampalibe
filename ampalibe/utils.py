@@ -163,6 +163,8 @@ def translate(key, lang):
         lang: the langage code in format fr, en, mg, ...
     this function uses the langs.json file.
     """
+    global LANGS
+
     if not lang:
         return key
 
@@ -177,9 +179,7 @@ def translate(key, lang):
 
     if not LANGS:
         with open("langs.json") as lang_file:
-            trans = json.load(lang_file)
-            global LANGS
-            LANGS = trans
+            LANGS = json.load(lang_file)
 
     keyword = LANGS.get(key)
 

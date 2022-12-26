@@ -14,16 +14,7 @@ funcs = {
     "after": None,
 }
 
-if not os.path.isfile("langs.json"):
-    from .source import langs
-
-    with open("langs.json", "w") as fichier:
-        fichier.write(langs)
-
-langfile = open("langs.json", encoding="utf-8")
-LANGS = json.load(langfile)
-langfile.close()
-del langfile
+LANGS = None
 
 
 def analyse(data):
@@ -167,17 +158,28 @@ def download_file(url, file):
 def translate(key, lang):
     """
     translate a keyword or sentence
-
     @params:
-
         key: the key used in langs.json file
-
         lang: the langage code in format fr, en, mg, ...
-
     this function uses the langs.json file.
     """
     if not lang:
         return key
+
+    if not os.path.isfile("langs.json"):
+        print("Warning! langs.json not found", file=sys.stderr)
+        from .source import langs
+
+        with open("langs.json", "w") as lang_file:
+            lang_file.write(langs)
+            print("langs.json created!")
+        return key
+
+    if not LANGS:
+        with open("langs.json") as lang_file:
+            trans = json.load(lang_file)
+            global LANGS
+            LANGS = trans
 
     keyword = LANGS.get(key)
 

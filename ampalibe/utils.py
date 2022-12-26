@@ -14,6 +14,9 @@ funcs = {
     "after": None,
 }
 
+with open("langs.json", encoding="utf-8") as fichier:
+    LANGS = json.load(fichier)
+
 
 def analyse(data):
     """
@@ -175,12 +178,11 @@ def translate(key, lang):
         with open("langs.json", "w") as fichier:
             fichier.write(langs)
             print("langs.json created!")
+            global LANGS
+            LANGS = json.loads(langs)
         return key
 
-    with open("langs.json") as fichier:
-        trans = json.load(fichier)
-
-    keyword = trans.get(key)
+    keyword = LANGS.get(key)
 
     if keyword:
         if keyword.get(lang):

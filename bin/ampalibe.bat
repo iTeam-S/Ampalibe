@@ -38,7 +38,7 @@ IF /I "%1" == "run" (
     call .env.bat
     python -m ampalibe run
     IF /I "%2" == "--dev" (
-        watchmedo auto-restart --patterns="*.py" --recursive -- python -c "import core;core.ampalibe.init.run()"
+        watchmedo auto-restart --patterns="*.py;langs.json" --recursive -- python -c "import core;core.ampalibe.init.run()"
         exit
     )
     python -c "import core;core.ampalibe.init.run()"

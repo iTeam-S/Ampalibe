@@ -94,7 +94,7 @@ elif [ "$1" == "run" ]; then
     python3 -m ampalibe run
 
     if [ "$2" = "--dev" ]; then
-        watchmedo auto-restart --patterns="*.py" --recursive -- python3 -c 'import core;core.ampalibe.init.run()'
+        watchmedo auto-restart --patterns="*.py;langs.json" --recursive -- python3 -c 'import core;core.ampalibe.init.run()'
         exit
     fi
 

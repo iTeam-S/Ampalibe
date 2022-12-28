@@ -6,3 +6,4 @@ requests
 watchdog
 aiocron
 colorama
+tinydb

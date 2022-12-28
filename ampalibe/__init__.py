@@ -49,7 +49,7 @@ def init_proj(path):
         os.makedirs(os.path.join(path, "assets", folder), exist_ok=True)
 
     print(
-        ".env\n.env.bat\n__pycache__/\nngrok\nngrok.exe",
+        ".env\n.env.bat\n__pycache__/\nngrok\nngrok.exe\n_db.json",
         file=open(f"{path}/.gitignore", "a"),
     )
 

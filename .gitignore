@@ -138,5 +138,6 @@ __pycache__/
 ngrok
 ngrok.exe
 ampalibe.db
+_db.json
 
 generated/

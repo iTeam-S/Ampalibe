@@ -86,7 +86,6 @@ class Model:
                     `action` TEXT DEFAULT NULL,
                     `last_use` datetime NOT NULL DEFAULT current_timestamp(),
                     `lang` varchar(5) DEFAULT NULL,
-                    `tmp` varchar(255) DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             """
@@ -96,7 +95,6 @@ class Model:
                     id SERIAL,
                     user_id VARCHAR NULL DEFAULT NULL,
                     action TEXT NULL DEFAULT NULL,
-                    tmp VARCHAR NULL DEFAULT NULL,
                     last_use TIMESTAMP NULL DEFAULT NOW(),
                     lang VARCHAR NULL DEFAULT NULL,
                     PRIMARY KEY (id),
@@ -115,8 +113,7 @@ class Model:
                    user_id TEXT NOT NULL UNIQUE,
                    action TEXT,
                    last_use TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                   lang TEXT,
-                   tmp TEXT
+                   lang TEXT
                 )
             """
         self.cursor.execute(req)

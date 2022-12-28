@@ -849,3 +849,41 @@ class Messenger:
         res = requests.get(f"https://graph.facebook.com/{dest_id}", params=params)
         res = self.__analyse(res)
         return res.json() if res.status_code == 200 else {}
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_recurring_notification(self, dest_id, recurring_notification, **kwargs):
+        """
+        Method that sends a recurring notification to a customer  .
+
+        Args:
+            recurring_notification (RecurringNotification obj or dict | required ): The recurring notification
+
+        Returns:
+            Response: POST request to the facebook API to send a recurring notification
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/recurring-notifications
+        """
+
+        recurring_notification = (
+            recurring_notification.value
+            if isinstance(recurring_notification, RecurringNotification)
+            else recurring_notification
+        )
+
+        dataJSON = {
+            "recipient": {"id": dest_id},
+            "message": {
+                "attachment": {"type": "template", "payload": recurring_notification}
+            },
+        }
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
+        )
+        return self.__analyse(res)

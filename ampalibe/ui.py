@@ -2,20 +2,12 @@
     List of All UI Widget Messenger 
 """
 from .payload import Payload
-
-
-class Content_type:
-    text = "text"
-    user_phone_number = "user_phone_number"
-    user_email = "user_email"
-
-
-class Type:
-    postback = "postback"
-    web_url = "web_url"
-    phone_number = "phone_number"
-    account_link = "account_link"
-    account_unlink = "account_unlink"
+from .constant import (
+    Content_type,
+    Type,
+    Message_frequency,
+    Notification_messages_cta_text,
+)
 
 
 class QuickReply:
@@ -288,6 +280,54 @@ class Adjustment:
     @property
     def value(self):
         return {"name": self.name, "amount": self.amount}
+
+    def __str__(self):
+        return str(self.value)
+
+
+class RecurringNotification:
+    def __init__(self, **kwargs):
+        """
+        title, image_url, payload, notification_messages_frequency, notification_messages_cta_text
+        """
+        self.template_type = "notification_messages"
+        self.title = kwargs.get("title")
+        self.image = kwargs.get("image_url")
+        self.payload = kwargs.get("payload")
+        self.notification_messages_frequency = kwargs.get(
+            "notification_messages_frequency"
+        )
+        self.notification_messages_cta_text = kwargs.get(
+            "notification_messages_cta_text"
+        )
+
+        if not self.title:
+            raise ValueError("Recurring notification must be have a title")
+
+        if not self.payload:
+            raise ValueError("Recurring notification must be have a payload")
+
+    @property
+    def value(self):
+        res = {"template_type": self.template_type, "title": self.title}
+
+        if self.image:
+            res["image_url"] = self.image
+
+        if isinstance(self.payload, Payload(payload)):
+            res["payload"] = Payload.trt_payload_out(self.payload)
+        else:
+            res["payload"] = self.payload
+
+        if self.notification_messages_frequency:
+            res[
+                "notification_messages_frequency"
+            ] = self.notification_messages_frequency
+
+        if self.notification_messages_cta_text:
+            res["notification_messages_cta_text"] = self.notification_messages_cta_text
+
+        return res
 
     def __str__(self):
         return str(self.value)

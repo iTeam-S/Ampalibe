@@ -159,7 +159,7 @@ No need to manage the length of the items to send: A next page button will be di
             for i in range(30)
         ]
         # next=True for displaying directly next page button.
-        chat.send_template(sender_id, list_items, next=True)
+        chat.send_generic_template(sender_id, list_items, next=True)
 
     @ampalibe.command('/item')
     def get_item(sender_id, id_item, **extends):

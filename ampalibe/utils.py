@@ -172,13 +172,13 @@ def translate(key, lang):
         print("Warning! langs.json not found", file=sys.stderr)
         from .source import langs
 
-        with open("langs.json", "w") as lang_file:
+        with open("langs.json", "w", encoding='utf-8') as lang_file:
             lang_file.write(langs)
             print("langs.json created!")
         return key
 
     if not LANGS:
-        with open("langs.json") as lang_file:
+        with open("langs.json", encoding='utf-8') as lang_file:
             LANGS = json.load(lang_file)
 
     keyword = LANGS.get(key)

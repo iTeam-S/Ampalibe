@@ -1,7 +1,10 @@
-from datetime import datetime
+import os
 import json
 from .payload import Payload
+from datetime import datetime
 from conf import Configuration  # type: ignore
+from tinydb import TinyDB, Query
+from tinydb.operations import delete
 
 
 class Model:
@@ -38,6 +41,8 @@ class Model:
 
         self.__connect()
         self.__init_db()
+        os.makedirs("assets/private/", exist_ok=True)
+        self.tinydb = TinyDB("assets/private/_db.json")
 
     def __connect(self):
         """
@@ -81,7 +86,6 @@ class Model:
                     `action` TEXT DEFAULT NULL,
                     `last_use` datetime NOT NULL DEFAULT current_timestamp(),
                     `lang` varchar(5) DEFAULT NULL,
-                    `tmp` varchar(255) DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             """
@@ -91,7 +95,6 @@ class Model:
                     id SERIAL,
                     user_id VARCHAR NULL DEFAULT NULL,
                     action TEXT NULL DEFAULT NULL,
-                    tmp VARCHAR NULL DEFAULT NULL,
                     last_use TIMESTAMP NULL DEFAULT NOW(),
                     lang VARCHAR NULL DEFAULT NULL,
                     PRIMARY KEY (id),
@@ -110,8 +113,7 @@ class Model:
                    user_id TEXT NOT NULL UNIQUE,
                    action TEXT,
                    last_use TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                   lang TEXT,
-                   tmp TEXT
+                   lang TEXT
                 )
             """
         self.cursor.execute(req)
@@ -222,22 +224,6 @@ class Model:
         self.db.commit()
 
     @verif_db
-    def __get_temp(self, user_id):
-        """
-        get all temporary data of an user
-
-        @params :  user_id
-        @return: JSON string
-        """
-        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "SELECT tmp FROM amp_user WHERE user_id = %s"
-        else:
-            req = "SELECT tmp FROM amp_user WHERE user_id = ?"
-        self.cursor.execute(req, (user_id,))
-        res = self.cursor.fetchone()
-        return res if res is None else res[0]
-
-    @verif_db
     def set_temp(self, user_id, key, value):
         """
         set a temp parameter of an user
@@ -251,19 +237,8 @@ class Model:
                 {"$set": {key: value}},
             )
             return
-        data = self.__get_temp(user_id)
-        if not data:
-            data = {}
-        else:
-            data = json.loads(data)
-        data[key] = value
-        data = json.dumps(data)
-        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "UPDATE amp_user SET tmp = %s WHERE user_id = %s"
-        else:
-            req = "UPDATE amp_user SET tmp = ? WHERE user_id = ?"
-        self.cursor.execute(req, (data, user_id))
-        self.db.commit()
+        if not self.tinydb.update({key: value}, Query().user_id == user_id):
+            self.tinydb.insert({"user_id": user_id, key: value})
 
     @verif_db
     def get_temp(self, user_id, key):
@@ -277,11 +252,9 @@ class Model:
         if self.ADAPTER == "MONGODB":
             return self.db.amp_user.find({"user_id": user_id})[0].get(key)
 
-        data = self.__get_temp(user_id)
-        if not data:
-            return
-        data = json.loads(data)
-        return data.get(key)
+        res = self.tinydb.search(Query().user_id == user_id)
+        if res:
+            return res[0].get(key)
 
     @verif_db
     def del_temp(self, user_id, key):
@@ -298,22 +271,7 @@ class Model:
                 {"$unset": {key: ""}},
             )
             return
-        data = self.__get_temp(user_id)
-        if not data:
-            return
-        data = json.loads(data)
-        try:
-            data.pop(key)
-        except KeyError:
-            pass
-        else:
-            data = json.dumps(data)
-            if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-                req = "UPDATE amp_user SET tmp = %s WHERE user_id = %s"
-            else:
-                req = "UPDATE amp_user SET tmp = ? WHERE user_id = ?"
-            self.cursor.execute(req, (data, user_id))
-            self.db.commit()
+        self.tinydb.update(delete(key), Query().user_id == user_id)
 
     @verif_db
     def get_lang(self, user_id):

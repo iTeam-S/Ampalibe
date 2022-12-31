@@ -32,7 +32,7 @@ setuptools.setup(
         "requests",
         "colorama",
         "requests_toolbelt",
-        "watchdog",
+        "watchdog!=2.2.0",
         "aiocron",
         "tinydb",
     ],  # depandance

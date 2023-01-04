@@ -288,7 +288,15 @@ class Adjustment:
 class RecurringNotification:
     def __init__(self, **kwargs):
         """
-        title, image_url, payload, notification_messages_frequency, notification_messages_cta_text
+            Recurring notification ui object to be used in the send_recurring_notification
+            Args:
+                title (str) - Title of the notification
+                image (str | optional) - Image url of the notification
+                payload (str) - Payload of the notification
+                notification_messages_frequency (str) - "DAILY" or "WEEKLY" or "MONTHLY"
+                notification_messages_cta_text (str) - "GET" or "SIGN_UP" or "ALLOW" or "OPT_IN" or "FREQUENCY"
+                image_aspect_ratio (str | optional) - "HORIZONTAL" or "SQUARE"
+                notification_reoptin (str | optional) - "ENABLED" or "DISABLED"
         """
         self.template_type = "notification_messages"
         self.title = kwargs.get("title")
@@ -299,6 +307,10 @@ class RecurringNotification:
         )
         self.notification_messages_cta_text = kwargs.get(
             "notification_messages_cta_text"
+        )
+        self.image_ratio = kwargs.get("image_aspect_ratio")
+        self.notification_reoptin = kwargs.get(
+            "notification_messages_reoptin"
         )
 
         if not self.title:
@@ -314,7 +326,7 @@ class RecurringNotification:
         if self.image:
             res["image_url"] = self.image
 
-        if isinstance(self.payload, Payload(payload)):
+        if isinstance(self.payload, Payload):
             res["payload"] = Payload.trt_payload_out(self.payload)
         else:
             res["payload"] = self.payload

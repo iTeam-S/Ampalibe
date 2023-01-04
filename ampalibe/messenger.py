@@ -6,7 +6,7 @@ from retry import retry
 import requests_toolbelt
 from conf import Configuration  # type: ignore
 from .custom_logger import Logger as __log
-from .ui import Summary, Address, Adjustment
+from .ui import RecurringNotification, Summary, Address, Adjustment
 from .ui import Button, QuickReply, Element, ReceiptElement
 
 logger = __log().logger

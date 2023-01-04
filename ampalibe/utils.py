@@ -77,6 +77,11 @@ def analyse(data):
                 reaction.webhook = message["reaction"]["action"]
                 return sender_id, reaction, message
 
+            if message.get("optin"):
+                optin = Cmd(message["optin"]["payload"])
+                optin.webhook = "optin"
+                return sender_id, optin, message
+
 
 def command(*args, **kwargs):
     """

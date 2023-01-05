@@ -1,3 +1,6 @@
+from enum import Enum
+
+
 class Content_type:
     text = "text"
     user_phone_number = "user_phone_number"
@@ -12,61 +15,29 @@ class Type:
     account_unlink = "account_unlink"
 
 
-class Message_frequency:
-    @property
-    def DAILY(self):
-        """
-        subscribe to receive a notification every twenty-four hours for 6 months
-        """
-        return "DAILY"
-
-    @property
-    def WEEKLY(self):
-        """
-        subscribe to receive a notification every 7 days for 9 months.
-        """
-        return "WEEKLY"
-
-    @property
-    def MONTHLY(self):
-        """
-        subscribe to receive a notification every month for 12 months.
-        """
-        return "MONTHLY"
+class Notification_frequency(Enum):
+    """
+    Message frequency for the subscription message.
+    """
+    DAILY = "DAILY"
+    WEEKLY = "WEEKLY"
+    MONTHLY = "MONTHLY"
 
 
-class Notification_messages_cta_text:
-    @property
-    def ALLOW(self):
-        """
-        Sets the subscribe message button text to "Allow Messages".
-        """
-        return "ALLOW"
+class Notification_cta_text(Enum):
+    """
+    Call to action text for the subscription message.
+    """
+    ALLOW = "ALLOW"
+    FREQUENCY = "FREQUENCY"
+    GET = "GET"
+    OPT_IN = "OPT_IN"
+    SIGN_UP = "SIGN_UP"
 
-    @property
-    def FREQUENCY(self):
-        """
-        Sets the text of the subscription message button to "Get messages [daily/weekly/monthly]".
-        """
-        return "FREQUENCY"
 
-    @property
-    def GET(self):
-        """
-        GET: Sets the subscribe message button text to "Receive messages". This is the default if notif_messages_cta_text is not set.
-        """
-        return "GET"
-
-    @property
-    def OPT_IN(self):
-        """
-        OPT_IN: Sets the subscribe message button text to "Subscribe to messages".
-        """
-        return "OPT_IN"
-
-    @property
-    def SIGN_UP(self):
-        """
-        Sets the subscribe message button text to "Sign up for messages".
-        """
-        return "SIGN_UP"
+class Notification_reoptin(Enum):
+    """
+    Reoptin action for the subscription message.
+    """
+    ENABLED = "ENABLED"
+    DISABLED = "DISABLED"

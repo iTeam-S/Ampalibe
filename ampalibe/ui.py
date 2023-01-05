@@ -318,11 +318,13 @@ class RecurringNotificationOptin:
         if self.notification_frequency not in Notification_frequency:
             raise ValueError("RecurringNotificationOptin must have a valid notification frequency")
 
-        if self.notification_cta_text not in Notification_cta_text:
-            raise ValueError("RecurringNotificationOptin must have a valid notification cta text")
+        if self.notification_cta_text:
+            if self.notification_cta_text not in Notification_cta_text:
+                raise ValueError("RecurringNotificationOptin must have a valid notification cta text")
 
-        if self.notification_reoptin not in Notification_reoptin:
-            raise ValueError("RecurringNotificationOptin must have a valid notification reoptin")
+        if self.notification_reoptin:
+            if self.notification_reoptin not in Notification_reoptin:
+                raise ValueError("RecurringNotificationOptin must have a valid notification reoptin")
 
     @property
     def value(self):

@@ -74,7 +74,7 @@ def analyse(data):
 
             if message.get("reaction"):
                 reaction = Cmd(message["reaction"]["reaction"])
-                reaction.webhook = message["reaction"]["action"]
+                reaction.webhook = "reaction"
                 return sender_id, reaction, message
 
             if message.get("optin"):

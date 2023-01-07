@@ -641,48 +641,69 @@ Method to send a one time notification request to the user
 
     *title (str)*: title of the notification , should be less than 65 characters
 
-    *payload (str)*: payload of the notification
+    *payload (str | Payload)*: payload of the notification
 
-**Example**:
 
 .. code-block:: python
 
-    from ampalibe import Messenger
+    chat.send_onetime_notification_request(sender_id, 'title', Paylod('/test'))
 
-    chat = Messenger()
-
-    chat.send_onetime_notification_request(sender_id, 'title', '/test')
 
 If the user accept the notification, a *one_time_notif_token* will be sent to the webhook
 use the token to send notification to the user with one of those sends methods according to your needs :
-    *send_message*
-    *send_text* 
-    *send_attachment*
-    *send_action*
-    *send_quick_reply*
-    *send_template*
-    *send_file_url*
-    *send_file*
-    *send_media*
-    *send_button*
-    *send_receipt_template*
+*send_message*
+*send_text* 
+*send_attachment*
+*send_action*
+*send_quick_reply*
+*send_template*
+*send_file_url*
+*send_file*
+*send_media*
+*send_button*
+*send_receipt_template*
 
 **Example**:
 
+
 .. code-block:: python
 
-    from ampalibe import Messenger
+    from ampalibe import Messenger, Model
 
     chat = Messenger()
+    query = Model()
 
     @ampalibe.command('/')
     def main(sender_id, cmd, **ext):
         chat.send_onetime_notification_request(sender_id, "Notification", "/test")
 
 
-    @ampalibe.event('optin')
-    def test(**ext):
-        chat.send_text(ext['sender_id'], "This is a notification", one_time_notif_token=ext['token'])
+    @ampalibe.command('/test')
+    def test(sender_id, cmd, **ext):
+        chat.send_text(ext['sender_id'], "You accepted to receive one notification later.")
+        print("the token is :", cmd.token)
+        query.set_temp(sender_id, 'one_time_notif_token', cmd.token)
+
+    
+.. code-block:: python
+
+    from ampalibe import Messenger, Model
+
+    chat = Messenger()
+    query = Model()
+
+    @ampalibe.command('/')
+    def main(sender_id, cmd, **ext):
+        """
+        To send a notification to the user, you need to use the token 
+        that you received in the webhook
+        """
+        chat.send_text(
+            sender_id, 
+            "Hello, notif for you even if had not answered me the last 24 hours"
+            one_time_notif_token=query.get_temp(sender_id, 'one_time_notif_token')
+        )
+
 
 
 send_product_template
@@ -706,6 +727,7 @@ The product template is a structured message that can be used to render products
 **Example**:
 
 .. code-block:: python
+
     from ampalibe import Messenger
     from ampalibe.ui import Product
     chat = Messenger()

@@ -52,3 +52,8 @@ def try_second_action(sender_id, **extends):
 def second_action_work(sender_id, cmd, myname, version, **extends):
     query.set_action(sender_id, None)
     return cmd + " " + myname + str(version)
+
+
+@ampalibe.command("/receive_optin_webhook")
+def receive_optin_webhook(**extends):
+    return "Optin"

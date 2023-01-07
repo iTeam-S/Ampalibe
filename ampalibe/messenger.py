@@ -7,8 +7,8 @@ import requests_toolbelt
 from .payload import Payload
 from conf import Configuration  # type: ignore
 from ._logger import Logger as __log
-from .constant import Action, Filetype, Messaging_type, Tag
 from .ui import ReceiptElement, Summary, Address, Adjustment
+from .constant import Tag, Action, Filetype, Messaging_type, Notification_type
 from .ui import Button, QuickReply, Element, Product, RecurringNotificationOptin
 
 logger = __log().logger

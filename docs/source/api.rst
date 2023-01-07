@@ -9,14 +9,8 @@ Api
    ampalibe.event
    ampalibe.Payload
    ampalibe.Model
-   ampalibe.download_file
+   ampalibe.constant
    ampalibe.translate
    ampalibe.crontab
    ampalibe.simulate
-   ampalibe.ui.Type
-   ampalibe.ui.Content_type
-   ampalibe.messenger.Tag
-   ampalibe.messenger.Action
-   ampalibe.messenger.Filetype
-   ampalibe.messenger.Messaging_type
-   ampalibe.messenger.Notification_type
+   ampalibe.download_file

@@ -166,11 +166,8 @@ def download_file(url, file):
 
 def translate(key, lang):
     """
-    translate a keyword or sentence
-    @params:
-        key: the key used in langs.json file
-        lang: the langage code in format fr, en, mg, ...
     this function uses the langs.json file.
+    translate a keyword or sentence
     """
     global LANGS
 

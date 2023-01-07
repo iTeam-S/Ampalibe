@@ -132,8 +132,6 @@ class Messenger:
         recipient = {"one_time_notif_token": kwargs.get("one_time_notif_token")} \
             if kwargs.get("one_time_notif_token") else {"id": dest_id}
 
-        print(recipient)
-
         dataJSON = {"recipient": recipient, "message": {"text": text}}
         dataJSON.update(kwargs)
 

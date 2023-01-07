@@ -88,6 +88,8 @@ class Server:
                     "watermark": payload,
                     "message": message,
                 }
+                if payload.webhook == "optin":
+                    kw["token"] = payload.token
                 if testmode:
                     funcs["event"][payload.webhook](**kw)
                 else:

@@ -34,6 +34,7 @@ setuptools.setup(
         "requests_toolbelt",
         "watchdog!=2.2.0",
         "aiocron",
+        "tinydb",
     ],  # depandance
     include_package_data=True,  # Include all data file with the package
     scripts=["bin/ampalibe", "bin/ampalibe.bat"],

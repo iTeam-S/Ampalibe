@@ -127,12 +127,12 @@ to request a person's location, email address, and phone number.
     chat.send_quick_reply(sender_id, quick_rep, 'who do you choose ?', next='See More')
 
 
-send_template
-_____________
+send_generic_template
+______________________
 
 .. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/template.png
 
-The method send_template represent a Message templates who offer a way for you 
+The method send_generic_template represent a Message templates who offer a way for you 
 to offer a richer in-conversation experience than standard text messages by integrating
 buttons, images, lists, and more alongside text a single message. Templates can be use for 
 many purposes, such as displaying product information, asking the messagerecipient to choose 
@@ -187,10 +187,10 @@ displaying all requested templates
         )
 
     # next=True for displaying directly next page button.
-    chat.send_template(sender_id, list_items, next=True)
+    chat.send_generic_template(sender_id, list_items, next=True)
 
     # next=<word> for displaying directly next page button with custom text.
-    # chat.send_template(sender_id, list_items, next='Next page')
+    # chat.send_generic_template(sender_id, list_items, next='Next page')
 
 send_file_url
 _____________
@@ -683,3 +683,4 @@ use the token to send notification to the user with one of those sends methods a
     @ampalibe.event('optin')
     def test(**ext):
         chat.send_text(ext['sender_id'], "This is a notification", one_time_notif_token=ext['token'])
+

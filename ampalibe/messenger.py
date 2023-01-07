@@ -7,9 +7,8 @@ import requests_toolbelt
 from conf import Configuration  # type: ignore
 from .custom_logger import Logger as __log
 from .ui import RecurringNotificationOptin, Summary, Address, Adjustment
-from .ui import Button, QuickReply, Element, ReceiptElement
+from .ui import Button, QuickReply, Element, ReceiptElement, Product
 from .payload import Payload
-
 
 logger = __log().logger
 
@@ -290,6 +289,17 @@ class Messenger:
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_template(self, dest_id, elements, quick_rep=None, next=None, **kwargs):
+        """
+        This method is used to send a template to the user
+        """
+        return self.send_generic_template(
+            dest_id, elements, quick_rep=None, next=None, **kwargs
+        )
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_generic_template(
+        self, dest_id, elements, quick_rep=None, next=None, **kwargs
+    ):
         """
         The method represent a Message templates who offer a way for you
         to offer a richer in-conversation experience than standard text messages by integrating
@@ -1001,5 +1011,7 @@ class Messenger:
             headers=header,
             params=params,
         )
-
         return self.__analyse(res)
+        
+        
+ 

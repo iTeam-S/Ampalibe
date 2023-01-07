@@ -354,10 +354,13 @@ class RecurringNotificationOptin:
         return str(self.value)
         
         
- class Product:
+class Product:
     def __init__(self, id):
         self.id = id
 
     @property
     def value(self):
         return {"id": self.id}
+
+    def __str__(self):
+        return str(self.value)

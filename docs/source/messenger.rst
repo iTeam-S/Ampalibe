@@ -684,3 +684,34 @@ use the token to send notification to the user with one of those sends methods a
     def test(**ext):
         chat.send_text(ext['sender_id'], "This is a notification", one_time_notif_token=ext['token'])
 
+
+send_product_template
+______________________
+
+Method to send product template.
+
+The product template is a structured message that can be used to render products that have been uploaded to a catalog. Product details (image, title, price) will automatically be pulled from the product catalog.
+
+.. image:: https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/product_template.png
+
+**Ref**:  https://developers.facebook.com/docs/messenger-platform/send-messages/template/product
+
+**Args**
+
+    *dest_id (str)*: user id for destination
+
+    *product_ids (list of Product)*: List of product
+
+
+**Example**:
+
+.. code-block:: python
+    from ampalibe import Messenger
+    from ampalibe.ui import Product
+    chat = Messenger()
+    products = [
+        Product(p_id) 
+        for p_id in ['123456789', '987654321']
+    ]
+    chat.send_product_template(sender_id, products)
+

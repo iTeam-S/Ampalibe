@@ -1012,6 +1012,82 @@ class Messenger:
             params=params,
         )
         return self.__analyse(res)
+    
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_product_template(
+        self, dest_id, products, next=None, quick_rep=None, **kwargs
+    ):
+        """
+        Method that sends a product template to a customer owned by the page.
+        Args:
+            dest_id (str | required ): The id of the customer
+            products (list of id  | required ): The products ids to send
+            next(bool) || (text): this params activate the next page when elements have a length more than ten
+        Returns:
+            Response: POST request to the facebook API to send a product template
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/template/product
+        """
+
+        products = [
+            product.value if isinstance(product, Product) else product
+            for product in products
+        ]
+
+        dataJSON = {
+            "recipient": {"id": dest_id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "product",
+                        "elements": products[:10],
+                    },
+                }
+            },
+        }
+        dataJSON.update(kwargs)
+
+        if len(products) > 10 and next:
+            dataJSON["message"]["quick_replies"] = [
+                {
+                    "content_type": "text",
+                    "title": "Next" if next == True else str(next),
+                    "payload": "/__next",
+                    "image_url": "https://icon-icons.com/downloadimage.php"
+                    + "?id=81300&root=1149/PNG/512/&file="
+                    + "1486504364-chapter-controls-forward-play"
+                    + "-music-player-video-player-next_81300.png",
+                }
+            ]
+            pickle.dump(
+                (products[10:], next),
+                open(f"assets/private/.__{dest_id}", "wb"),
+            )
+
+        if quick_rep:
+            quick_rep = [
+                qr.value if isinstance(qr, QuickReply) else qr for qr in quick_rep
+            ]
+
+            if isinstance(dataJSON["message"].get("quick_replies"), list):
+                dataJSON["message"]["quick_replies"] = (
+                    quick_rep + dataJSON["message"]["quick_replies"]
+                )
+            else:
+                dataJSON["message"]["quick_replies"] = quick_rep
+
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
+        )
+        return self.__analyse(res)
         
         
  

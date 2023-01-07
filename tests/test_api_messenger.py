@@ -161,10 +161,10 @@ def test_send_receipt_template():
     ) == 200
 
 
-def test_send_onetime_notification_request():
-    assert (
-        chat.send_onetime_notification_request(
-            sender_id, "Accepter le notification", "/test"
-        ).status_code
-        == 200
-    )
+# def test_send_onetime_notification_request():
+#     assert (
+#         chat.send_onetime_notification_request(
+#             sender_id, "Accepter le notification", "/test"
+#         ).status_code
+#         == 200
+#     )

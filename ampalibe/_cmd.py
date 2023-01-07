@@ -20,7 +20,7 @@ class Cmd(str):
 
     def copy(self, text):
         new_cmd = Cmd(text)
-        new_cmd.set_atts(self.attachments)
+        new_cmd.__atts = self.attachments
         new_cmd.webhook = self.webhook
         new_cmd.token = self.token
         return new_cmd

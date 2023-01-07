@@ -17,8 +17,9 @@ _req = None
 loop = None
 
 webserver = FastAPI(title="Ampalibe server")
-if os.path.isdir("assets/public"):
-    webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
+if not os.path.isdir("assets/public"):
+    os.makedirs("assets/public", exist_ok=True)
+webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
 
 
 class Extra:

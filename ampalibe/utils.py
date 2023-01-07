@@ -2,7 +2,7 @@ import os
 import sys
 import json
 import requests
-from .custom_cmd import Cmd
+from ._cmd import Cmd
 from conf import Configuration  # type: ignore
 
 
@@ -181,13 +181,13 @@ def translate(key, lang):
         print("Warning! langs.json not found", file=sys.stderr)
         from .source import langs
 
-        with open("langs.json", "w", encoding='utf-8') as lang_file:
+        with open("langs.json", "w", encoding="utf-8") as lang_file:
             lang_file.write(langs)
             print("langs.json created!")
         return key
 
     if not LANGS:
-        with open("langs.json", encoding='utf-8') as lang_file:
+        with open("langs.json", encoding="utf-8") as lang_file:
             LANGS = json.load(lang_file)
 
     keyword = LANGS.get(key)

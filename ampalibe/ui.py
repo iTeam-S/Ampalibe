@@ -2,7 +2,13 @@
     List of All UI Widget Messenger 
 """
 from .payload import Payload
-from .constant import Notification_frequency, Notification_cta_text, Notification_reoptin
+from .constant import (
+    Type,
+    Content_type,
+    Notification_frequency,
+    Notification_cta_text,
+    Notification_reoptin,
+)
 
 
 class QuickReply:
@@ -291,12 +297,12 @@ class Adjustment:
 class RecurringNotificationOptin:
     def __init__(self, **kwargs):
         """
-            RecurringNotificationOptin ui object to be used in the send_optin
-            Args:
-                title (str) - Title of the optin
-                image (str | optional) - Image url of the optin
-                payload (str) - Payload of the optin
-                notification_frequency (str) - Frequency of the notification messages
+        RecurringNotificationOptin ui object to be used in the send_optin
+        Args:
+            title (str) - Title of the optin
+            image (str | optional) - Image url of the optin
+            payload (str) - Payload of the optin
+            notification_frequency (str) - Frequency of the notification messages
         """
         self.template_type = "notification_messages"
         self.title = kwargs.get("title")
@@ -313,18 +319,26 @@ class RecurringNotificationOptin:
             raise ValueError("RecurringNotificationOptin must have a payload")
 
         if not self.notification_frequency:
-            raise ValueError("RecurringNotificationOptin must have a notification frequency")
+            raise ValueError(
+                "RecurringNotificationOptin must have a notification frequency"
+            )
 
         if self.notification_frequency not in Notification_frequency:
-            raise ValueError("RecurringNotificationOptin must have a valid notification frequency")
+            raise ValueError(
+                "RecurringNotificationOptin must have a valid notification frequency"
+            )
 
         if self.notification_cta_text:
             if self.notification_cta_text not in Notification_cta_text:
-                raise ValueError("RecurringNotificationOptin must have a valid notification cta text")
+                raise ValueError(
+                    "RecurringNotificationOptin must have a valid notification cta text"
+                )
 
         if self.notification_reoptin:
             if self.notification_reoptin not in Notification_reoptin:
-                raise ValueError("RecurringNotificationOptin must have a valid notification reoptin")
+                raise ValueError(
+                    "RecurringNotificationOptin must have a valid notification reoptin"
+                )
 
     @property
     def value(self):
@@ -352,8 +366,8 @@ class RecurringNotificationOptin:
 
     def __str__(self):
         return str(self.value)
-        
-        
+
+
 class Product:
     def __init__(self, id):
         self.id = id

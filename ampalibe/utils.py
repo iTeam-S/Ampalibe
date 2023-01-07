@@ -80,7 +80,10 @@ def analyse(data):
             if message.get("optin"):
                 optin = Cmd(message["optin"]["payload"])
                 optin.webhook = "optin"
-                optin.token = message["optin"]["notification_messages_token"]
+                if message["optin"].get("type") == "one_time_notif_req":
+                    optin.token = message["optin"]["one_time_notif_token"]
+                elif message["optin"].get("type") == "notification_messages":
+                    optin.token = message["optin"]["notification_messages_token"]
                 return sender_id, optin, message
 
 

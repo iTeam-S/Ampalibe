@@ -59,7 +59,7 @@ def test_send_quick_reply():
     )
 
 
-def test_send_template():
+def test_send_generic_template():
     makedirs("assets/private", exist_ok=True)
     list_items = []
 
@@ -159,3 +159,31 @@ def test_send_receipt_template():
             adjustments=[adjustment],
         ).status_code
     ) == 200
+
+
+def test_personas_mangement():
+    # create
+    personas_id = chat.create_personas(
+        "Rivo Lalaina", "https://avatars.githubusercontent.com/u/59861055?v=4"
+    )
+    assert personas_id.isdigit()
+
+    # get personas
+    personas = chat.get_personas(personas_id)
+    assert personas.get("id") == personas_id
+
+    # list personas
+    list_personas = chat.list_personas()
+    assert list_personas[0].get("id") == personas_id
+
+    # delete personas
+    assert chat.delete_personas(personas_id).status_code == 200
+
+
+def test_send_onetime_notification_request():
+    assert (
+        chat.send_onetime_notification_request(
+            sender_id, "Accepter le notification", "/test"
+        ).status_code
+        == 200
+    )

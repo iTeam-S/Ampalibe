@@ -2,7 +2,7 @@ import os
 import sys
 import json
 import requests
-from .custom_cmd import Cmd
+from ._cmd import Cmd
 from conf import Configuration  # type: ignore
 
 
@@ -74,8 +74,17 @@ def analyse(data):
 
             if message.get("reaction"):
                 reaction = Cmd(message["reaction"]["reaction"])
-                reaction.webhook = message["reaction"]["action"]
+                reaction.webhook = "reaction"
                 return sender_id, reaction, message
+
+            if message.get("optin"):
+                optin = Cmd(message["optin"]["payload"])
+                optin.webhook = "optin"
+                if message["optin"].get("type") == "one_time_notif_req":
+                    optin.token = message["optin"]["one_time_notif_token"]
+                elif message["optin"].get("type") == "notification_messages":
+                    optin.token = message["optin"]["notification_messages_token"]
+                return sender_id, optin, message
 
 
 def command(*args, **kwargs):
@@ -157,11 +166,8 @@ def download_file(url, file):
 
 def translate(key, lang):
     """
-    translate a keyword or sentence
-    @params:
-        key: the key used in langs.json file
-        lang: the langage code in format fr, en, mg, ...
     this function uses the langs.json file.
+    translate a keyword or sentence
     """
     global LANGS
 
@@ -172,13 +178,13 @@ def translate(key, lang):
         print("Warning! langs.json not found", file=sys.stderr)
         from .source import langs
 
-        with open("langs.json", "w", encoding='utf-8') as lang_file:
+        with open("langs.json", "w", encoding="utf-8") as lang_file:
             lang_file.write(langs)
             print("langs.json created!")
         return key
 
     if not LANGS:
-        with open("langs.json", encoding='utf-8') as lang_file:
+        with open("langs.json", encoding="utf-8") as lang_file:
             LANGS = json.load(lang_file)
 
     keyword = LANGS.get(key)

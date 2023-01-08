@@ -4,62 +4,28 @@ import pickle
 import requests
 from retry import retry
 import requests_toolbelt
+from .payload import Payload
 from conf import Configuration  # type: ignore
-from .custom_logger import Logger as __log
-from .ui import Button, QuickReply, Element, Product
-from .ui import Summary, Address, Adjustment, ReceiptElement
+from ._logger import Logger as __log
+from .ui import ReceiptElement, Summary, Address, Adjustment
+from .constant import Tag, Action, Filetype, Messaging_type, Notification_type
+from .ui import Button, QuickReply, Element, Product, RecurringNotificationOptin
 
 logger = __log().logger
 
 
-class Action:
-    mark_seen = "mark_seen"
-    typing_on = "typing_on"
-    typing_off = "typing_off"
-
-
-class Filetype:
-    file = "file"
-    video = "video"
-    image = "image"
-    audio = "audio"
-
-
-class Messaging_type:
-    MESSAGE_TAG = "MESSAGE_TAG"
-    RESPONSE = "RESPONSE"
-    UPDATE = "UPDATE"
-
-
-class Tag:
-    ACCOUNT_UPDATE = "ACCOUNT_UPDATE"
-    CONFIRMED_EVENT_UPDATE = "CONFIRMED_EVENT_UPDATE"
-    CUSTOMER_FEEDBACK = "CUSTOMER_FEEDBACK"
-    HUMAN_AGENT = "HUMAN_AGENT"
-    POST_PURCHASE_UPDATE = "POST_PURCHASE_UPDATE"
-
-
-class Notification_type:
-    NO_PUSH = "NO_PUSH"
-    REGULAR = "REGULAR"
-    SILENT_PUSH = "SILENT_PUSH"
-
-
 class Messenger:
-    def __init__(self, log_level="error"):
+    def __init__(self, log_level="error", api_version="v15.0"):
         """
-        Here, We need the <access token> of the facebook page we want
-        to apply the bot for the purpose of page and bot interaction
-
         Args:
-            access_token (str): A facebook page access token
             log_level (error, info, quiet): A type of display log
                 error: print only error
                 info: print access log and error log
                 quiet: do not print anything
         """
         self.access_token = Configuration.ACCESS_TOKEN
-        self.url = "https://graph.facebook.com/v13.0/me"
+        self.api_version = api_version
+        self.url = f"https://graph.facebook.com/{api_version}/me"
 
         if log_level not in ("error", "info", "quiet"):
             raise Exception(ValueError, "log_level must be error or info or quiet")
@@ -125,7 +91,14 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages#sending_text
         """
-        dataJSON = {"recipient": {"id": dest_id}, "message": {"text": text}}
+
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
+
+        dataJSON = {"recipient": recipient, "message": {"text": text}}
         dataJSON.update(kwargs)
 
         header = {"content-type": "application/json; charset=utf-8"}
@@ -156,8 +129,14 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/reference/attachment-upload-api#attachment_reuse
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
+
         dataJSON = {
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "message": {
                 "attachment": {
                     "type": filetype,
@@ -195,9 +174,15 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
+
         dataJSON = {
             "messaging_type": "RESPONSE",
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "sender_action": action,
         }
         dataJSON.update(kwargs)
@@ -233,6 +218,11 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
 
         quick_reps = [
             quick_rep.value if isinstance(quick_rep, QuickReply) else quick_rep
@@ -241,7 +231,7 @@ class Messenger:
 
         dataJSON = {
             "messaging_type": "RESPONSE",
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "message": {"text": text, "quick_replies": quick_reps[:13]},
         }
         dataJSON.update(kwargs)
@@ -278,6 +268,7 @@ class Messenger:
         """
         This method is used to send a template to the user
         """
+        logger.warning("This method is deprecated, use send_generic_template instead")
         return self.send_generic_template(
             dest_id, elements, quick_rep=None, next=None, **kwargs
         )
@@ -314,6 +305,11 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
 
         elements = [
             element.value if isinstance(element, Element) else element
@@ -322,7 +318,7 @@ class Messenger:
 
         dataJSON = {
             "messaging_type": "RESPONSE",
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "message": {
                 "attachment": {
                     "type": "template",
@@ -395,10 +391,15 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages#url
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
 
         dataJSON = {
             "messaging_type": "RESPONSE",
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "message": {
                 "attachment": {
                     "type": filetype,
@@ -559,8 +560,14 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages/template/media
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
+
         dataJSON = {
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "message": {
                 "attachment": {
                     "type": "template",
@@ -577,7 +584,7 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            "https://graph.facebook.com/v6.0/me/messages",
+            f"https://graph.facebook.com/{self.api_version}/me/messages",
             json=dataJSON,
             headers=header,
             params=params,
@@ -603,7 +610,7 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.post(
-            "https://graph.facebook.com/v6.0/me/messenger_profile",
+            f"https://graph.facebook.com/{self.api_version}/me/messenger_profile",
             json=dataJSON,
             headers=header,
             params=params,
@@ -629,6 +636,11 @@ class Messenger:
          Ref:
              https://developers.facebook.com/docs/messenger-platform/send-messages/template/button
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
 
         buttons = [
             button.value if isinstance(button, Button) else button for button in buttons
@@ -636,7 +648,7 @@ class Messenger:
 
         self.send_action(dest_id, "typing_on")
         dataJSON = {
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "message": {
                 "attachment": {
                     "type": "template",
@@ -709,7 +721,7 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.get(
-            f"https://graph.facebook.com/v13.0/{self.page_id}/personas",
+            f"https://graph.facebook.com/{self.api_version}/{self.page_id}/personas",
             headers=header,
             params=params,
         )
@@ -734,7 +746,7 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.get(
-            f"https://graph.facebook.com/v13.0/{persona_id}",
+            f"https://graph.facebook.com/{self.api_version}/{persona_id}",
             headers=header,
             params=params,
         )
@@ -759,12 +771,12 @@ class Messenger:
         params = {"access_token": self.token}
 
         res = requests.delete(
-            f"https://graph.facebook.com/v13.0/{persona_id}",
+            f"https://graph.facebook.com/{self.api_version}/{persona_id}",
             headers=header,
             params=params,
         )
         res = self.__analyse(res)
-        return res.json()
+        return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_receipt_template(
@@ -780,6 +792,7 @@ class Messenger:
         adjustments=None,
         order_url=None,
         timestamp=None,
+        **kwargs,
     ):
         """
         Method that sends a receipt template to a customer  .
@@ -801,6 +814,11 @@ class Messenger:
         Ref:
             https://developers.facebook.com/docs/messenger-platform/reference/templates/receipt
         """
+        recipient = (
+            {"one_time_notif_token": kwargs.get("one_time_notif_token")}
+            if kwargs.get("one_time_notif_token")
+            else {"id": dest_id}
+        )
 
         if receipt_elements:
             receipt_elements = [
@@ -818,7 +836,7 @@ class Messenger:
             ]
 
         dataJSON = {
-            "recipient": {"id": dest_id},
+            "recipient": recipient,
             "message": {
                 "attachment": {
                     "type": "template",
@@ -862,20 +880,138 @@ class Messenger:
         return res.json() if res.status_code == 200 else {}
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_recurring_notification_optin(self, dest_id, optin, **kwargs):
+        """
+        Method that sends a recurring notification optin to a customer  .
+
+        Args:
+            optin (Optin obj or dict | required ): The optin
+
+        Returns:
+            Response: POST request to the facebook API to send a recurring notification optin
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/recurring-notifications
+        """
+
+        optin = optin.value if isinstance(optin, RecurringNotificationOptin) else optin
+        dataJSON = {
+            "recipient": {"id": dest_id},
+            "message": {"attachment": {"type": "template", "payload": optin}},
+        }
+
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
+        )
+        return self.__analyse(res)
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_recurring_notification(self, message_token, elements, **kwargs):
+        """
+        Method that sends a recurring notification to a customer .
+
+        Args:
+            message_token (str | required ): The message token from optin
+            elements (list of Element obj or list of dict | required ): The recurring notification elements
+
+        Returns:
+            Response: POST request to the facebook API to send a recurring notification
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/recurring-notifications
+        """
+
+        elements = [
+            element.value if isinstance(element, Element) else element
+            for element in elements
+        ]
+
+        dataJSON = {
+            "recipient": {"notification_messages_token": message_token},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "notification_messages",
+                        "elements": elements,
+                    },
+                }
+            },
+        }
+
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages",
+            json=dataJSON,
+            headers=header,
+            params=params,
+        )
+
+        return self.__analyse(res)
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
+    def send_onetime_notification_request(self, dest_id, title, payload, **kwargs):
+        """
+        Method to send a notification request.
+
+        Args:
+            dest_id (str | required ): The customer id
+            title (str | optional ): The title of the notification request
+
+        Returns:
+            Response: POST request to the facebook API to send a notification request
+
+        Ref:
+            https://developers.facebook.com/docs/messenger-platform/send-messages/one-time-notification
+        """
+
+        payload = payload.value if isinstance(payload, Payload) else payload
+
+        dataJson = {
+            "recipient": {"id": dest_id},
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "one_time_notif_req",
+                        "title": title or "Notification request",
+                        "payload": payload,
+                    },
+                }
+            },
+        }
+
+        header = {"content-type": "application/json; charset=utf-8"}
+        params = {"access_token": self.token}
+
+        res = requests.post(
+            self.url + "/messages",
+            json=dataJson,
+            headers=header,
+            params=params,
+        )
+        return self.__analyse(res)
+
+    @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_product_template(
         self, dest_id, products, next=None, quick_rep=None, **kwargs
     ):
         """
         Method that sends a product template to a customer owned by the page.
-
         Args:
             dest_id (str | required ): The id of the customer
             products (list of id  | required ): The products ids to send
             next(bool) || (text): this params activate the next page when elements have a length more than ten
-
         Returns:
             Response: POST request to the facebook API to send a product template
-
         Ref:
             https://developers.facebook.com/docs/messenger-platform/send-messages/template/product
         """

@@ -17,8 +17,9 @@ _req = None
 loop = None
 
 webserver = FastAPI(title="Ampalibe server")
-if os.path.isdir("assets/public"):
-    webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
+if not os.path.isdir("assets/public"):
+    os.makedirs("assets/public", exist_ok=True)
+webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
 
 
 class Extra:
@@ -81,7 +82,7 @@ class Server:
         # data analysis and decomposition
         sender_id, payload, message = analyse(data)
 
-        if payload.webhook not in ("message", "postback", "attachments"):
+        if payload.webhook in ("read", "delivery", "reaction"):
             if funcs["event"].get(payload.webhook):
                 kw = {
                     "sender_id": sender_id,

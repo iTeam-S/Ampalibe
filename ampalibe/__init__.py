@@ -8,7 +8,7 @@ from .source import env, env_cmd
 from .source import conf, core, langs
 
 
-__version__ = "1.1.8.dev"
+__version__ = "1.2.0.dev"
 __author__ = "iTeam-$"
 
 
@@ -147,11 +147,12 @@ except ImportError:
         f.write(conf)
     sys.path.insert(0, dir_tmp)
 finally:
+    from .constant import *
     from .model import Model
     from aiocron import crontab
     from .payload import Payload
     from .messenger import Messenger
-    from .custom_logger import Logger as __log
+    from ._logger import Logger as __log
     from .core import webserver, Extra as init
     from .utils import translate, download_file, simulate
     from .utils import event, action, command, before_receive, after_receive

@@ -119,7 +119,17 @@ jobs:
           echo KO
           exit 1
         fi
-    
+
+    - name: "Test du reception de l'evenement optin avec type one_time_notif_req"
+      run: |
+        response=$(curl -H "Content-Type: application/json" -X POST "http://127.0.0.1:4555/?testmode=1" -d '{"object": "page", "entry": [{"messaging": [ {"sender": {"id": "test_user"}, "optin":{"payload": "/receive_optin_webhook", "type": "one_time_notif_req", "one_time_notif_token": "EXAMPLE_DE_TOKEN"} }]}]}')
+        if [ "$response" = '"Optin"' ]; then
+          echo "Optin one_notif: OK"
+        else
+          echo KO!
+          exit 1
+        fi
+
     - name: "Run functionnal test"
       run: bash tests/test.sh
 

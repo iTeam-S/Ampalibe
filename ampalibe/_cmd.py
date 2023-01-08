@@ -4,6 +4,7 @@ class Cmd(str):
     """
 
     webhook = "message"
+    token = None
     __atts = []
 
     def __init__(self, text):
@@ -21,4 +22,5 @@ class Cmd(str):
         new_cmd = Cmd(text)
         new_cmd.__atts = self.attachments
         new_cmd.webhook = self.webhook
+        new_cmd.token = self.token
         return new_cmd

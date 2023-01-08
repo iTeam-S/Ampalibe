@@ -1,5 +1,6 @@
+# pyright: reportGeneralTypeIssues=false
+
 import os
-import json
 from .payload import Payload
 from datetime import datetime
 from conf import Configuration  # type: ignore
@@ -119,6 +120,7 @@ class Model:
         self.cursor.execute(req)
         self.db.commit()
 
+    @staticmethod
     def verif_db(fonction):
         """
         decorator that checks if the database
@@ -311,3 +313,21 @@ class Model:
             req = "UPDATE amp_user set lang = ? WHERE user_id = ?"
         self.cursor.execute(req, (lang, user_id))
         self.db.commit()
+
+    @verif_db
+    def get(self, user_id, *args):
+        """
+        get specific data of an user
+
+        @params :  user_id, list of data to get
+        @return:  list of data
+        """
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
+            req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = %s"
+        elif self.ADAPTER == "MONGODB":
+            data = self.db.amp_user.find({"user_id": user_id})[0]
+            return [data.get(k) for k in args]
+        else:
+            req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = ?"
+        self.cursor.execute(req, (user_id,))
+        return self.cursor.fetchone()[0]

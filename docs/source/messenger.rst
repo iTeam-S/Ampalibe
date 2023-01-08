@@ -685,8 +685,7 @@ use the token to send notification to the user with one of those sends methods a
 
     @ampalibe.command('/test')
     def test(sender_id, cmd, **ext):
-        chat.send_text(ext['sender_id'], "You accepted to receive one notification later.")
-        print("the token is :", cmd.token)
+        chat.send_text(sender_id, "You accepted to receive one notification later.")
         query.set_temp(sender_id, 'one_time_notif_token', cmd.token)
 
     

@@ -9,20 +9,22 @@ from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
+from .extras import funcs, analyse, before_run
 from fastapi.staticfiles import StaticFiles
-from .utils import funcs, analyse, before_run
+from asyncio.events import AbstractEventLoop
 from fastapi import FastAPI, Request, Response
 
-_req = None
-loop = None
+_req = Model()
+loop = AbstractEventLoop()
 
 webserver = FastAPI(title="Ampalibe server")
 if not os.path.isdir("assets/public"):
     os.makedirs("assets/public", exist_ok=True)
+
 webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
 
 
-class Extra:
+class Init:
     def __init__(self, *args):
         self.query = Model()
         self.chat = Messenger()
@@ -32,9 +34,6 @@ class Extra:
         """
         function that run framework
         """
-        global _req
-        _req = Model()
-
         global loop
         loop = asyncio.get_event_loop()
         Thread(target=loop.run_forever).start()
@@ -46,7 +45,7 @@ class Extra:
         )
 
 
-class Server:
+class Server(Request):
     """
     Content of webhook
     """

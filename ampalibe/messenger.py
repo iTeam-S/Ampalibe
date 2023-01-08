@@ -973,7 +973,7 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages/one-time-notification
         """
 
-        payload = payload.value if isinstance(payload, Payload) else payload
+        payload = Payload.trt_payload_out(payload) if isinstance(payload, Payload) else payload
 
         dataJson = {
             "recipient": {"id": dest_id},

@@ -100,7 +100,7 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
     elif sys.argv[1] == "run":
         print(
             inspect.cleandoc(
-                """\033[36m
+                r"""\033[36m
                                                                 0o
                                                                 Oo
                                                                 coooool
@@ -153,9 +153,9 @@ finally:
     from .payload import Payload
     from .messenger import Messenger
     from ._logger import Logger as __log
-    from .core import webserver, Extra as init
-    from .utils import translate, download_file, simulate
-    from .utils import event, action, command, before_receive, after_receive
+    from .core import webserver, Init as init
+    from .extras import translate, download_file, simulate
+    from .extras import event, action, command, before_receive, after_receive
 
     # Instance Logger for ampalibe
     Logger = __log().logger

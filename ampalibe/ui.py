@@ -149,7 +149,7 @@ class Element:
         if self.default_action:
             res["default_action"] = self.default_action.value
 
-        res["buttons"] = [button.value for button in self.buttons]
+        res["buttons"] = [button.value for button in self.buttons]  # type: ignore
 
         return res
 
@@ -345,7 +345,7 @@ class RecurringNotificationOptin:
         res = {
             "template_type": self.template_type,
             "title": self.title,
-            "notification_messages_frequency": self.notification_frequency.value,
+            "notification_messages_frequency": self.notification_frequency.value,  # type: ignore
         }
 
         if isinstance(self.payload, Payload):

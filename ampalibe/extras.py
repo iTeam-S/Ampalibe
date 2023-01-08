@@ -86,6 +86,8 @@ def analyse(data):
                     optin.token = message["optin"]["notification_messages_token"]
                 return sender_id, optin, message
 
+    return None, Cmd(""), None
+
 
 def command(*args, **kwargs):
     """

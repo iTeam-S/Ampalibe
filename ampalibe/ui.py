@@ -5,9 +5,9 @@ from .payload import Payload
 from .constant import (
     Type,
     Content_type,
-    Notification_frequency,
-    Notification_cta_text,
     Notification_reoptin,
+    Notification_cta_text,
+    Notification_frequency,
 )
 
 

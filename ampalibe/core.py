@@ -9,13 +9,12 @@ from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
-from .extras import funcs, analyse, before_run
 from fastapi.staticfiles import StaticFiles
-from asyncio.events import AbstractEventLoop
+from .extras import funcs, analyse, before_run
 from fastapi import FastAPI, Request, Response
 
 _req = Model()
-loop = AbstractEventLoop()
+loop = asyncio.get_event_loop()
 
 webserver = FastAPI(title="Ampalibe server")
 if not os.path.isdir("assets/public"):
@@ -34,8 +33,6 @@ class Init:
         """
         function that run framework
         """
-        global loop
-        loop = asyncio.get_event_loop()
         Thread(target=loop.run_forever).start()
 
         uvicorn.run(

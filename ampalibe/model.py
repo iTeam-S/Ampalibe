@@ -123,28 +123,13 @@ class Model:
         self.cursor.execute(req)
         self.db.commit()
 
-    @staticmethod
-    def verif_db(fonction):
+    def verif_db(fonction):  # type: ignore
         """
         decorator that checks if the database
         is connected or not before doing an operation.
         """
 
         def trt_verif(*arg, **kwarg):
-            """
-            if arg[0].ADAPTER == "MYSQL":
-                if not arg[0].db.is_connected():
-                    # reconnexion de la base
-                    try:
-                        arg[0].db.reconnect()
-                    except Exception:
-                        arg[0].__connect()
-            elif arg[0].ADAPTER == "POSTGRESQL":
-                try:
-                    arg[0].cursor.execute("SELECT 1")
-                except Exception:
-                    arg[0].__connect()
-            """
             arg[0].__connect()
             return fonction(*arg, **kwarg)
 

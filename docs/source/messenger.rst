@@ -649,14 +649,19 @@ Method to send a one time notification request to the user
     chat.send_onetime_notification_request(sender_id, 'title', Paylod('/test'))
 
 
+.. important ::
+
+    You need one time notification permission for this message. 
+    To get that go to Advanced Messaging under your Page Settings to request the permission.
+
+
 If the user accept the notification, a *one_time_notif_token* will be sent to the webhook
 use the token to send notification to the user with one of those sends methods according to your needs :
-*send_message*
 *send_text* 
 *send_attachment*
 *send_action*
 *send_quick_reply*
-*send_template*
+*send_generic_template*
 *send_file_url*
 *send_file*
 *send_media*

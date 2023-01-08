@@ -15,7 +15,7 @@ logger = __log().logger
 
 
 class Messenger:
-    def __init__(self, log_level="error", api_version="v13.0"):
+    def __init__(self, log_level="error", api_version="v15.0"):
         """
         Args:
             log_level (error, info, quiet): A type of display log
@@ -268,6 +268,7 @@ class Messenger:
         """
         This method is used to send a template to the user
         """
+        logger.warning("This method is deprecated, use send_generic_template instead")
         return self.send_generic_template(
             dest_id, elements, quick_rep=None, next=None, **kwargs
         )
@@ -775,7 +776,7 @@ class Messenger:
             params=params,
         )
         res = self.__analyse(res)
-        return res.json()
+        return res
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_receipt_template(

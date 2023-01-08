@@ -13,13 +13,16 @@ class Model:
     Object for interact with database with pre-defined function
     """
 
-    def __init__(self, conf=Configuration):
+    def __init__(self, conf=Configuration, init=True):
         """
         object to interact with database
 
         @params: conf [ Configuration object ]
         @return: Request object
         """
+        if not init:
+            return
+
         self.ADAPTER = conf.ADAPTER
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             self.DB_CONF = {

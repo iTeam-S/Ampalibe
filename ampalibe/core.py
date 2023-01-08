@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from .extras import funcs, analyse, before_run
 from fastapi import FastAPI, Request, Response
 
-_req: Model
+_req = Model(init=False)
 loop = asyncio.get_event_loop()
 
 webserver = FastAPI(title="Ampalibe server")

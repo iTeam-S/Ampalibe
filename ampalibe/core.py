@@ -92,9 +92,9 @@ class Server(Request):
             return {"status": "ok"}
 
         _req._verif_user(sender_id)
-        # get action for the current user
-        action = _req.get_action(sender_id)
-        lang = _req.get_lang(sender_id)
+        # action = _req.get_action(sender_id)
+        # lang = _req.get_lang(sender_id)
+        action, lang = _req.get(sender_id, "action", "lang")
 
         if payload in ("/__next", "/__more"):
             bot = Messenger()

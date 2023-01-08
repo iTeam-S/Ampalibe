@@ -443,7 +443,17 @@ class Messenger:
             button.value if isinstance(button, Button) else button for button in menu
         ]
 
-        if action == "PUT":
+        if action == "DELETE":
+            params["params"] = "(persistent_menu)"
+            params["psid"] = dest_id
+
+            res = requests.delete(
+                self.url + "/custom_user_settings",
+                headers=header,
+                params=params,
+            )
+            return self.__analyse(res)
+        else:
             dataJSON = {
                 "psid": dest_id,
                 "persistent_menu": [
@@ -460,17 +470,6 @@ class Messenger:
             res = requests.post(
                 self.url + "/custom_user_settings",
                 json=dataJSON,
-                headers=header,
-                params=params,
-            )
-            return self.__analyse(res)
-
-        elif action == "DELETE":
-            params["params"] = "(persistent_menu)"
-            params["psid"] = dest_id
-
-            res = requests.delete(
-                self.url + "/custom_user_settings",
                 headers=header,
                 params=params,
             )
@@ -973,7 +972,11 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages/one-time-notification
         """
 
-        payload = Payload.trt_payload_out(payload) if isinstance(payload, Payload) else payload
+        payload = (
+            Payload.trt_payload_out(payload)
+            if isinstance(payload, Payload)
+            else payload
+        )
 
         dataJson = {
             "recipient": {"id": dest_id},

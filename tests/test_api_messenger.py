@@ -1,4 +1,4 @@
-from os import environ, makedirs, removedirs
+from os import environ, makedirs
 from ampalibe import Messenger, Payload
 from ampalibe.messenger import Action, Filetype
 from ampalibe.ui import (

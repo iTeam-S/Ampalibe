@@ -318,4 +318,4 @@ class Model:
         else:
             req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (user_id,))
-        return self.cursor.fetchone()[0]
+        return self.cursor.fetchone()

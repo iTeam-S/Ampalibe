@@ -10,7 +10,7 @@ from .payload import Payload
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
 from fastapi.staticfiles import StaticFiles
-from .extras import funcs, analyse, before_run
+from .tools import funcs, analyse, before_run
 from fastapi import FastAPI, Request, Response
 
 _req = Model(init=False)

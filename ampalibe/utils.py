@@ -77,7 +77,7 @@ def simulate(sender_id, text, **params):
     }
     header = {"content-type": "application/json; charset=utf-8"}
     return requests.post(
-        f"http://127.0.0.1:{Configuration.APP_PORT}",
+        f"http://127.0.0.1:{Configuration.APP_PORT}/",
         json=data_json,
         headers=header,
         params=params,

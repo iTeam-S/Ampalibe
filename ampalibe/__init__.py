@@ -154,7 +154,7 @@ finally:
     from .messenger import Messenger
     from ._logger import Logger as __log
     from .core import webserver, Init as init
-    from .extras import translate, download_file, simulate
+    from .utils import translate, download_file, simulate
     from .extras import event, action, command, before_receive, after_receive
 
     # Instance Logger for ampalibe

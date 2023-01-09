@@ -1,5 +1,6 @@
+# pyright: reportGeneralTypeIssues=false
+
 import os
-import json
 from .payload import Payload
 from datetime import datetime
 from conf import Configuration  # type: ignore
@@ -12,13 +13,16 @@ class Model:
     Object for interact with database with pre-defined function
     """
 
-    def __init__(self, conf=Configuration):
+    def __init__(self, conf=Configuration, init=True):
         """
         object to interact with database
 
         @params: conf [ Configuration object ]
         @return: Request object
         """
+        if not init:
+            return
+
         self.ADAPTER = conf.ADAPTER
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
             self.DB_CONF = {
@@ -119,27 +123,13 @@ class Model:
         self.cursor.execute(req)
         self.db.commit()
 
-    def verif_db(fonction):
+    def verif_db(fonction):  # type: ignore
         """
         decorator that checks if the database
         is connected or not before doing an operation.
         """
 
         def trt_verif(*arg, **kwarg):
-            """
-            if arg[0].ADAPTER == "MYSQL":
-                if not arg[0].db.is_connected():
-                    # reconnexion de la base
-                    try:
-                        arg[0].db.reconnect()
-                    except Exception:
-                        arg[0].__connect()
-            elif arg[0].ADAPTER == "POSTGRESQL":
-                try:
-                    arg[0].cursor.execute("SELECT 1")
-                except Exception:
-                    arg[0].__connect()
-            """
             arg[0].__connect()
             return fonction(*arg, **kwarg)
 
@@ -311,3 +301,21 @@ class Model:
             req = "UPDATE amp_user set lang = ? WHERE user_id = ?"
         self.cursor.execute(req, (lang, user_id))
         self.db.commit()
+
+    @verif_db
+    def get(self, user_id, *args):
+        """
+        get specific data of an user
+
+        @params :  user_id, list of data to get
+        @return:  list of data
+        """
+        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
+            req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = %s"
+        elif self.ADAPTER == "MONGODB":
+            data = self.db.amp_user.find({"user_id": user_id})[0]
+            return [data.get(k) for k in args]
+        else:
+            req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = ?"
+        self.cursor.execute(req, (user_id,))
+        return self.cursor.fetchone()

@@ -100,7 +100,8 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
     elif sys.argv[1] == "run":
         print(
             inspect.cleandoc(
-                """\033[36m
+                "\033[36m"
+                + r"""
                                                                 0o
                                                                 Oo
                                                                 coooool
@@ -110,8 +111,9 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
            / \  |  \/  |  _ \ / \  | |   |_ _| __ )| ____|    looooooooooool
           / _ \ | |\/| | |_) / _ \ | |    | ||  _ \|  _|       loooooooooool
          / ___ \| |  | |  __/ ___ \| |___ | || |_) | |___        looooooool
-        /_/   \_\_|  |_|_| /_/   \_\_____|___|____/|_____|         oooooo \033[0m
+        /_/   \_\_|  |_|_| /_/   \_\_____|___|____/|_____|         oooooo
         """
+                + "\033[0m"
             )
         )
         typing_print(
@@ -153,9 +155,9 @@ finally:
     from .payload import Payload
     from .messenger import Messenger
     from ._logger import Logger as __log
-    from .core import webserver, Extra as init
+    from .core import webserver, Init as init
     from .utils import translate, download_file, simulate
-    from .utils import event, action, command, before_receive, after_receive
+    from .decorators import event, action, command, before_receive, after_receive
 
     # Instance Logger for ampalibe
     Logger = __log().logger

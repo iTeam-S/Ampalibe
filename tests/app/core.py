@@ -1,6 +1,6 @@
 import ampalibe
-from ampalibe import Payload
 from conf import Configuration
+from ampalibe import translate, simulate, download_file, Payload
 
 query = ampalibe.Model()
 
@@ -57,3 +57,26 @@ def second_action_work(sender_id, cmd, myname, version, **extends):
 @ampalibe.command("/receive_optin_webhook")
 def receive_optin_webhook(**extends):
     return "Optin"
+
+
+@ampalibe.command("/lang")
+def lang(sender_id, value=None, **extends):
+    if value:
+        query.set_lang(sender_id, value)
+        simulate(sender_id, "/lang/download")
+    return Payload.trt_payload_out(Payload("/lang", value="en"))
+
+
+@ampalibe.command("/lang/download")
+def lang_download(lang, **extends):
+    download_file(
+        f"http://127.0.0.1:{Configuration.APP_PORT}/asset/hello.txt",
+        "assets/private/hello.txt",
+    )
+
+
+@ampalibe.command("/lang/test")
+def lang_test(lang, **extends):
+    with open("assets/private/hello.txt", "r") as f:
+        text = f.read().strip()
+    return translate(text, lang)

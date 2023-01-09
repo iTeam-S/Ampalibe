@@ -10,19 +10,20 @@ from .payload import Payload
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
 from fastapi.staticfiles import StaticFiles
-from .utils import funcs, analyse, before_run
+from .tools import funcs, analyse, before_run
 from fastapi import FastAPI, Request, Response
 
-_req = None
-loop = None
+_req = Model(init=False)
+loop = asyncio.get_event_loop()
 
 webserver = FastAPI(title="Ampalibe server")
 if not os.path.isdir("assets/public"):
     os.makedirs("assets/public", exist_ok=True)
+
 webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
 
 
-class Extra:
+class Init:
     def __init__(self, *args):
         self.query = Model()
         self.chat = Messenger()
@@ -35,8 +36,6 @@ class Extra:
         global _req
         _req = Model()
 
-        global loop
-        loop = asyncio.get_event_loop()
         Thread(target=loop.run_forever).start()
 
         uvicorn.run(
@@ -46,7 +45,7 @@ class Extra:
         )
 
 
-class Server:
+class Server(Request):
     """
     Content of webhook
     """
@@ -96,9 +95,9 @@ class Server:
             return {"status": "ok"}
 
         _req._verif_user(sender_id)
-        # get action for the current user
-        action = _req.get_action(sender_id)
-        lang = _req.get_lang(sender_id)
+        # action = _req.get_action(sender_id)
+        # lang = _req.get_lang(sender_id)
+        action, lang = _req.get(sender_id, "action", "lang")
 
         if payload in ("/__next", "/__more"):
             bot = Messenger()

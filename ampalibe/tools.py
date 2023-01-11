@@ -1,5 +1,8 @@
+import os
+import pickle
+from threading import Thread
 from ._cmd import Cmd
-
+from .messenger import Messenger
 
 funcs = {
     "command": {},
@@ -95,3 +98,26 @@ def before_run(func, **kwargs):
         funcs["after"](**kwargs)
 
     return res
+
+
+def send_next(sender_id, payload):
+    chat = Messenger()
+    if os.path.isfile(f"assets/private/.__{sender_id}"):
+        elements = pickle.load(open(f"assets/private/.__{sender_id}", "rb"))
+        if payload == "/__next":
+            chat.send_generic_template(sender_id, elements[0], next=elements[1])
+        else:
+            chat.send_quick_reply(sender_id, elements[0], elements[1], next=elements[2])
+
+
+def verif_event(testmode, payload, sender_id, message):
+    if funcs["event"].get(payload.webhook):
+        kw = {
+            "sender_id": sender_id,
+            "watermark": payload,
+            "message": message,
+        }
+        if testmode:
+            funcs["event"][payload.webhook](**kw)
+        else:
+            Thread(target=funcs["event"][payload.webhook], kwargs=kw).start()

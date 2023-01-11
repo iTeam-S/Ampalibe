@@ -127,7 +127,7 @@ class Server(Request):
                     kwargs=kw,
                 ).start()
             else:
-                Logger.warning(f'⚠ Warning! action "{action}" undeclared ')
+                Logger.error(f'⚠ Error! action "{action}" undeclared ')
         else:
             command = funcs["command"].get("/")
             if command:
@@ -135,5 +135,5 @@ class Server(Request):
                     return before_run(command, **kw)
                 Thread(target=before_run, args=(command,), kwargs=kw).start()
             else:
-                Logger.error("Error! Default route '/' function undeclared.")
+                Logger.error("⚠ Error! Default route '/' function undeclared.")
         return {"status": "ok"}

@@ -269,9 +269,7 @@ class Messenger:
         This method is used to send a template to the user
         """
         logger.warning("This method is deprecated, use send_generic_template instead")
-        return self.send_generic_template(
-            dest_id, elements, quick_rep=None, next=None, **kwargs
-        )
+        return self.send_generic_template(dest_id, elements, quick_rep, next, **kwargs)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_generic_template(

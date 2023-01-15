@@ -86,7 +86,7 @@ class Model:
             req = """
                 CREATE TABLE IF NOT EXISTS `amp_user` (
                     `id` INT NOT NULL AUTO_INCREMENT,
-                    `sender_id` varchar(50) NOT NULL UNIQUE,
+                    `user_id` varchar(50) NOT NULL UNIQUE,
                     `action` TEXT DEFAULT NULL,
                     `last_use` datetime NOT NULL DEFAULT current_timestamp(),
                     `lang` varchar(5) DEFAULT NULL,
@@ -97,24 +97,24 @@ class Model:
             req = """
                 CREATE TABLE IF NOT EXISTS  "amp_user" (
                     id SERIAL,
-                    sender_id VARCHAR NULL DEFAULT NULL,
+                    user_id VARCHAR NULL DEFAULT NULL,
                     action TEXT NULL DEFAULT NULL,
                     last_use TIMESTAMP NULL DEFAULT NOW(),
                     lang VARCHAR NULL DEFAULT NULL,
                     PRIMARY KEY (id),
-                    UNIQUE (sender_id)
+                    UNIQUE (user_id)
                 )
             """
         elif self.ADAPTER == "MONGODB":
             if "amp_user" not in self.db.list_collection_names():
                 self.db.create_collection("amp_user")
-                # self.db.amp_user.create_index("sender_id", unique=True)
+                # self.db.amp_user.create_index("user_id", unique=True)
             return
         else:
             req = """
                CREATE TABLE IF NOT EXISTS amp_user (
                    id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                   sender_id TEXT NOT NULL UNIQUE,
+                   user_id TEXT NOT NULL UNIQUE,
                    action TEXT,
                    last_use TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                    lang TEXT
@@ -136,39 +136,39 @@ class Model:
         return trt_verif
 
     @verif_db
-    def _verif_user(self, sender_id):
+    def _verif_user(self, user_id):
         """
         method to insert new user and/or update the date
         of last use if the user already exists.
 
-        @params :  sender_id
+        @params :  user_id
 
         """
         # Insertion dans la base si non present
         # Mise à jour du last_use si déja présent
         if self.ADAPTER == "MYSQL":
             req = """
-                INSERT INTO amp_user(sender_id) VALUES (%s)
+                INSERT INTO amp_user(user_id) VALUES (%s)
                 ON DUPLICATE KEY UPDATE last_use = NOW()
             """
         elif self.ADAPTER == "POSTGRESQL":
             req = """
-                INSERT INTO amp_user(sender_id) VALUES (%s)
-                ON CONFLICT (sender_id) DO UPDATE SET last_use = NOW();
+                INSERT INTO amp_user(user_id) VALUES (%s)
+                ON CONFLICT (user_id) DO UPDATE SET last_use = NOW();
             """
         elif self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(
-                {"sender_id": sender_id},
+                {"user_id": user_id},
                 {"$set": {"last_use": datetime.now()}},
                 upsert=True,
             )
             return
         else:
             req = """
-                INSERT INTO amp_user(sender_id) VALUES (?)
-                ON CONFLICT(sender_id) DO UPDATE SET last_use = CURRENT_TIMESTAMP;
+                INSERT INTO amp_user(user_id) VALUES (?)
+                ON CONFLICT(user_id) DO UPDATE SET last_use = CURRENT_TIMESTAMP;
             """
-        self.cursor.execute(req, (sender_id,))
+        self.cursor.execute(req, (user_id,))
         self.db.commit()
 
     @verif_db
@@ -180,11 +180,11 @@ class Model:
          @return : current action [ type of String/None ]
         """
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "SELECT action FROM amp_user WHERE sender_id = %s"
+            req = "SELECT action FROM amp_user WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
-            return self.db.amp_user.find({"sender_id": sender_id})[0].get("action")
+            return self.db.amp_user.find({"user_id": sender_id})[0].get("action")
         else:
-            req = "SELECT action FROM amp_user WHERE sender_id = ?"
+            req = "SELECT action FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (sender_id,))
         # retourne le resultat
         return self.cursor.fetchone()[0]
@@ -201,15 +201,15 @@ class Model:
             action = Payload.trt_payload_out(action)
 
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "UPDATE amp_user set action = %s WHERE sender_id = %s"
+            req = "UPDATE amp_user set action = %s WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(
-                {"sender_id": sender_id},
+                {"user_id": sender_id},
                 {"$set": {"action": action}},
             )
             return
         else:
-            req = "UPDATE amp_user set action = ? WHERE sender_id = ?"
+            req = "UPDATE amp_user set action = ? WHERE user_id = ?"
         self.cursor.execute(req, (action, sender_id))
         self.db.commit()
 
@@ -223,12 +223,12 @@ class Model:
         """
         if self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(
-                {"sender_id": sender_id},
+                {"user_id": sender_id},
                 {"$set": {key: value}},
             )
             return
-        if not self.tinydb.update({key: value}, Query().sender_id == sender_id):
-            self.tinydb.insert({"sender_id": sender_id, key: value})
+        if not self.tinydb.update({key: value}, Query().user_id == sender_id):
+            self.tinydb.insert({"user_id": sender_id, key: value})
 
     @verif_db
     def get_temp(self, sender_id, key):
@@ -240,9 +240,9 @@ class Model:
         @return: data
         """
         if self.ADAPTER == "MONGODB":
-            return self.db.amp_user.find({"sender_id": sender_id})[0].get(key)
+            return self.db.amp_user.find({"user_id": sender_id})[0].get(key)
 
-        res = self.tinydb.search(Query().sender_id == sender_id)
+        res = self.tinydb.search(Query().user_id == sender_id)
         if res:
             return res[0].get(key)
 
@@ -257,11 +257,11 @@ class Model:
         """
         if self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(
-                {"sender_id": sender_id},
+                {"user_id": sender_id},
                 {"$unset": {key: ""}},
             )
             return
-        self.tinydb.update(delete(key), Query().sender_id == sender_id)
+        self.tinydb.update(delete(key), Query().user_id == sender_id)
 
     @verif_db
     def get_lang(self, sender_id):
@@ -273,11 +273,11 @@ class Model:
         """
 
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "SELECT lang FROM amp_user WHERE sender_id = %s"
+            req = "SELECT lang FROM amp_user WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
-            return self.db.amp_user.find({"sender_id": sender_id})[0].get("lang")
+            return self.db.amp_user.find({"user_id": sender_id})[0].get("lang")
         else:
-            req = "SELECT lang FROM amp_user WHERE sender_id = ?"
+            req = "SELECT lang FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (sender_id,))
         return self.cursor.fetchone()[0]
 
@@ -290,15 +290,15 @@ class Model:
         @return:  None
         """
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "UPDATE amp_user set lang = %s WHERE sender_id = %s"
+            req = "UPDATE amp_user set lang = %s WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(
-                {"sender_id": sender_id},
+                {"user_id": sender_id},
                 {"$set": {"lang": lang}},
             )
             return
         else:
-            req = "UPDATE amp_user set lang = ? WHERE sender_id = ?"
+            req = "UPDATE amp_user set lang = ? WHERE user_id = ?"
         self.cursor.execute(req, (lang, sender_id))
         self.db.commit()
 
@@ -311,11 +311,11 @@ class Model:
         @return:  list of data
         """
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = f"SELECT {','.join(args)} FROM amp_user WHERE sender_id = %s"
+            req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = %s"
         elif self.ADAPTER == "MONGODB":
-            data = self.db.amp_user.find({"sender_id": sender_id})[0]
+            data = self.db.amp_user.find({"user_id": sender_id})[0]
             return [data.get(k) for k in args]
         else:
-            req = f"SELECT {','.join(args)} FROM amp_user WHERE sender_id = ?"
+            req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (sender_id,))
         return self.cursor.fetchone()

@@ -13,7 +13,7 @@ from ampalibe.ui import (
 )
 
 chat = Messenger()
-sender_id = environ.get("USER_ID")
+sender_id = environ.get("SENDER_ID")
 
 
 def test_send_action():

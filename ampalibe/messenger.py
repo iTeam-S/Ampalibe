@@ -71,18 +71,18 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_message(self, dest_id, message, prio=False):
+    def send_message(self, sender_id, message, prio=False):
         logger.warning("This method is deprecated, use send_text instead")
-        return self.send_text(dest_id, message)
+        return self.send_text(sender_id, message)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_text(self, dest_id, text, **kwargs):
+    def send_text(self, sender_id, text, **kwargs):
         """
         This method allows you to send a text message to the given recipient,
         Note that the number of characters to send is limited to 2000 characters
 
         Args:
-            dest_id (str): user id facebook for the destination
+            sender_id (str): user id facebook for the destination
             text (str): message want to send
 
         Returns:
@@ -95,7 +95,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         dataJSON = {"recipient": recipient, "message": {"text": text}}
@@ -113,13 +113,13 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_attachment(self, dest_id, attachment_id, filetype="file", **kwargs):
+    def send_attachment(self, sender_id, attachment_id, filetype="file", **kwargs):
         """
         The Messenger Platform supports saving assets via the Send API and Attachment Upload API. This allows you reuse assets, rather than uploading them every time they are needed.
         To attach a saved asset to a message, specify the attachment_id of the asset in the payload.attachment_id property of the message request:
 
         Args:
-            dest_id (str): user id facebook for the destination
+            sender_id (str): user id facebook for the destination
             attachment_id (str): The reusable attachment ID
             filetype (str, optional): type of the file["video","image",...]. Defaults to 'file'.
 
@@ -132,7 +132,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         dataJSON = {
@@ -158,14 +158,14 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_action(self, dest_id, action, **kwargs):
+    def send_action(self, sender_id, action, **kwargs):
         """
         This method is used to simulate an action on messages.
         example: view, writing.
         Action available: ['mark_seen', 'typing_on', 'typing_off']
 
         Args:
-            dest_id (str): user id facebook for the destination
+            sender_id (str): user id facebook for the destination
             action (str): action ['mark_seen', 'typing_on', 'typing_off']
 
         Returns:
@@ -177,7 +177,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         dataJSON = {
@@ -199,7 +199,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_quick_reply(self, dest_id, quick_reps, text, next=None, **kwargs):
+    def send_quick_reply(self, sender_id, quick_reps, text, next=None, **kwargs):
         """
         Quick replies provide a way to present a set of up to 13 buttons
         in-conversation that contain a title and optional image, and appear
@@ -207,7 +207,7 @@ class Messenger:
         to request a person's location, email address, and phone number.
 
         Args:
-            dest_id (str): user id facebook for the destination
+            sender_id (str): user id facebook for the destination
             quick_rep (list of dict) || (list of QuickRep): list of the different quick_reply to send a user
             text (str): A text of a little description for each <quick_reply>
             next(bool) || (text): this params activate the next page when elements have a length more than ten
@@ -221,7 +221,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         quick_reps = [
@@ -249,7 +249,7 @@ class Messenger:
 
             pickle.dump(
                 (quick_reps[12:], text, next),
-                open(f"assets/private/.__{dest_id}", "wb"),
+                open(f"assets/private/.__{sender_id}", "wb"),
             )
 
         header = {"content-type": "application/json; charset=utf-8"}
@@ -264,16 +264,16 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_template(self, dest_id, elements, quick_rep=None, next=None, **kwargs):
+    def send_template(self, sender_id, elements, quick_rep=None, next=None, **kwargs):
         """
         This method is used to send a template to the user
         """
         logger.warning("This method is deprecated, use send_generic_template instead")
-        return self.send_generic_template(dest_id, elements, quick_rep, next, **kwargs)
+        return self.send_generic_template(sender_id, elements, quick_rep, next, **kwargs)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_generic_template(
-        self, dest_id, elements, quick_rep=None, next=None, **kwargs
+        self, sender_id, elements, quick_rep=None, next=None, **kwargs
     ):
         """
         The method represent a Message templates who offer a way for you
@@ -291,7 +291,7 @@ class Messenger:
         displaying all requested templates
 
         Args:
-            dest_id (str): user id facebook for the destination
+            sender_id (str): user id facebook for the destination
             elements (list of dict) || (list of Element): the list of the specific elements to define the
             structure for the template
             quick_rep (list of dict) || (list of QuickReply): addition quick reply at the bottom of the template
@@ -306,7 +306,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         elements = [
@@ -343,7 +343,7 @@ class Messenger:
             ]
             pickle.dump(
                 (elements[10:], next),
-                open(f"assets/private/.__{dest_id}", "wb"),
+                open(f"assets/private/.__{sender_id}", "wb"),
             )
 
         if quick_rep:
@@ -370,7 +370,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file_url(self, dest_id, url, filetype="file", reusable=False, **kwargs):
+    def send_file_url(self, sender_id, url, filetype="file", reusable=False, **kwargs):
         """
         The Messenger Platform allows you to attach assets to messages, including audio,
         video, images, and files.All this is the role of this Method. The maximum attachment
@@ -378,7 +378,7 @@ class Messenger:
         to attach an asset to a message:
 
         Args:
-            dest_id (str): user id facebook for destination
+            sender_id (str): user id facebook for destination
             url (str): the origin url for the file
             filetype (str, optional): type of the file["video","image",...]. Defaults to 'file'.
             reusable (bool, default False): Make an attachment reusable
@@ -392,7 +392,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         dataJSON = {
@@ -417,14 +417,14 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def persistent_menu(self, dest_id, menu, action="PUT", **kwargs):
+    def persistent_menu(self, sender_id, menu, action="PUT", **kwargs):
         """
         The Persistent Menu disabling the composer best practices allows you to have an always-on
         user interface element inside Messenger conversations. This is an easy way to help people
         discover and access the core functionality of your Messenger bot at any point in the conversation
 
         Args:
-            dest_id (str): user id for destination
+            sender_id (str): user id for destination
             persistent_menu (list of dict) || (list of Button): the elements of the persistent menu to enable
             action (str, optional): the action for benefit["PUT","DELETE"]. Defaults to 'PUT'.
 
@@ -443,7 +443,7 @@ class Messenger:
 
         if action == "DELETE":
             params["params"] = "(persistent_menu)"
-            params["psid"] = dest_id
+            params["psid"] = sender_id
 
             res = requests.delete(
                 self.url + "/custom_user_settings",
@@ -453,7 +453,7 @@ class Messenger:
             return self.__analyse(res)
         else:
             dataJSON = {
-                "psid": dest_id,
+                "psid": sender_id,
                 "persistent_menu": [
                     {
                         "locale": kwargs.get("locale", "default"),
@@ -476,7 +476,7 @@ class Messenger:
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_file(
         self,
-        dest_id,
+        sender_id,
         file,
         filetype="file",
         filename=None,
@@ -504,7 +504,7 @@ class Messenger:
         params = {"access_token": self.token}
 
         dataJSON = {
-            "recipient": json.dumps({"id": dest_id}),
+            "recipient": json.dumps({"id": sender_id}),
             "message": json.dumps(
                 {
                     "attachment": {
@@ -538,7 +538,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_media(self, dest_id, fb_url, media_type, **kwargs):
+    def send_media(self, sender_id, fb_url, media_type, **kwargs):
         """
         Method that sends files media as image and video via facebook link.
         This model does not allow any external URLs, only those on Facebook.
@@ -560,7 +560,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         dataJSON = {
@@ -615,7 +615,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_button(self, dest_id, buttons, text, **kwargs):
+    def send_button(self, sender_id, buttons, text, **kwargs):
         """
         The button template sends a text message with
         up to three buttons attached. This template gives
@@ -623,7 +623,7 @@ class Messenger:
         such as predefined answers to questions or actions to take.
 
          Args:
-             dest_id (str): user id facebook for the destination
+             sender_id (str): user id facebook for the destination
              buttons (list of dict) || (list of Button): The list of buttons who want send
              text (str): A text to describe the fonctionnality of the buttons
 
@@ -636,14 +636,14 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         buttons = [
             button.value if isinstance(button, Button) else button for button in buttons
         ]
 
-        self.send_action(dest_id, "typing_on")
+        self.send_action(sender_id, "typing_on")
         dataJSON = {
             "recipient": recipient,
             "message": {
@@ -662,7 +662,7 @@ class Messenger:
         header = {"content-type": "application/json; charset=utf-8"}
         params = {"access_token": self.token}
 
-        self.send_action(dest_id, "typing_off")
+        self.send_action(sender_id, "typing_off")
         res = requests.post(
             self.url + "/messages",
             json=dataJSON,
@@ -778,7 +778,7 @@ class Messenger:
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_receipt_template(
         self,
-        dest_id,
+        sender_id,
         recipient_name,
         order_number,
         payment_method,
@@ -814,7 +814,7 @@ class Messenger:
         recipient = (
             {"one_time_notif_token": kwargs.get("one_time_notif_token")}
             if kwargs.get("one_time_notif_token")
-            else {"id": dest_id}
+            else {"id": sender_id}
         )
 
         if receipt_elements:
@@ -865,19 +865,19 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def get_user_profile(self, dest_id, fields="first_name,last_name,profile_pic"):
+    def get_user_profile(self, sender_id, fields="first_name,last_name,profile_pic"):
         """
         The User Profile methiod allows you to use a Page-scoped ID (PSID)
         to retrieve user profile information that can be used to personalize
         the experience of people interacting with your Messenger.
         """
         params = {"fields": fields, "access_token": self.token}
-        res = requests.get(f"https://graph.facebook.com/{dest_id}", params=params)
+        res = requests.get(f"https://graph.facebook.com/{sender_id}", params=params)
         res = self.__analyse(res)
         return res.json() if res.status_code == 200 else {}
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_recurring_notification_optin(self, dest_id, optin, **kwargs):
+    def send_recurring_notification_optin(self, sender_id, optin, **kwargs):
         """
         Method that sends a recurring notification optin to a customer  .
 
@@ -893,7 +893,7 @@ class Messenger:
 
         optin = optin.value if isinstance(optin, RecurringNotificationOptin) else optin
         dataJSON = {
-            "recipient": {"id": dest_id},
+            "recipient": {"id": sender_id},
             "message": {"attachment": {"type": "template", "payload": optin}},
         }
 
@@ -955,12 +955,12 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_onetime_notification_request(self, dest_id, title, payload, **kwargs):
+    def send_onetime_notification_request(self, sender_id, title, payload, **kwargs):
         """
         Method to send a notification request.
 
         Args:
-            dest_id (str | required ): The customer id
+            sender_id (str | required ): The customer id
             title (str | optional ): The title of the notification request
 
         Returns:
@@ -977,7 +977,7 @@ class Messenger:
         )
 
         dataJson = {
-            "recipient": {"id": dest_id},
+            "recipient": {"id": sender_id},
             "message": {
                 "attachment": {
                     "type": "template",
@@ -1003,12 +1003,12 @@ class Messenger:
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_product_template(
-        self, dest_id, products, next=None, quick_rep=None, **kwargs
+        self, sender_id, products, next=None, quick_rep=None, **kwargs
     ):
         """
         Method that sends a product template to a customer owned by the page.
         Args:
-            dest_id (str | required ): The id of the customer
+            sender_id (str | required ): The id of the customer
             products (list of id  | required ): The products ids to send
             next(bool) || (text): this params activate the next page when elements have a length more than ten
         Returns:
@@ -1023,7 +1023,7 @@ class Messenger:
         ]
 
         dataJSON = {
-            "recipient": {"id": dest_id},
+            "recipient": {"id": sender_id},
             "message": {
                 "attachment": {
                     "type": "template",
@@ -1050,7 +1050,7 @@ class Messenger:
             ]
             pickle.dump(
                 (products[10:], next),
-                open(f"assets/private/.__{dest_id}", "wb"),
+                open(f"assets/private/.__{sender_id}", "wb"),
             )
 
         if quick_rep:

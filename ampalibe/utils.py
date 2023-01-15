@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import requests
+from .payload import Payload
 from conf import Configuration  # type: ignore
 
 
@@ -60,6 +61,9 @@ def simulate(sender_id, text, **params):
     """
     Simulate a message send by an user
     """
+    if isinstance(text, Payload):
+        text = Payload.trt_payload_out(payload)
+
     data_json = {
         "object": "page",
         "entry": [

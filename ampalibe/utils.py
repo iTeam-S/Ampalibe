@@ -62,7 +62,7 @@ def simulate(sender_id, text, **params):
     Simulate a message send by an user
     """
     if isinstance(text, Payload):
-        text = Payload.trt_payload_out(payload)
+        text = Payload.trt_payload_out(text)
 
     data_json = {
         "object": "page",

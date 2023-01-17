@@ -60,6 +60,10 @@ def translate(key, lang):
 def simulate(sender_id, text, **params):
     """
     Simulate a message send by an user
+
+    Args:
+        sender_id: <str>
+        text: <str> |<Payload>
     """
     if isinstance(text, Payload):
         text = Payload.trt_payload_out(text)

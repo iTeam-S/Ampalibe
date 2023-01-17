@@ -32,6 +32,13 @@ if you use postgresql as database, you have to install `psycopg2`  with ampalibe
    $ pip install ampalibe[psycopg2]
 
 
+if you use mongodb as database, you have to install `pymongo`  with ampalibe
+
+.. code-block:: console
+
+   $ pip install ampalibe[pymongo]
+
+
 Creation of a new project
 -------------------------
 

@@ -154,10 +154,13 @@ finally:
     from aiocron import crontab
     from .payload import Payload
     from .messenger import Messenger
-    from ._logger import Logger as __log
+    from ._logger import Logger
     from .core import webserver, Init as init
     from .utils import translate, download_file, simulate
-    from .decorators import event, action, command, before_receive, after_receive
-
-    # Instance Logger for ampalibe
-    Logger = __log().logger
+    from .decorators import (
+        event,
+        action,
+        command,
+        before_receive,
+        after_receive,
+    )

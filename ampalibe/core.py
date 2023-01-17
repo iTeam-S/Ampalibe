@@ -9,14 +9,13 @@ from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
-from ._logger import Logger as __log
+from ._logger import Logger
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from .tools import funcs, analyse, before_run, send_next, verif_event
 
 _req = Model(init=False)
 loop = asyncio.get_event_loop()
-Logger = __log().logger
 
 webserver = FastAPI(title="Ampalibe server")
 if not os.path.isdir("assets/public"):
@@ -65,7 +64,10 @@ class Server(Request):
         Main verification for bot server is received here
         """
 
-        if request.query_params.get("hub.verify_token") == Configuration.VERIF_TOKEN:
+        if (
+            request.query_params.get("hub.verify_token")
+            == Configuration.VERIF_TOKEN
+        ):
             return Response(content=request.query_params["hub.challenge"])
         return "Failed to verify token"
 
@@ -99,7 +101,12 @@ class Server(Request):
 
         payload, kw = Payload.trt_payload_in(payload)
         kw.update(
-            {"sender_id": sender_id, "cmd": payload, "message": message, "lang": lang}
+            {
+                "sender_id": sender_id,
+                "cmd": payload,
+                "message": message,
+                "lang": lang,
+            }
         )
 
         command = funcs["command"].get(payload.split()[0])

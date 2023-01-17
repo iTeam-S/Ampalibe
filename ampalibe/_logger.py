@@ -2,25 +2,6 @@ import sys
 import logging
 
 
-class Logger:
-    """
-    Logger class for Ampalibe, by default the logger name is Ampalibe
-    """
-
-    def __init__(self, name="Ampalibe"):
-        logger = logging.getLogger(name)
-        logger.setLevel(logging.DEBUG)
-        format_ = CustomFormatter()
-
-        # by default the logger will print on the console , in stdout
-        handler = logging.StreamHandler(sys.stdout)
-        handler.setLevel(logging.DEBUG)
-        handler.setFormatter(format_)
-        logger.addHandler(handler)
-
-        self.logger = logger
-
-
 class CustomFormatter(logging.Formatter):
     """
     Custom formatter for logging, add colors to the output and custom format
@@ -47,3 +28,20 @@ class CustomFormatter(logging.Formatter):
         log_fmt = self.FORMATS.get(record.levelno)
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
+
+
+def __logger(name="Ampalibe"):
+
+    log = logging.getLogger(name)
+    log.setLevel(logging.DEBUG)
+    format_ = CustomFormatter()
+
+    # by default the logger will print on the console , in stdout
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    handler.setFormatter(format_)
+    log.addHandler(handler)
+    return log
+
+
+Logger = __logger()

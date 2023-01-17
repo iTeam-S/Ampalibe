@@ -5,11 +5,11 @@ import pickle
 import asyncio
 import uvicorn
 from .model import Model
+from ._logger import Logger
 from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore
 from .messenger import Messenger
-from ._logger import Logger
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from .tools import funcs, analyse, before_run, send_next, verif_event

@@ -30,18 +30,18 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-def logger(name="Ampalibe"):
+def __logger(name="Ampalibe"):
 
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    log = logging.getLogger(name)
+    log.setLevel(logging.DEBUG)
     format_ = CustomFormatter()
 
     # by default the logger will print on the console , in stdout
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(format_)
-    logger.addHandler(handler)
-    return logger
+    log.addHandler(handler)
+    return log
 
 
-Logger = logger()
+Logger = __logger()

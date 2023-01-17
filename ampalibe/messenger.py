@@ -6,7 +6,7 @@ from retry import retry
 import requests_toolbelt
 from .payload import Payload
 from conf import Configuration  # type: ignore
-from ._logger import Logger as logger
+from ._logger import Logger
 from .ui import ReceiptElement, Summary, Address, Adjustment
 from .constant import Tag, Action, Filetype, Messaging_type, Notification_type
 from .ui import (
@@ -38,11 +38,11 @@ class Messenger:
 
     def __analyse(self, res, log_level="error"):
         if log_level == "info":
-            logger.info(
+            Logger.info(
                 f"\n  status_code : {res.status_code}, data :{res.text}"
             )
         elif res.status_code != 200 and log_level == "error":
-            logger.error(
+            Logger.error(
                 f"\n  status_code : {res.status_code}, data :{res.text}"
             )
         return res
@@ -50,7 +50,7 @@ class Messenger:
     @property
     def token(self):
         if not self.access_token:
-            logger.warning("No access token provided")
+            Logger.warning("No access token provided")
         return self.access_token
 
     @property
@@ -82,7 +82,7 @@ class Messenger:
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
     def send_message(self, sender_id, message, prio=False):
-        logger.warning("This method is deprecated, use send_text instead")
+        Logger.warning("This method is deprecated, use send_text instead")
         return self.send_text(sender_id, message)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
@@ -284,7 +284,7 @@ class Messenger:
         """
         This method is used to send a template to the user
         """
-        logger.warning(
+        Logger.warning(
             "This method is deprecated, use send_generic_template instead"
         )
         return self.send_generic_template(

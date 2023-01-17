@@ -152,9 +152,9 @@ finally:
     from .constant import *
     from .model import Model
     from aiocron import crontab
+    from ._logger import Logger
     from .payload import Payload
     from .messenger import Messenger
-    from ._logger import Logger
     from .core import webserver, Init as init
     from .utils import translate, download_file, simulate
     from .decorators import (

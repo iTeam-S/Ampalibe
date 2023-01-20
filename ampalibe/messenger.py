@@ -6,7 +6,7 @@ from retry import retry
 import requests_toolbelt
 from .payload import Payload
 from conf import Configuration  # type: ignore
-from ._logger import Logger
+from .logger import Logger
 from .ui import ReceiptElement, Summary, Address, Adjustment
 from .constant import Tag, Action, Filetype, Messaging_type, Notification_type
 from .ui import (

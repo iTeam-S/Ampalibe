@@ -1,7 +1,7 @@
 import os
 import pickle
 from threading import Thread
-from ._cmd import Cmd
+from .cmd import Cmd
 from .messenger import Messenger
 
 funcs = {

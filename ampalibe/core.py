@@ -5,7 +5,7 @@ import pickle
 import asyncio
 import uvicorn
 from .model import Model
-from ._logger import Logger
+from .logger import Logger
 from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore

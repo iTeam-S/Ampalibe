@@ -518,9 +518,9 @@ Method to create personas
 
     chat = Messenger()
 
-    personas_id = chat.create_personas('Rivo Lalaina', 'https://avatars.githubusercontent.com/u/59861055?v=4')
+    persona_id = chat.create_personas('Rivo Lalaina', 'https://avatars.githubusercontent.com/u/59861055?v=4')
 
-    chat.send_text(sender_id, "Hello", personas_id=personas_id)
+    chat.send_text(sender_id, "Hello", persona_id=persona_id)
 
 
 get_personas

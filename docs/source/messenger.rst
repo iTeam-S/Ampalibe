@@ -646,13 +646,15 @@ Method to send a one time notification request to the user
 
 .. code-block:: python
 
-    chat.send_onetime_notification_request(sender_id, 'title', Paylod('/test'))
+    chat.send_onetime_notification_request(sender_id, 'title', Payload('/test'))
 
 
 .. important ::
 
     You need one time notification permission for this message. 
     To get that go to Advanced Messaging under your Page Settings to request the permission.
+
+    And you must also subscribe to messaging_optins webhook
 
 
 If the user accept the notification, a *one_time_notif_token* will be sent to the webhook

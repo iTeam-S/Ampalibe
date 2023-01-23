@@ -106,6 +106,37 @@ OR
 
 See [this video](https://www.youtube.com/watch?v=Sg2P9uFJEF4&list=PL0zWFyU4-Sk5FcKJpBTp0-_nDm0kIQ5sY&index=1) on Youtube
 
+### Minimal Application
+
+```python
+import ampalibe
+from ampalibe import Messenger, Model
+from ampalibe.messenger import Action
+
+chat = Messenger()
+query = Model()
+
+@ampalibe.before_receive()
+def before_process(sender_id, **ext):
+    #  Put a view for each message received
+    chat.send_action(sender_id, Action.mark_seen)
+    return True
+
+@ampalibe.command('/')
+def main(sender_id, cmd, **ext):
+    """
+    No need to manage weebhooks and data: messages are received directly in a main function
+    """
+    chat.send_text(sender_id, 'Enter your name')
+    
+    # define the function of the next treatment
+    query.set_action(sender_id, '/get_name')
+    
+@ampalibe.action('/get_name')
+def get_name(sender_id, cmd, **ext):
+    query.set_action(sender_id, None)  #  clear current action
+    chat.send_text(sender_id, f'Hello {cmd}')  #  greeting with name enter by user
+```
 
 ## Documentation
 

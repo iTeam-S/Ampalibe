@@ -4,9 +4,9 @@ import pickle
 import requests
 from retry import retry
 import requests_toolbelt
+from .logger import Logger
 from .payload import Payload
 from conf import Configuration  # type: ignore
-from .logger import Logger
 from .ui import ReceiptElement, Summary, Address, Adjustment
 from .constant import Tag, Action, Filetype, Messaging_type, Notification_type
 from .ui import (
@@ -32,19 +32,13 @@ class Messenger:
         self.url = f"https://graph.facebook.com/{api_version}/me"
 
         if log_level not in ("error", "info", "quiet"):
-            raise Exception(
-                ValueError, "log_level must be error or info or quiet"
-            )
+            raise Exception(ValueError, "log_level must be error or info or quiet")
 
     def __analyse(self, res, log_level="error"):
         if log_level == "info":
-            Logger.info(
-                f"\n  status_code : {res.status_code}, data :{res.text}"
-            )
+            Logger.info(f"\n  status_code : {res.status_code}, data :{res.text}")
         elif res.status_code != 200 and log_level == "error":
-            Logger.error(
-                f"\n  status_code : {res.status_code}, data :{res.text}"
-            )
+            Logger.error(f"\n  status_code : {res.status_code}, data :{res.text}")
         return res
 
     @property
@@ -123,9 +117,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_attachment(
-        self, sender_id, attachment_id, filetype="file", **kwargs
-    ):
+    def send_attachment(self, sender_id, attachment_id, filetype="file", **kwargs):
         """
         The Messenger Platform supports saving assets via the Send API and Attachment Upload API. This allows you reuse assets, rather than uploading them every time they are needed.
         To attach a saved asset to a message, specify the attachment_id of the asset in the payload.attachment_id property of the message request:
@@ -211,9 +203,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_quick_reply(
-        self, sender_id, quick_reps, text, next=None, **kwargs
-    ):
+    def send_quick_reply(self, sender_id, quick_reps, text, next=None, **kwargs):
         """
         Quick replies provide a way to present a set of up to 13 buttons
         in-conversation that contain a title and optional image, and appear
@@ -278,15 +268,11 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_template(
-        self, sender_id, elements, quick_rep=None, next=None, **kwargs
-    ):
+    def send_template(self, sender_id, elements, quick_rep=None, next=None, **kwargs):
         """
         This method is used to send a template to the user
         """
-        Logger.warning(
-            "This method is deprecated, use send_generic_template instead"
-        )
+        Logger.warning("This method is deprecated, use send_generic_template instead")
         return self.send_generic_template(
             sender_id, elements, quick_rep, next, **kwargs
         )
@@ -368,8 +354,7 @@ class Messenger:
 
         if quick_rep:
             quick_rep = [
-                qr.value if isinstance(qr, QuickReply) else qr
-                for qr in quick_rep
+                qr.value if isinstance(qr, QuickReply) else qr for qr in quick_rep
             ]
 
             if isinstance(dataJSON["message"].get("quick_replies"), list):
@@ -391,9 +376,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_file_url(
-        self, sender_id, url, filetype="file", reusable=False, **kwargs
-    ):
+    def send_file_url(self, sender_id, url, filetype="file", reusable=False, **kwargs):
         """
         The Messenger Platform allows you to attach assets to messages, including audio,
         video, images, and files.All this is the role of this Method. The maximum attachment
@@ -461,8 +444,7 @@ class Messenger:
         params = {"access_token": self.token}
 
         menu = [
-            button.value if isinstance(button, Button) else button
-            for button in menu
+            button.value if isinstance(button, Button) else button for button in menu
         ]
 
         if action == "DELETE":
@@ -594,9 +576,7 @@ class Messenger:
                     "type": "template",
                     "payload": {
                         "template_type": "media",
-                        "elements": [
-                            {"media_type": media_type, "url": fb_url}
-                        ],
+                        "elements": [{"media_type": media_type, "url": fb_url}],
                     },
                 }
             },
@@ -666,8 +646,7 @@ class Messenger:
         )
 
         buttons = [
-            button.value if isinstance(button, Button) else button
-            for button in buttons
+            button.value if isinstance(button, Button) else button for button in buttons
         ]
 
         self.send_action(sender_id, "typing_on")
@@ -846,9 +825,7 @@ class Messenger:
 
         if receipt_elements:
             receipt_elements = [
-                receipt.value
-                if isinstance(receipt, ReceiptElement)
-                else receipt
+                receipt.value if isinstance(receipt, ReceiptElement) else receipt
                 for receipt in receipt_elements
             ]
 
@@ -857,9 +834,7 @@ class Messenger:
 
         if adjustments:
             adjustments = [
-                adjustment.value
-                if isinstance(adjustment, Adjustment)
-                else adjustment
+                adjustment.value if isinstance(adjustment, Adjustment) else adjustment
                 for adjustment in adjustments
             ]
 
@@ -896,18 +871,14 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def get_user_profile(
-        self, sender_id, fields="first_name,last_name,profile_pic"
-    ):
+    def get_user_profile(self, sender_id, fields="first_name,last_name,profile_pic"):
         """
         The User Profile methiod allows you to use a Page-scoped ID (PSID)
         to retrieve user profile information that can be used to personalize
         the experience of people interacting with your Messenger.
         """
         params = {"fields": fields, "access_token": self.token}
-        res = requests.get(
-            f"https://graph.facebook.com/{sender_id}", params=params
-        )
+        res = requests.get(f"https://graph.facebook.com/{sender_id}", params=params)
         res = self.__analyse(res)
         return res.json() if res.status_code == 200 else {}
 
@@ -926,11 +897,7 @@ class Messenger:
             https://developers.facebook.com/docs/messenger-platform/send-messages/recurring-notifications
         """
 
-        optin = (
-            optin.value
-            if isinstance(optin, RecurringNotificationOptin)
-            else optin
-        )
+        optin = optin.value if isinstance(optin, RecurringNotificationOptin) else optin
         dataJSON = {
             "recipient": {"id": sender_id},
             "message": {"attachment": {"type": "template", "payload": optin}},
@@ -994,9 +961,7 @@ class Messenger:
         return self.__analyse(res)
 
     @retry(requests.exceptions.ConnectionError, tries=3, delay=3)
-    def send_onetime_notification_request(
-        self, sender_id, title, payload, **kwargs
-    ):
+    def send_onetime_notification_request(self, sender_id, title, payload, **kwargs):
         """
         Method to send a notification request.
 
@@ -1096,8 +1061,7 @@ class Messenger:
 
         if quick_rep:
             quick_rep = [
-                qr.value if isinstance(qr, QuickReply) else qr
-                for qr in quick_rep
+                qr.value if isinstance(qr, QuickReply) else qr for qr in quick_rep
             ]
 
             if isinstance(dataJSON["message"].get("quick_replies"), list):

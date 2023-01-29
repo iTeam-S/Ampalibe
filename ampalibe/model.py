@@ -8,6 +8,41 @@ from tinydb import TinyDB, Query
 from tinydb.operations import delete
 
 
+class DataBaseConfig:
+    def standart(self, conf=Configuration):
+        """
+        function to configure the standart database
+        """
+        db_conf = {
+            "host": conf.DB_HOST,
+            "user": conf.DB_USER,
+            "password": conf.DB_PASSWORD,
+            "database": conf.DB_NAME,
+        }
+        if conf.DB_PORT:
+            db_conf["port"] = conf.DB_PORT
+        return db_conf
+
+    def mongodb(self, conf=Configuration):
+        """
+        function to configure the mongodb database
+        """
+
+        url = "mongodb"
+        if hasattr(conf, "SRV_PROTOCOL"):
+            url += "+srv://" if not conf.SRV_PROTOCOL else "://"
+
+        if conf.DB_USER and conf.DB_PASSWORD:
+            url += f"{conf.DB_USER}:{conf.DB_PASSWORD}@"
+
+        url += conf.DB_HOST
+
+        if conf.DB_PORT:
+            url += f":{str(conf.DB_PORT)}/"
+
+        return url
+
+
 class Model:
     """
     Object for interact with database with pre-defined function
@@ -22,24 +57,12 @@ class Model:
         """
         if not init:
             return
-
         self.ADAPTER = conf.ADAPTER
+
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            self.DB_CONF = {
-                "host": conf.DB_HOST,
-                "user": conf.DB_USER,
-                "password": conf.DB_PASSWORD,
-                "database": conf.DB_NAME,
-            }
-            if conf.DB_PORT:
-                self.DB_CONF["port"] = conf.DB_PORT
+            self.DB_CONF = DataBaseConfig().standart(conf)
         elif self.ADAPTER == "MONGODB":
-            self.DB_CONF = "mongodb" + ("://" if conf.DB_PORT else "+srv://")
-            if conf.DB_USER and conf.DB_PASSWORD:
-                self.DB_CONF += conf.DB_USER + ":" + conf.DB_PASSWORD + "@"
-            self.DB_CONF += conf.DB_HOST
-            if conf.DB_PORT:
-                self.DB_CONF += ":" + str(conf.DB_PORT) + "/"
+            self.DB_CONF = DataBaseConfig().mongodb(conf)
         else:  # SQLite is choosen by default
             self.DB_CONF = conf.DB_FILE
 
@@ -53,19 +76,34 @@ class Model:
         The function which connect object to the database.
         """
         if self.ADAPTER == "MYSQL":
-            import mysql.connector
-
+            try:
+                import mysql.connector
+            except ImportError:
+                raise ImportError(
+                    "You must install mysql-connector-python to use mysql database: pip install mysql-connector"
+                )
             self.db = mysql.connector.connect(**self.DB_CONF)
+
         elif self.ADAPTER == "POSTGRESQL":
-            import psycopg2
-
+            try:
+                import psycopg2
+            except ImportError:
+                raise ImportError(
+                    "You must install psycopg2 to use postgresql database: pip install psycopg2"
+                )
             self.db = psycopg2.connect(**self.DB_CONF)
-        elif self.ADAPTER == "MONGODB":
-            import pymongo
 
+        elif self.ADAPTER == "MONGODB":
+            try:
+                import pymongo
+            except ImportError:
+                raise ImportError(
+                    "You must install pymongo to use mongodb database: pip install pymongo"
+                )
             self.db = pymongo.MongoClient(self.DB_CONF)
             self.db = self.db[Configuration.DB_NAME]
-            return
+            return  # no cursor for mongodb
+
         else:
             import sqlite3
 
@@ -90,7 +128,8 @@ class Model:
                     `action` TEXT DEFAULT NULL,
                     `last_use` datetime NOT NULL DEFAULT current_timestamp(),
                     `lang` varchar(5) DEFAULT NULL,
-                    PRIMARY KEY (`id`)
+                    PRIMARY KEY (`id`),
+                    INDEX (last_use)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             """
         elif self.ADAPTER == "POSTGRESQL":
@@ -102,7 +141,8 @@ class Model:
                     last_use TIMESTAMP NULL DEFAULT NOW(),
                     lang VARCHAR NULL DEFAULT NULL,
                     PRIMARY KEY (id),
-                    UNIQUE (user_id)
+                    UNIQUE (user_id),
+                    INDEX (last_use)
                 )
             """
         elif self.ADAPTER == "MONGODB":
@@ -144,32 +184,22 @@ class Model:
         @params :  user_id
 
         """
-        # Insertion dans la base si non present
-        # Mise à jour du last_use si déja présent
-        if self.ADAPTER == "MYSQL":
-            req = """
-                INSERT INTO amp_user(user_id) VALUES (%s)
-                ON DUPLICATE KEY UPDATE last_use = NOW()
-            """
-        elif self.ADAPTER == "POSTGRESQL":
-            req = """
-                INSERT INTO amp_user(user_id) VALUES (%s)
-                ON CONFLICT (user_id) DO UPDATE SET last_use = NOW();
-            """
-        elif self.ADAPTER == "MONGODB":
+        SQL_MAP = {
+            "MYSQL": "INSERT INTO amp_user(user_id) VALUES (%s) ON DUPLICATE KEY UPDATE last_use = NOW();",
+            "POSTGRESQL": "INSERT INTO amp_user(user_id) VALUES (%s) ON CONFLICT (user_id) DO UPDATE SET last_use = NOW();",
+            "SQLITE": "INSERT INTO amp_user(user_id) VALUES (?) ON CONFLICT(user_id) DO UPDATE SET last_use = CURRENT_TIMESTAMP;",
+        }
+
+        if self.ADAPTER == "MONGODB":
             self.db.amp_user.update_one(
                 {"user_id": user_id},
                 {"$set": {"last_use": datetime.now()}},
                 upsert=True,
             )
-            return
         else:
-            req = """
-                INSERT INTO amp_user(user_id) VALUES (?)
-                ON CONFLICT(user_id) DO UPDATE SET last_use = CURRENT_TIMESTAMP;
-            """
-        self.cursor.execute(req, (user_id,))
-        self.db.commit()
+            sql = SQL_MAP.get(self.ADAPTER)
+            self.cursor.execute(sql, (user_id,))
+            self.db.commit()
 
     @verif_db
     def get_action(self, sender_id):
@@ -179,15 +209,7 @@ class Model:
          @params :  sender_id
          @return : current action [ type of String/None ]
         """
-        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "SELECT action FROM amp_user WHERE user_id = %s"
-        elif self.ADAPTER == "MONGODB":
-            return self.db.amp_user.find({"user_id": sender_id})[0].get("action")
-        else:
-            req = "SELECT action FROM amp_user WHERE user_id = ?"
-        self.cursor.execute(req, (sender_id,))
-        # retourne le resultat
-        return self.cursor.fetchone()[0]
+        return self.get(sender_id, "action")[0]
 
     @verif_db
     def set_action(self, sender_id, action):
@@ -271,15 +293,7 @@ class Model:
         @params: sender_id
         @return lang or None
         """
-
-        if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
-            req = "SELECT lang FROM amp_user WHERE user_id = %s"
-        elif self.ADAPTER == "MONGODB":
-            return self.db.amp_user.find({"user_id": sender_id})[0].get("lang")
-        else:
-            req = "SELECT lang FROM amp_user WHERE user_id = ?"
-        self.cursor.execute(req, (sender_id,))
-        return self.cursor.fetchone()[0]
+        return self.get(sender_id, "lang")[0]
 
     @verif_db
     def set_lang(self, sender_id, lang):

@@ -11,12 +11,13 @@ export ADAPTER=SQLITE
 #export ADAPTER=POSTGRESQL
 #export ADAPTER=MONGODB
 
-####### CASE MYSQL OR POSTGRESQL ADAPTER
+####### CASE MYSQL, POSTGRESQL OR MONGODB ADAPTER
 export DB_HOST=
 export DB_USER=
 export DB_PASSWORD=
 export DB_NAME=
 #export DB_PORT=
+#export SRV_PROTOCOL=1
 
 ####### CASE SQLITE ADAPTER
 export DB_FILE=ampalibe.db
@@ -41,13 +42,15 @@ set AMP_VERIF_TOKEN=
 set ADAPTER=SQLITE
 :: set ADAPTER=MYSQL
 :: set ADAPTER=POSTGRESQL
+:: set ADAPTER=MONGODB
 
-::::: CASE MYSQL ADAPTER OR POSTGRESQL ADAPTER
+::::: CASE MYSQL, POSTGRESQL OR MONGODB ADAPTER
 set DB_HOST=
 set DB_USER=
 set DB_PASSWORD=
 set DB_NAME=
 :: set DB_PORT=
+:: set SRV_PROTOCOL=1
 
 :: CASE SQLITE ADAPTER
 set DB_FILE=ampalibe.db
@@ -106,6 +109,7 @@ class Configuration:
     DB_PASSWORD = env.get('DB_PASSWORD', '')
     DB_PORT = env.get('DB_PORT')
     DB_NAME = env.get('DB_NAME')
+    SRV_PROTOCOL = env.get('SRV_PROTOCOL')
 
     ACCESS_TOKEN = env.get('AMP_ACCESS_TOKEN')
     VERIF_TOKEN = env.get('AMP_VERIF_TOKEN')
@@ -113,6 +117,7 @@ class Configuration:
     APP_HOST = env.get('AMP_HOST', '0.0.0.0')
     APP_PORT = int(env.get('AMP_PORT', 4555))
     APP_URL = env.get('AMP_URL')
+    
 """
 
 langs = """{

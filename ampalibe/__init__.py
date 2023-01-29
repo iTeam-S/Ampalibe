@@ -151,8 +151,8 @@ except ImportError:
 finally:
     from .constant import *
     from .model import Model
-    from aiocron import crontab
     from .logger import Logger
+    from aiocron import crontab
     from .payload import Payload
     from .messenger import Messenger
     from .core import webserver, Init as init

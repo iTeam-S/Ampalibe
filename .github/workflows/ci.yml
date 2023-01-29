@@ -46,7 +46,8 @@ jobs:
         if [ $? -eq 0 ]; then
           echo "Server Web Running"
         else
-          echo "Server Web Not Runing" 
+          echo "Server Web Not Runing"
+          docker logs amp
           exit 1
         fi
     

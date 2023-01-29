@@ -157,8 +157,7 @@ class Model:
                    user_id TEXT NOT NULL UNIQUE,
                    action TEXT,
                    last_use TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                   lang TEXT,
-                   INDEX (last_use)
+                   lang TEXT
                 )
             """
         self.cursor.execute(req)

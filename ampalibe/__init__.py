@@ -4,8 +4,7 @@ import time
 import inspect
 import colorama
 import tempfile
-from .source import ENV, ENV_CMD, CONF, CORE, LANGS
-
+from . import source
 
 __version__ = "1.2.0.dev"
 __author__ = "iTeam-$"
@@ -26,22 +25,22 @@ def create_env(path):
     if sys.platform == "win32":
         print(ENV_CMD, file=open(f"{path}/.env.bat", "w"))
     else:
-        print(ENV, file=open(f"{path}/.env", "w"))
+        print(source.ENV, file=open(f"{path}/.env", "w"))
     typing_print("~\033[32m 👌 \033[0m | Env file created")
 
 
 def create_lang(path):
-    print(LANGS, file=open(f"{path}/langs.json", "w"))
+    print(source.LANGS, file=open(f"{path}/langs.json", "w"))
     typing_print("~\033[32m 👌 \033[0m | Langs file created")
 
 
 def init_proj(path):
     create_env(path)
     create_lang(path)
-    print(core, file=open(f"{path}/core.py", "w"))
+    print(source.CORE, file=open(f"{path}/core.py", "w"))
     typing_print("~\033[32m 👌 \033[0m | Core file created")
 
-    print(CONF, file=open(f"{path}/conf.py", "w"))
+    print(source.CONF, file=open(f"{path}/conf.py", "w"))
     typing_print("~\033[32m 👌 \033[0m | Config file created")
 
     for folder in {"public", "private"}:
@@ -145,7 +144,7 @@ except ImportError:
     dir_tmp = os.path.join(tempfile.gettempdir(), "ampalibe_temp")
     os.makedirs(dir_tmp, exist_ok=True)
     with open(os.path.join(dir_tmp, "conf.py"), "w") as f:
-        f.write(CONF)
+        f.write(source.CONF)
     sys.path.insert(0, dir_tmp)
 finally:
     from .constant import *

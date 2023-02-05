@@ -23,7 +23,7 @@ def typing_print(text):
 
 def create_env(path):
     if sys.platform == "win32":
-        print(ENV_CMD, file=open(f"{path}/.env.bat", "w"))
+        print(source.ENV_CMD, file=open(f"{path}/.env.bat", "w"))
     else:
         print(source.ENV, file=open(f"{path}/.env", "w"))
     typing_print("~\033[32m 👌 \033[0m | Env file created")

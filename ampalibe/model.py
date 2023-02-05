@@ -332,4 +332,4 @@ class Model:
         else:
             req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (sender_id,))
-        return self.cursor.fetchone() | (None, None)
+        return self.cursor.fetchone() or (None, None)

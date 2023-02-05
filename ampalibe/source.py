@@ -1,4 +1,4 @@
-env = """# PAGE ACCESS TOKEN 
+ENV = """# PAGE ACCESS TOKEN 
 export AMP_ACCESS_TOKEN=
 
 # PAGE VERIF TOKEN
@@ -32,7 +32,7 @@ export AMP_URL=
 
 """
 
-env_cmd = """:: PAGE ACCESS TOKEN 
+ENV_CMD = """:: PAGE ACCESS TOKEN 
 set AMP_ACCESS_TOKEN=
 
 :: PAGE VERIF TOKEN
@@ -64,7 +64,8 @@ set AMP_PORT=4555
 set AMP_URL=
 
 """
-core = """import ampalibe
+
+CORE = """import ampalibe
 from ampalibe import Messenger
 
 chat = Messenger()
@@ -91,8 +92,7 @@ def main(sender_id, cmd, **ext):
     chat.send_text(sender_id, "Hello, Ampalibe")
     """
 
-
-conf = """from os import environ as env
+CONF = """from os import environ as env
 
 
 class Configuration:
@@ -120,7 +120,7 @@ class Configuration:
     
 """
 
-langs = """{
+LANGS = """{
     "hello_world": {
         "en": "Hello World",
         "fr": "Bonjour le monde"

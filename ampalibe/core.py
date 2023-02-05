@@ -1,7 +1,5 @@
 import os
-import sys
 import json
-import pickle
 import asyncio
 import uvicorn
 from .model import Model
@@ -64,10 +62,7 @@ class Server(Request):
         Main verification for bot server is received here
         """
 
-        if (
-            request.query_params.get("hub.verify_token")
-            == Configuration.VERIF_TOKEN
-        ):
+        if request.query_params.get("hub.verify_token") == Configuration.VERIF_TOKEN:
             return Response(content=request.query_params["hub.challenge"])
         return "Failed to verify token"
 

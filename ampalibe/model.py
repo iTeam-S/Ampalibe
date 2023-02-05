@@ -80,7 +80,7 @@ class Model:
                 import mysql.connector
             except ImportError:
                 raise ImportError(
-                    "You must install mysql-connector-python to use mysql database: pip install mysql-connector"
+                    "You must install mysql-connector to use mysql database: pip install mysql-connector"
                 )
             self.db = mysql.connector.connect(**self.DB_CONF)
 
@@ -332,4 +332,4 @@ class Model:
         else:
             req = f"SELECT {','.join(args)} FROM amp_user WHERE user_id = ?"
         self.cursor.execute(req, (sender_id,))
-        return self.cursor.fetchone()
+        return self.cursor.fetchone() or (None, None)

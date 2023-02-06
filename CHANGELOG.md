@@ -170,3 +170,27 @@
 * [IMP] Readability and maintainability (#74) 
 
 
+## Ampalibe 1.1.8
+
+* [ADD] Mongodb support (#76)
+* [IMP] Code quality (#87) (6a695791ab1b07f18cde89484ec41f72a8ed90c4)
+* [IMP] Optimize time for translate function (#77)
+* [IMP] Change temporary data management (#78) 
+* [FIX] translate encoding in windows (af9e1fba065a726243b8c518157f101cd7c2de4b)
+* [ADD] New Messenger API: send_product_template (#79)
+* [FIX] --dev doesn't work anymore on windows (af7aba3fb1f860109a3aa417de7bbda880f09ffb)
+* [ADD] One time notification Messenger API (#80)
+* [IMP] fix & imrpov structure (#81)
+* [IMP] Improve core readability (#82) (#83) 
+* [FIX] Logger , printing twice (#86)
+* [IMP] Model optimisation (#88)
+* [IMP] Minor syntax style (#89) 
+
+
+ 
+
+
+
+
+
+

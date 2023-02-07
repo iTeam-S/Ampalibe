@@ -133,3 +133,22 @@ LANGS = """{
     }
 }
 """
+
+MODELS = """from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import text
+
+Base = declarative_base()
+
+
+class AmpUser(Base):
+    __tablename__ = "amp_user"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(String(50), unique=True, nullable=False)
+    action = Column(String, nullable=True)
+    last_use = Column(
+        DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP")
+    )
+    lang = Column(String(5), nullable=True)
+"""

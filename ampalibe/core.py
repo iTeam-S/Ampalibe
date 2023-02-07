@@ -3,6 +3,7 @@ import json
 import asyncio
 import uvicorn
 from .model import Model
+from .admin import admin_app
 from .logger import Logger
 from threading import Thread
 from .payload import Payload
@@ -15,11 +16,15 @@ from .tools import funcs, analyse, before_run, send_next, verif_event
 _req = Model(init=False)
 loop = asyncio.get_event_loop()
 
+
 webserver = FastAPI(title="Ampalibe server")
 if not os.path.isdir("assets/public"):
     os.makedirs("assets/public", exist_ok=True)
 
 webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
+
+
+admin_app.mount_to(webserver)
 
 
 class Init:

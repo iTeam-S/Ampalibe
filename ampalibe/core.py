@@ -3,8 +3,8 @@ import json
 import asyncio
 import uvicorn
 from .model import Model
-from .admin import admin_app
 from .logger import Logger
+from .admin import admin_app
 from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore
@@ -17,7 +17,7 @@ _req = Model(init=False)
 loop = asyncio.get_event_loop()
 
 
-webserver = FastAPI(title="Ampalibe server")
+webserver = FastAPI()
 if not os.path.isdir("assets/public"):
     os.makedirs("assets/public", exist_ok=True)
 
@@ -86,7 +86,7 @@ class Server(Request):
         sender_id, payload, message = analyse(data)
 
         if payload.webhook in ("read", "delivery", "reaction"):
-            verif_event(sender_id, payload, message, testmode)
+            await verif_event(sender_id, payload, message, testmode)
             return {"status": "ok"}
 
         _req._verif_user(sender_id)
@@ -114,33 +114,24 @@ class Server(Request):
         if command:
             _req.set_action(sender_id, None)
             if testmode:
-                return before_run(command, **kw)
-            else:
-                Thread(
-                    target=before_run,
-                    args=(command,),
-                    kwargs=kw,
-                ).start()
+                return await before_run(command, **kw)
+            asyncio.create_task(before_run(command, **kw))
         elif action:
             action, kw_tmp = Payload.trt_payload_in(action)
             kw.update(kw_tmp)
 
             if funcs["action"].get(action):
                 if testmode:
-                    return before_run(funcs["action"].get(action), **kw)
-                Thread(
-                    target=before_run,
-                    args=(funcs["action"].get(action),),
-                    kwargs=kw,
-                ).start()
+                    return await before_run(funcs["action"].get(action), **kw)
+                asyncio.create_task(before_run(funcs["action"].get(action), **kw))
             else:
                 Logger.error(f'⚠ Error! action "{action}" undeclared ')
         else:
             command = funcs["command"].get("/")
             if command:
                 if testmode:
-                    return before_run(command, **kw)
-                Thread(target=before_run, args=(command,), kwargs=kw).start()
+                    return await before_run(command, **kw)
+                asyncio.create_task(before_run(command, **kw))
             else:
                 Logger.error("⚠ Error! Default route '/' function undeclared.")
         return {"status": "ok"}

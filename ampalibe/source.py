@@ -152,3 +152,37 @@ class AmpUser(Base):
     )
     lang = Column(String(5), nullable=True)
 """
+
+RESOURCES = '''from models import AmpUser
+from ampalibe import __version__, __author__
+
+from starlette.requests import Request
+from starlette.templating import Jinja2Templates
+
+from ampalibe.admin import ModelView
+from ampalibe.admin import CustomView
+
+
+class AmpUserView(ModelView):
+    """
+    class extends ModelView is used to have a crud in the admin panel for model specified
+    """
+
+    fields = ["user_id", "action", "last_use", "lang"]
+
+    def __init__(self):
+        super().__init__(label="Ampalibe Users", icon="fa fa-users", model=AmpUser)
+
+
+class OtherView(CustomView):
+    """
+    class extends CustomView is used to have a custom view in the admin panel
+    """
+
+    def __init__(self):
+        super().__init__(label="Other", icon="fa fa-other", path="/other")
+
+    async def render(self, request: Request, templates: Jinja2Templates):
+        data = {"request": request, "version": __version__, "author": __author__}
+        return templates.TemplateResponse("other.html", data)
+'''

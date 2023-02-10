@@ -27,17 +27,19 @@ class DataBaseConfig:
         """
         function to configure the standart database
         """
-        url = f"{conf.ADAPTER}://{conf.DB_USER}:{conf.DB_PASSWORD}@{conf.DB_HOST}"
-        if conf.DB_PORT:
-            url += f":{str(conf.DB_PORT)}/"
-        else:
-            url += "/"
-        url += f"{conf.DB_NAME}"
         if conf.ADAPTER == "SQLITE":
             return f"sqlite:///{conf.DB_FILE}"
         elif conf.ADAPTER == "MONGODB":
             return self.mongodb(conf)
-        return url.lower()
+        else:
+            url = f"{conf.ADAPTER}://{conf.DB_USER}"
+            if conf.DB_PASSWORD:
+                url += f":{conf.DB_PASSWORD}"
+            url += f"@{conf.DB_HOST}"
+            if conf.DB_PORT:
+                url += f":{str(conf.DB_PORT)}"
+            url += f"/{conf.DB_NAME}"
+            return url.lower()
 
     def mongodb(self, conf=Configuration):
         """

@@ -134,23 +134,19 @@ LANGS = """{
 }
 """
 
-MODELS = """from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import text
-
-Base = declarative_base()
+MODELS = """from datetime import datetime
+from typing import Optional
+from sqlmodel import Field, SQLModel
 
 
-class AmpUser(Base):
-    __tablename__ = "amp_user"
+class AmpUser(SQLModel, table=True):
+    __tablename__: str = "amp_user"
 
-    id = Column(Integer, primary_key=True)
-    user_id = Column(String(50), unique=True, nullable=False)
-    action = Column(String, nullable=True)
-    last_use = Column(
-        DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP")
-    )
-    lang = Column(String(5), nullable=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: str = Field(max_length=50, unique=True, nullable=False)
+    action: Optional[str] = None
+    last_use: datetime = Field(default=datetime.now(), nullable=False, index=True)
+    lang: Optional[str] = Field(min_length=2, max_length=3)
 """
 
 RESOURCES = '''from models import AmpUser

@@ -4,7 +4,6 @@ import asyncio
 import uvicorn
 from .model import Model
 from .logger import Logger
-from .admin import admin_app
 from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore
@@ -22,9 +21,6 @@ if not os.path.isdir("assets/public"):
     os.makedirs("assets/public", exist_ok=True)
 
 webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
-
-
-admin_app.mount_to(webserver)
 
 
 class Init:

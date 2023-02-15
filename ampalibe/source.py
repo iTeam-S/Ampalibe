@@ -182,3 +182,16 @@ class OtherView(CustomView):
         data = {"request": request, "version": __version__, "author": __author__}
         return templates.TemplateResponse("other.html", data)
 '''
+
+
+OTHER_HTML = """
+{% extends "layout.html" %}
+
+{% block content %}
+    <div>
+        <h1 style="text-align: center ;">
+            Custom Admin Page for Ampalibe {{ version }} authored by {{ author }}
+        </h1>
+    </div>
+{% endblock %}
+"""

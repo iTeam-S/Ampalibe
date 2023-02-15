@@ -6,7 +6,7 @@ import colorama
 import tempfile
 from . import source
 
-__version__ = "1.1.8"
+__version__ = "1.2.0.dev"
 __author__ = "iTeam-$"
 
 
@@ -42,6 +42,8 @@ def create_models(path):
 def create_resources(path):
     print(source.RESOURCES, file=open(f"{path}/resources.py", "w"))
     typing_print("~\033[32m 👌 \033[0m | Resources file created")
+    os.mkdir(f"{path}/templates")
+    print(source.OTHER_HTML, file=open(f"{path}/templates/other.html", "w"))
 
 
 def init_proj(path):
@@ -147,6 +149,16 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
                 """
             )
         )
+
+    # elif sys.argv[1] == "upgrade":
+    #     from .model import DataBaseConfig
+    #     from alembic.config import Config
+    #     from alembic import command
+
+    #     alembic_cfg = Config("alembic.ini")
+    #     alembic_cfg.set_main_option("sqlalchemy.url", DataBaseConfig().get_db_url())
+    #     alembic_cfg.set_main_option("script_location", "migrations")
+    #     command.upgrade(alembic_cfg, "head")
 
     sys.exit(0)
 

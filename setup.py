@@ -35,6 +35,7 @@ setuptools.setup(
         "watchdog!=2.2.0",
         "aiocron",
         "tinydb",
+        "sqlmodel",
         "starlette-admin",
     ],  # depandance
     include_package_data=True,  # Include all data file with the package

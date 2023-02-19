@@ -136,16 +136,6 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
             )
         )
 
-    # elif sys.argv[1] == "upgrade":
-    #     from .model import DataBaseConfig
-    #     from alembic.config import Config
-    #     from alembic import command
-
-    #     alembic_cfg = Config("alembic.ini")
-    #     alembic_cfg.set_main_option("sqlalchemy.url", DataBaseConfig().get_db_url())
-    #     alembic_cfg.set_main_option("script_location", "migrations")
-    #     command.upgrade(alembic_cfg, "head")
-
     sys.exit(0)
 
 try:

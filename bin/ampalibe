@@ -62,8 +62,6 @@ elif [ "$1" == "create" ]; then
             exit 1
         fi
             python3 -m ampalibe create $2
-            # cd $2 && alembic init migrations > /dev/null
-            # alembic revision -m "first revision" && cd ..
     else
         echo -e "~\033[31m ERROR !!\033[0m | Incorrect number of args for create"
         usage
@@ -72,8 +70,6 @@ elif [ "$1" == "create" ]; then
 elif [ "$1" == "init" ]; then
     if [ $# -eq 1 ]; then
         python3 -m ampalibe init
-        # alembic init migrations > /dev/null
-        # alembic revision -m "first revision"    
     else
         >&2 echo -e "~\033[31m ERROR :(\033[0m | Incorrect number of args for init"
         exit 1
@@ -103,10 +99,6 @@ elif [ "$1" == "run" ]; then
     fi
 
     python3 -c 'import core;core.ampalibe.init.run()'
-
-
-# elif [ "$1" == "upgrade" ]; then
-#     python3 -m ampalibe upgrade
 
 else
     >&2 echo -e "~\033[31m ERROR !! \033[0m | Missing knowing argument"

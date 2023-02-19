@@ -7,6 +7,3 @@ watchdog!=2.2.0
 aiocron
 colorama
 tinydb
-sqlmodel
-starlette-admin
-

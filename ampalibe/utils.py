@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import httpx
 import requests
 from .payload import Payload
 from conf import Configuration  # type: ignore
@@ -90,3 +91,58 @@ def simulate(sender_id, text, **params):
         headers=header,
         params=params,
     )
+
+
+async def async_simulate(sender_id, text, **params):
+    """
+    Simulate a message send by an user
+
+    Args:
+        sender_id: <str>
+        text: <str> |<Payload>
+    """
+    if isinstance(text, Payload):
+        text = Payload.trt_payload_out(text)
+
+    data_json = {
+        "object": "page",
+        "entry": [
+            {
+                "messaging": [
+                    {
+                        "message": {
+                            "text": text,
+                        },
+                        "sender": {"id": sender_id},
+                    }
+                ]
+            }
+        ],
+    }
+    headers = {"content-type": "application/json; charset=utf-8"}
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"http://127.0.0.1:{Configuration.APP_PORT}/",
+            json=data_json,
+            headers=headers,
+        )
+
+    return response
+
+
+async def async_download_file(url, file):
+    """
+    Downloading a file from an url.
+
+    Args:
+        url: direct link for the attachment
+
+        file: filename with path
+    """
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, follow_redirects=True)
+
+    with open(file, "wb") as f:
+        f.write(response.content)
+
+    return file

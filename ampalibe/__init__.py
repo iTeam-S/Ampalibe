@@ -6,7 +6,7 @@ import colorama
 import tempfile
 from . import source
 
-__version__ = "1.1.8"
+__version__ = "1.2.0.dev"
 __author__ = "iTeam-$"
 
 
@@ -154,7 +154,13 @@ finally:
     from .payload import Payload
     from .messenger import Messenger
     from .core import webserver, Init as init
-    from .utils import translate, download_file, simulate
+    from .utils import (
+        translate,
+        download_file,
+        async_download_file,
+        simulate,
+        async_simulate,
+    )
     from .decorators import (
         event,
         action,

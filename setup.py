@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ampalibe",  # This is the name of the package
-    version="1.1.8",  # The release version
+    version="1.2.0.dev",  # The release version
     author="iTeam-$",  # Full name of the author
     description=(
         "Ampalibe is a lightweight Python framework for building Facebook"
@@ -35,6 +35,7 @@ setuptools.setup(
         "watchdog!=2.2.0",
         "aiocron",
         "tinydb",
+        "httpx",
     ],  # depandance
     include_package_data=True,  # Include all data file with the package
     scripts=["bin/ampalibe", "bin/ampalibe.bat"],

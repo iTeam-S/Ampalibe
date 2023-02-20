@@ -1,6 +1,10 @@
 import ampalibe
+import requests
 from conf import Configuration
-from ampalibe import translate, simulate, download_file, Payload
+from ampalibe import Payload
+from ampalibe.utils import translate
+from ampalibe.utils import async_simulate as simulate
+from ampalibe.utils import async_download_file as download_file
 
 query = ampalibe.Model()
 
@@ -60,16 +64,16 @@ def receive_optin_webhook(**extends):
 
 
 @ampalibe.command("/lang")
-def lang(sender_id, value=None, **extends):
+async def lang(sender_id, value=None, **extends):
     if value:
         query.set_lang(sender_id, value)
-        simulate(sender_id, "/lang/download")
+        await simulate(sender_id, "/lang/download")
     return Payload.trt_payload_out(Payload("/lang", value="en"))
 
 
 @ampalibe.command("/lang/download")
-def lang_download(lang, **extends):
-    download_file(
+async def lang_download(lang, **extends):
+    await download_file(
         f"http://127.0.0.1:{Configuration.APP_PORT}/asset/hello.txt",
         "assets/private/hello.txt",
     )

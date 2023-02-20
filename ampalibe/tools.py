@@ -1,7 +1,8 @@
 import os
 import pickle
+import inspect
+import asyncio
 from .cmd import Cmd
-from threading import Thread
 from .messenger import Messenger
 
 funcs = {
@@ -11,6 +12,13 @@ funcs = {
     "before": None,
     "after": None,
 }
+
+
+async def verif_func(func, **kwargs):
+    """
+    function verify if the function is a coroutine or not before running it
+    """
+    return await func(**kwargs) if inspect.iscoroutinefunction(func) else func(**kwargs)
 
 
 def analyse(data):
@@ -85,17 +93,22 @@ def analyse(data):
     return None, Cmd(""), None
 
 
-def before_run(func, **kwargs):
+async def before_run(func, **kwargs):
+    """
+    Function to be executed before running the function
+    called by the user command
+    """
+
     res = None
     if funcs["before"] and hasattr(funcs["before"], "__call__"):
-        if funcs["before"](**kwargs):
-            res = func(**kwargs)
+        if await verif_func(funcs["before"], **kwargs):
+            res = await verif_func(func, **kwargs)
     else:
-        res = func(**kwargs)
+        res = await verif_func(func, **kwargs)
 
     if funcs["after"] and hasattr(funcs["after"], "__call__"):
         kwargs["res"] = res
-        funcs["after"](**kwargs)
+        await verif_func(funcs["after"], **kwargs)
 
     return res
 
@@ -110,7 +123,7 @@ def send_next(sender_id, payload):
             chat.send_quick_reply(sender_id, elements[0], elements[1], next=elements[2])
 
 
-def verif_event(testmode, payload, sender_id, message):
+async def verif_event(testmode, payload, sender_id, message):
     if funcs["event"].get(payload.webhook):
         kw = {
             "sender_id": sender_id,
@@ -118,6 +131,6 @@ def verif_event(testmode, payload, sender_id, message):
             "message": message,
         }
         if testmode:
-            funcs["event"][payload.webhook](**kw)
+            await verif_func(funcs["event"][payload.webhook], **kw)
         else:
-            Thread(target=funcs["event"][payload.webhook], kwargs=kw).start()
+            asyncio.create_task(verif_func(funcs["event"][payload.webhook], **kw))

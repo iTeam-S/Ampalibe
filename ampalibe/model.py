@@ -23,6 +23,24 @@ class DataBaseConfig:
             db_conf["port"] = conf.DB_PORT
         return db_conf
 
+    def get_db_url(self, conf=Configuration):
+        """
+        function to configure the standart database
+        """
+        if conf.ADAPTER == "SQLITE":
+            return f"sqlite:///{conf.DB_FILE}"
+        elif conf.ADAPTER == "MONGODB":
+            return self.mongodb(conf)
+        else:
+            url = f"{conf.ADAPTER}://{conf.DB_USER}"
+            if conf.DB_PASSWORD:
+                url += f":{conf.DB_PASSWORD}"
+            url += f"@{conf.DB_HOST}"
+            if conf.DB_PORT:
+                url += f":{str(conf.DB_PORT)}"
+            url += f"/{conf.DB_NAME}"
+            return url.lower()
+
     def mongodb(self, conf=Configuration):
         """
         function to configure the mongodb database

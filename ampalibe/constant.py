@@ -1,5 +1,7 @@
 from enum import Enum
 
+AMPALIBE_LOGO = "https://raw.githubusercontent.com/iTeam-S/Ampalibe/main/docs/source/_static/ampalibe_logo.png"
+
 
 class Content_type:
     text = "text"

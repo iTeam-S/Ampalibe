@@ -8,3 +8,5 @@ aiocron
 colorama
 tinydb
 httpx
+sqlmodel
+sqladmin

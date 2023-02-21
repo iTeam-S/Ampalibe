@@ -36,6 +36,8 @@ setuptools.setup(
         "aiocron",
         "tinydb",
         "httpx",
+        "sqlmodel",
+        "sqladmin"
     ],  # depandance
     include_package_data=True,  # Include all data file with the package
     scripts=["bin/ampalibe", "bin/ampalibe.bat"],

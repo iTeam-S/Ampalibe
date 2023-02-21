@@ -30,6 +30,8 @@ export AMP_PORT=4555
 # URL APPLICATION
 export AMP_URL=
 
+# ENABLE ADMIN
+#export ADMIN_ENABLE=1
 """
 
 ENV_CMD = """:: PAGE ACCESS TOKEN 
@@ -62,6 +64,9 @@ set AMP_PORT=4555
 
 :: URL APPLICATION
 set AMP_URL=
+
+:: ENABLE ADMIN 
+:: set ADMIN_ENABLE=1
 
 """
 
@@ -117,6 +122,7 @@ class Configuration:
     APP_HOST = env.get('AMP_HOST', '0.0.0.0')
     APP_PORT = int(env.get('AMP_PORT', 4555))
     APP_URL = env.get('AMP_URL')
+    ADMIN_ENABLE = env.get('ADMIN_ENABLE')
     
 """
 
@@ -132,4 +138,29 @@ LANGS = """{
         "mg": "Ampalibe"
     }
 }
+"""
+
+MODELS = """from typing import Optional
+from datetime import datetime
+from sqlmodel import Field, SQLModel
+
+
+class AmpalibeUser(SQLModel, table=True):
+    __tablename__: str = "amp_user"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: str = Field(max_length=50, unique=True, nullable=False)
+    action: Optional[str] = None
+    last_use: datetime = Field(default=datetime.now(), nullable=False, index=True)
+    lang: Optional[str] = Field(min_length=2, max_length=3)
+"""
+
+RESOURCES = """from models import AmpalibeUser
+from sqladmin import ModelView
+
+class UserAmpalibe(ModelView, model=AmpalibeUser):
+    icon = "fa-solid fa-user"
+    can_create = True
+    can_edit = True
+    can_delete = False
+    can_view_details = True
 """

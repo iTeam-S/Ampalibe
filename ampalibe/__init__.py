@@ -34,6 +34,16 @@ def create_lang(path):
     typing_print("~\033[32m 👌 \033[0m | Langs file created")
 
 
+def create_models(path):
+    print(source.MODELS, file=open(f"{path}/models.py", "w"))
+    typing_print("~\033[32m 👌 \033[0m | Models file created")
+
+
+def create_resources(path):
+    print(source.RESOURCES, file=open(f"{path}/resources.py", "w"))
+    typing_print("~\033[32m 👌 \033[0m | Resources file created")
+
+
 def init_proj(path):
     create_env(path)
     create_lang(path)

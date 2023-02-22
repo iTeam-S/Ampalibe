@@ -154,11 +154,18 @@ class AmpalibeUser(SQLModel, table=True):
     lang: Optional[str] = Field(min_length=2, max_length=3)
 """
 
-RESOURCES = """from models import AmpalibeUser
-from sqladmin import ModelView
+RESOURCES = """from sqladmin import ModelView
+from models import AmpalibeUser
+
 
 class UserAmpalibe(ModelView, model=AmpalibeUser):
     icon = "fa-solid fa-user"
+    column_list = [
+        AmpalibeUser.user_id,
+        AmpalibeUser.action,
+        AmpalibeUser.last_use,
+        AmpalibeUser.lang,
+    ]
     can_create = True
     can_edit = True
     can_delete = False

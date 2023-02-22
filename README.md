@@ -118,7 +118,7 @@ query = Model()
 
 @ampalibe.before_receive()
 def before_process(sender_id, **ext):
-    #  Put a view for each message received
+    #  Mark as seen for each message received
     chat.send_action(sender_id, Action.mark_seen)
     return True
 

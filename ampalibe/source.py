@@ -168,6 +168,12 @@ Example CRUD for a table
 class UserAmpalibe(ModelView, model=AmpalibeUser):
     name = "Ampalibe Users"
     icon = "fa-solid fa-user"
+    column_list = [
+        AmpalibeUser.user_id,
+        AmpalibeUser.action,
+        AmpalibeUser.last_use,
+        AmpalibeUser.lang,
+    ]
     can_create = True
     can_edit = True
     can_delete = False

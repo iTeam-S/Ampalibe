@@ -49,6 +49,8 @@ def create_resources(path):
 def init_proj(path):
     create_env(path)
     create_lang(path)
+    create_models(path)
+    create_resources(path)
     print(source.CORE, file=open(f"{path}/core.py", "w"))
     typing_print("~\033[32m 👌 \033[0m | Core file created")
 

@@ -12,7 +12,7 @@ verif_content(){
         test -d $1/assets/$dir || { echo "assets/$dir not found" ; exit 1; }
     done
 
-    test -d templates || { echo "templates not found" ; exit 1; }
+    test -d $1/templates || { echo "templates not found" ; exit 1; }
 }
 
 #### TEST AMPALIBE CREATE #######

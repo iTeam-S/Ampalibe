@@ -21,6 +21,10 @@ if not os.path.isdir("assets/public"):
     os.makedirs("assets/public", exist_ok=True)
 
 webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
+if hasattr(Configuration, "ADMIN_ENABLE") and Configuration.ADMIN_ENABLE:
+    from .admin import init_admin
+
+    init_admin(webserver)
 
 
 class Init:

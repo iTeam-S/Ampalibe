@@ -2,7 +2,7 @@
 
 
 verif_content(){
-    for file in core.py .env conf.py langs.json .gitignore requirements.txt
+    for file in core.py .env conf.py langs.json .gitignore requirements.txt models.py resources.py
     do 
         test -f $1/$file || { echo "$file not found" ; exit 1; }
     done
@@ -11,6 +11,8 @@ verif_content(){
     do 
         test -d $1/assets/$dir || { echo "assets/$dir not found" ; exit 1; }
     done
+
+    test -d $1/templates || { echo "templates not found" ; exit 1; }
 }
 
 #### TEST AMPALIBE CREATE #######

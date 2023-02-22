@@ -2,52 +2,52 @@
 
 IF /I "%1" == "env" (
     python -m ampalibe env
-    exit
+    exit /B
 )
 
 IF /I "%1" == "lang" (
     python -m ampalibe lang
-    exit
+    exit /B
 )
 
 IF /I "%1" == "create" (
     IF exist "%2" (
         echo ERROR !! %2 already exists  1>&2
-        exit
+        exit /B
     )
     python -m ampalibe create %2
-    exit
+    exit /B
 )
 IF /I "%1" == "init" (
     python -m ampalibe init
-    exit
+    exit /B
 )
 IF /I "%1" == "run" (
 
     IF NOT exist "core.py" (
         echo ERROR !! core.py not found  1>&2
         echo Please, go to your dir project.
-        exit
+        exit /B
     )
 
     IF NOT exist "conf.py" (
         echo ERROR !! conf.py not found  1>&2
-        exit
+        exit /B
     )
 
     call .env.bat
     python -m ampalibe run
     IF /I "%2" == "--dev" (
         watchmedo auto-restart --patterns="*.py;langs.json" --recursive -- python -c "import core;core.ampalibe.init.run()"
-        exit
+        exit /B
     )
     python -c "import core;core.ampalibe.init.run()"
-    exit
+    exit /B
 )
 
 IF /I "%1" == "version" (
     python -m ampalibe version
-    exit
+    exit /B
 )
 
 python -m ampalibe usage

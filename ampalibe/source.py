@@ -166,7 +166,7 @@ from sqladmin import BaseView, expose
 Example CRUD for a table
 '''
 class UserAmpalibe(ModelView, model=AmpalibeUser):
-    name = "Ampalibe Users"
+    name = "Ampalibe User"
     icon = "fa-solid fa-user"
     column_list = [
         AmpalibeUser.user_id,

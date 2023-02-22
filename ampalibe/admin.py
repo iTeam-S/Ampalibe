@@ -5,8 +5,8 @@ from typing import Optional
 from datetime import datetime
 from .model import DataBaseConfig
 from .constant import AMPALIBE_LOGO
-from sqladmin import Admin, ModelView
 from starlette.requests import Request
+from sqladmin import Admin, ModelView, BaseView
 from sqladmin.authentication import AuthenticationBackend
 from sqlmodel import select, create_engine, Field, Session, SQLModel
 
@@ -119,9 +119,9 @@ def get_user_resources():
 
         clsmembers = inspect.getmembers(resources, inspect.isclass)
         for name, obj in clsmembers:
-            if name == "ModelView":
+            if name in ("ModelView", "BaseView"):
                 continue
-            if issubclass(obj, ModelView):
+            if issubclass(obj, (ModelView, BaseView)):
                 allViews.append(obj)
 
     except Exception as err:

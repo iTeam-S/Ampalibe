@@ -2,7 +2,6 @@ import os
 import json
 import asyncio
 import uvicorn
-from .admin import init_admin
 from .model import Model
 from .logger import Logger
 from threading import Thread
@@ -23,7 +22,10 @@ if not os.path.isdir("assets/public"):
 
 webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
 if hasattr(Configuration, "ADMIN_ENABLE") and Configuration.ADMIN_ENABLE:
+    from .admin import init_admin
+
     init_admin(webserver)
+
 
 class Init:
     def __init__(self, *args):

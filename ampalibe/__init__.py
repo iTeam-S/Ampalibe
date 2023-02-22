@@ -42,6 +42,8 @@ def create_models(path):
 def create_resources(path):
     print(source.RESOURCES, file=open(f"{path}/resources.py", "w"))
     typing_print("~\033[32m 👌 \033[0m | Resources file created")
+    os.mkdir(f"{path}/templates")
+    print(source.OTHER_HTML, file=open(f"{path}/templates/other.html", "w"))
 
 
 def init_proj(path):

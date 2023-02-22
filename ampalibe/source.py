@@ -154,13 +154,48 @@ class AmpalibeUser(SQLModel, table=True):
     lang: Optional[str] = Field(min_length=2, max_length=3)
 """
 
-RESOURCES = """from models import AmpalibeUser
-from sqladmin import ModelView
+RESOURCES = """from sqladmin import ModelView
+from models import AmpalibeUser
+from ampalibe import __version__, __author__
+from sqladmin import BaseView, expose
 
+#  Declare here all class ofModelView or BaseView to put in Admin dahsboard
+
+
+'''
+Example CRUD for a table
+'''
 class UserAmpalibe(ModelView, model=AmpalibeUser):
+    name = "Ampalibe Users"
     icon = "fa-solid fa-user"
     can_create = True
     can_edit = True
     can_delete = False
     can_view_details = True
+
+
+'''
+This is example of custom page you can make in your admin page
+'''
+class OtherView(BaseView):
+    name = "Other Page"
+    icon = "fa-solid fa-other"
+
+    @expose("/other", methods=["GET"])
+    def other_page(self, request):
+        return self.templates.TemplateResponse(
+            "other.html",
+            context={"request": request, "version": __version__, "author": __author__},
+        )
+"""
+
+OTHER_HTML = """
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h1 style="text-align: center ;">
+            Custom Admin Page for Ampalibe {{ version }} authored by {{ author }}
+        </h1>
+    </div>
+{% endblock %}
 """

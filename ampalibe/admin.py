@@ -12,7 +12,7 @@ from sqlmodel import select, create_engine, Field, Session, SQLModel
 
 
 engine = create_engine(
-    DataBaseConfig().get_db_url(), connect_args={"check_same_thread": False}
+    DataBaseConfig().get_db_url()
 )
 
 

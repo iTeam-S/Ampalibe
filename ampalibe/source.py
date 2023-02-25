@@ -185,7 +185,7 @@ This is example of custom page you can make in your admin page
 '''
 class OtherView(BaseView):
     name = "Other Page"
-    icon = "fa-solid fa-other"
+    icon = "fa-solid fa-list-alt"
 
     @expose("/other", methods=["GET"])
     def other_page(self, request):

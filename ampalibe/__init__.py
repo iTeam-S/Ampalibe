@@ -6,7 +6,7 @@ import colorama
 import tempfile
 from . import source
 
-__version__ = "1.2.0.dev"
+__version__ = "1.2.0.1a"
 __author__ = "iTeam-$"
 
 

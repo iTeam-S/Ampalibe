@@ -1,13 +1,11 @@
 import os
 import json
 import asyncio
-import uvicorn
 from .model import Model
 from .logger import Logger
 from threading import Thread
 from .payload import Payload
 from conf import Configuration  # type: ignore
-from .messenger import Messenger
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from .tools import funcs, analyse, before_run, send_next, verif_event
@@ -27,32 +25,17 @@ if hasattr(Configuration, "ADMIN_ENABLE") and Configuration.ADMIN_ENABLE:
     init_admin(webserver)
 
 
-class Init:
-    def __init__(self, *args):
-        self.query = Model()
-        self.chat = Messenger()
-
-    @staticmethod
-    def run():
-        """
-        function that run framework
-        """
-        global _req
-        _req = Model()
-
-        Thread(target=loop.run_forever).start()
-
-        uvicorn.run(
-            "ampalibe:webserver",
-            port=Configuration.APP_PORT,
-            host=Configuration.APP_HOST,
-        )
-
-
 class Server(Request):
     """
     Content of webhook
     """
+
+    @webserver.on_event("startup")
+    def startup():
+        global _req
+        _req = Model()
+        if not loop.is_running():
+            Thread(target=loop.run_forever).start()
 
     @webserver.on_event("shutdown")
     def shutdow():

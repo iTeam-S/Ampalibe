@@ -165,9 +165,10 @@ finally:
     from .model import Model
     from .logger import Logger
     from aiocron import crontab
+    from .core import webserver
     from .payload import Payload
+    from .old import Init as init
     from .messenger import Messenger
-    from .core import webserver, Init as init
     from .utils import (
         translate,
         download_file,

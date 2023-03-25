@@ -96,6 +96,10 @@ elif [ "$1" == "run" ]; then
     if [ "$2" = "--dev" ]; then
         watchmedo auto-restart --patterns="*.py;langs.json" --recursive -- python3 -c 'import core;core.ampalibe.init.run()'
         exit
+    elif [ "$2" = "--prod" ]; then
+        args=("${@:3}")
+        uvicorn core:ampalibe.webserver --host $AMP_HOST --port $AMP_PORT ${args[@]}
+        exit
     fi
 
     python3 -c 'import core;core.ampalibe.init.run()'

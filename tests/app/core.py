@@ -1,5 +1,4 @@
 import ampalibe
-import requests
 from conf import Configuration
 from ampalibe import Payload
 from ampalibe.utils import translate

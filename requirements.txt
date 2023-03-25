@@ -3,7 +3,6 @@ uvicorn
 retry
 requests_toolbelt
 requests
-watchdog!=2.2.0
 aiocron
 colorama
 tinydb

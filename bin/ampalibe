@@ -94,11 +94,15 @@ elif [ "$1" == "run" ]; then
     python3 -m ampalibe run
 
     if [ "$2" = "--dev" ]; then
-        watchmedo auto-restart --patterns="*.py;langs.json" --recursive -- python3 -c 'import core;core.ampalibe.init.run()'
+        python3 -m uvicorn core:ampalibe.webserver --host $AMP_HOST --port $AMP_PORT --reload
+        exit
+    elif [ "$2" = "--prod" ]; then
+        args=("${@:3}")
+        python3 -m uvicorn core:ampalibe.webserver --host $AMP_HOST --port $AMP_PORT ${args[@]}
         exit
     fi
 
-    python3 -c 'import core;core.ampalibe.init.run()'
+    python3 -m uvicorn core:ampalibe.webserver --host $AMP_HOST --port $AMP_PORT
 
 else
     >&2 echo -e "~\033[31m ERROR !! \033[0m | Missing knowing argument"

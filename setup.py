@@ -35,8 +35,7 @@ setuptools.setup(
         "watchdog!=2.2.0",
         "aiocron",
         "tinydb",
-        "httpx",
-        "https://github.com/gaetan1903/tinydb/archive/refs/heads/master.zip",
+        "httpx"
     ],  # depandance
     include_package_data=True,  # Include all data file with the package
     scripts=["bin/ampalibe", "bin/ampalibe.bat"],

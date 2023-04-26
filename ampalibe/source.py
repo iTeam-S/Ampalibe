@@ -32,6 +32,9 @@ export AMP_URL=
 
 # ENABLE ADMIN
 #export ADMIN_ENABLE=1
+
+# ENABLE PAYLOAD PROTECTION WITH KEY 
+#export PAYLOAD_SECRET=
 """
 
 ENV_CMD = """:: PAGE ACCESS TOKEN 
@@ -68,6 +71,8 @@ set AMP_URL=
 :: ENABLE ADMIN 
 :: set ADMIN_ENABLE=1
 
+:: ENABLE PAYLOAD PROTECTION WITH KEY 
+:: set PAYLOAD_SECRET=
 """
 
 CORE = """import ampalibe
@@ -123,6 +128,7 @@ class Configuration:
     APP_PORT = int(env.get('AMP_PORT', 4555))
     APP_URL = env.get('AMP_URL')
     ADMIN_ENABLE = env.get('ADMIN_ENABLE')
+    PAYLOAD_SECRET = env.get('PAYLOAD_SECRET')
     
 """
 

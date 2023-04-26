@@ -20,9 +20,17 @@ if not os.path.isdir("assets/public"):
 
 webserver.mount("/asset", StaticFiles(directory="assets/public"), name="asset")
 if hasattr(Configuration, "ADMIN_ENABLE") and Configuration.ADMIN_ENABLE:
-    from .admin import init_admin
+    try:
+        import sqlmodel
+        import sqladmin
+    except ModuleNotFoundError:
+        raise Exception(
+            "You must install sqlmodel and sqladmin to use admin panel \npip install sqlmodel sqladmin"
+        )
+    else:
+        from .admin import init_admin
 
-    init_admin(webserver)
+        init_admin(webserver)
 
 
 class Server(Request):

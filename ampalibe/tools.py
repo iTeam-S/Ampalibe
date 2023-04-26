@@ -67,17 +67,17 @@ def analyse(data):
                 return recipient_id, pst_payload, message
 
             if message.get("read"):
-                watermark = Cmd(message["read"]["watermark"])
+                watermark = Cmd(message["read"].get("watermark"))
                 watermark.webhook = "read"
                 return sender_id, watermark, message
 
             if message.get("delivery"):
-                watermark = Cmd(message["delivery"]["watermark"])
+                watermark = Cmd(message["delivery"].get("watermark"))
                 watermark.webhook = "delivery"
                 return sender_id, watermark, message
 
             if message.get("reaction"):
-                reaction = Cmd(message["reaction"]["reaction"])
+                reaction = Cmd(message["reaction"].get("reaction"))
                 reaction.webhook = "reaction"
                 return sender_id, reaction, message
 

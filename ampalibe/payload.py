@@ -2,6 +2,8 @@ import codecs
 import pickle
 import urllib.parse
 from .cmd import Cmd
+from conf import Configuration  # type: ignore
+from .crypt import encode, decode
 
 
 class Payload:
@@ -29,6 +31,9 @@ class Payload:
         """
 
         payload = urllib.parse.unquote(payload0)
+
+        if hasattr(Configuration, "PAYLOAD_SECRET") and Configuration.PAYLOAD_SECRET:
+            payload = decode(payload, Configuration.PAYLOAD_SECRET)
 
         res = {}
         while "{{" in payload:
@@ -61,5 +66,8 @@ class Payload:
             final_pl = payload.payload + (" " + tmp if tmp else "")
             if len(final_pl) >= 2000:
                 raise Exception("Payload data is too large")
-            return urllib.parse.quote(final_pl)
+            payload = final_pl
+
+        if hasattr(Configuration, "PAYLOAD_SECRET") and Configuration.PAYLOAD_SECRET:
+            payload = encode(payload, Configuration.PAYLOAD_SECRET)
         return urllib.parse.quote(payload)

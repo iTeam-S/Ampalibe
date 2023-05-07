@@ -134,16 +134,14 @@ class Model:
             """
         elif self.ADAPTER == "POSTGRESQL":
             req = """
-                CREATE TABLE IF NOT EXISTS  "amp_user" (
-                    id SERIAL,
-                    user_id VARCHAR NULL DEFAULT NULL,
-                    action TEXT NULL DEFAULT NULL,
-                    last_use TIMESTAMP NULL DEFAULT NOW(),
-                    lang VARCHAR NULL DEFAULT NULL,
-                    PRIMARY KEY (id),
-                    UNIQUE (user_id),
-                    INDEX (last_use)
-                )
+                CREATE TABLE IF NOT EXISTS amp_user (
+                    id SERIAL PRIMARY KEY,
+                    user_id VARCHAR UNIQUE NOT NULL,
+                    action TEXT DEFAULT NULL,
+                    last_use TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    lang VARCHAR DEFAULT NULL
+                );
+                CREATE INDEX IF NOT EXISTS last_use_index ON amp_user(last_use);
             """
         elif self.ADAPTER == "MONGODB":
             if "amp_user" not in self.db.list_collection_names():

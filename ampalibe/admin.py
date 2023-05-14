@@ -131,10 +131,10 @@ def get_user_resources():
             )
     
     except TypeError as err:
-        Logger.error(f"Error while loading resources ,make sure that the sequence attribute is a number: {err}")
+        Logger.warning(f"Error while loading resources ,make sure that the sequence attribute is a number: {err}")
         
     except Exception as err:
-        Logger.error(f"Error while loading resources : {err}")
+        Logger.warning(f"Error while loading resources : {err}")
 
     finally:
         return allViews

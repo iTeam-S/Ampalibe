@@ -123,9 +123,18 @@ def get_user_resources():
                 continue
             if issubclass(obj, (ModelView, BaseView)):
                 allViews.append(obj)
-
+        
+        # Sort by their sequence attributes if they have one
+        allViews = sorted(
+            allViews, 
+            key=lambda view: view.sequence if hasattr(view, 'sequence') else float('inf')
+            )
+    
+    except TypeError as err:
+        Logger.warning(f"Error while loading resources ,make sure that the sequence attribute is a number: {err}")
+        
     except Exception as err:
-        Logger.warning(err)
+        Logger.warning(f"Error while loading resources : {err}")
 
     finally:
         return allViews

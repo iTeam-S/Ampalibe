@@ -173,18 +173,39 @@ Example CRUD for a table
 '''
 class UserAmpalibe(ModelView, model=AmpalibeUser):
     name = "Ampalibe User"
+    description = "This is the view for the table ampalibe_user"
     icon = "fa-solid fa-user"
+    sequence = 1
     column_list = [
         AmpalibeUser.user_id,
         AmpalibeUser.action,
         AmpalibeUser.last_use,
         AmpalibeUser.lang,
     ]
+    column_searchable_list = [
+        AmpalibeUser.user_id,
+        AmpalibeUser.action,
+    ]
+
+    column_labels = {
+        AmpalibeUser.user_id: "User Facebook ID",
+        AmpalibeUser.action: "Action",
+        AmpalibeUser.last_use: "Update at",
+        AmpalibeUser.lang: "Language",
+    }
+
+    column_sortable_list = [
+        AmpalibeUser.last_use,
+    ]
+
+    # sort by last_use desc
+    column_default_sort = (AmpalibeUser.last_use, True)
+
     can_create = True
     can_edit = True
-    can_delete = False
+    can_delete = True
     can_view_details = True
-
+    
 
 '''
 This is example of custom page you can make in your admin page
@@ -192,6 +213,7 @@ This is example of custom page you can make in your admin page
 class OtherView(BaseView):
     name = "Other Page"
     icon = "fa-solid fa-list-alt"
+    sequence = 0
 
     @expose("/other", methods=["GET"])
     def other_page(self, request):

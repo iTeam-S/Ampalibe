@@ -4,6 +4,7 @@ import os
 from .payload import Payload
 from datetime import datetime
 from conf import Configuration  # type: ignore
+from .singleton import singleton
 from tinydb import TinyDB, Query
 from tinydb.operations import delete
 
@@ -60,7 +61,7 @@ class DataBaseConfig:
 
         return url
 
-
+@singleton
 class Model:
     """
     Object for interact with database with pre-defined function
@@ -71,10 +72,13 @@ class Model:
         object to interact with database
 
         @params: conf [ Configuration object ]
-        @return: Request object
+                 init [ boolean ]
         """
-        if not init:
-            return
+        if init:
+            self._start(conf)
+        
+    
+    def _start(self, conf=Configuration):
         self.ADAPTER = conf.ADAPTER
 
         if self.ADAPTER in ("MYSQL", "POSTGRESQL"):
@@ -88,6 +92,7 @@ class Model:
         self.__init_db()
         os.makedirs("assets/private/", exist_ok=True)
         self.tinydb = TinyDB("assets/private/_db.json")
+
 
     def __connect(self):
         """

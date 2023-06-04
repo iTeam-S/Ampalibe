@@ -7,6 +7,7 @@ import requests_toolbelt
 from .logger import Logger
 from .payload import Payload
 from conf import Configuration  # type: ignore
+from .singleton import singleton
 from .ui import ReceiptElement, Summary, Address, Adjustment
 from .constant import Tag, Action, Filetype, Messaging_type, Notification_type
 from .ui import (
@@ -17,7 +18,7 @@ from .ui import (
     RecurringNotificationOptin,
 )
 
-
+@singleton
 class Messenger:
     def __init__(self, log_level="error", api_version="v15.0"):
         """

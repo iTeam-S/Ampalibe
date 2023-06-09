@@ -10,9 +10,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from .tools import funcs, analyse, before_run, send_next, verif_event
 
+
 _req = Model(init=False)
 loop = asyncio.get_event_loop()
-
 
 webserver = FastAPI()
 if not os.path.isdir("assets/public"):
@@ -40,8 +40,7 @@ class Server(Request):
 
     @webserver.on_event("startup")
     def startup():
-        global _req
-        _req = Model()
+        _req._start()
         if not loop.is_running():
             Thread(target=loop.run_forever).start()
 

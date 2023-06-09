@@ -15,6 +15,7 @@
    
       ~Model.__init__
       ~Model.del_temp
+      ~Model.get
       ~Model.get_action
       ~Model.get_lang
       ~Model.get_temp

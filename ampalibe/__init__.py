@@ -6,7 +6,7 @@ import colorama
 import tempfile
 from . import source
 
-__version__ = "1.2.0.1a"
+__version__ = "2.0.0.dev"
 __author__ = "iTeam-$"
 
 
@@ -159,7 +159,7 @@ except ImportError:
     os.makedirs(dir_tmp, exist_ok=True)
     with open(os.path.join(dir_tmp, "conf.py"), "w") as f:
         f.write(source.CONF)
-    sys.path.insert(0, dir_tmp)
+    sys.path.append(dir_tmp)
 finally:
     from .constant import *
     from .model import Model

@@ -96,6 +96,12 @@ for dev mode with __Hot Reload__
 ampalibe run --dev
 ```
 
+> Use docker compose
+Utilize Docker Compose to disregard concerns about version conflicts.
+```
+docker-compose up
+```
+
 ### Register for an Access Token
 
 You will need to configure a Facebook application, a Facebook page, get the access to the page, link the application to the page, configure a webhook for your app before you can really start using __Ampalibe__.

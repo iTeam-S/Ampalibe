@@ -39,6 +39,11 @@ def create_models(path):
     typing_print("~\033[32m 👌 \033[0m | Models file created")
 
 
+def setup_docker_env(path):
+    print(source.DOCKER_COMPOSE, file=open(f"{path}/docker-compose.yaml", "w"))
+    typing_print("~\033[32m 👌 \033[0m | Docker-compose file created")
+
+
 def create_resources(path):
     print(source.RESOURCES, file=open(f"{path}/resources.py", "w"))
     typing_print("~\033[32m 👌 \033[0m | Resources file created")
@@ -93,6 +98,7 @@ if sys.argv[0] == "-m" and len(sys.argv) > 1:
         typing_print(f"~\033[32m 👌 \033[0m | Creating {proj_name} ...")
         os.makedirs(proj_name)
         init_proj(proj_name)
+        setup_docker_env(proj_name)
         typing_print(
             inspect.cleandoc(
                 f"""

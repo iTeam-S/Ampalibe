@@ -233,3 +233,13 @@ OTHER_HTML = """
     </div>
 {% endblock %}
 """
+
+DOCKER_COMPOSE="""version: '3'
+services:
+    ampalibe-app:
+      image: ghcr.io/iteam-s/ampalibe
+      ports:
+        - "4555:4555"
+      volumes:
+        - .:/usr/src/app
+"""

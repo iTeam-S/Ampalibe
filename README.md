@@ -219,5 +219,10 @@ We have made a promise to
 
        An Odoo module to synchronize the Ampalibe Framework with Odoo ERP.
 
+### 📌 Star History
 
-
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=iteam-s/ampalibe&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=iteam-s/ampalibe&type=Date" />
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=iteam-s/ampalibe&type=Date" />
+</picture>

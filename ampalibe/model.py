@@ -61,7 +61,7 @@ class DataBaseConfig:
 
         return url
 
-@singleton
+
 class Model:
     """
     Object for interact with database with pre-defined function
